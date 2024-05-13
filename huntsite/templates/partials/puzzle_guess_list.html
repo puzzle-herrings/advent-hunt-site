@@ -1,0 +1,18 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Guess</th>
+            <th scope="col">Response</th>
+            <th scope="col">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for guess in guesses %}
+            <tr>
+                <td>{{ guess.text }}</td>
+                <td>{{ guess.response }}</td>
+                <td>{{ guess.created_at }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

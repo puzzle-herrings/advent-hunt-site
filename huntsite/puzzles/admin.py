@@ -1,5 +1,7 @@
 from django.contrib import admin
 
-from huntsite.puzzles.models import Puzzle
+import huntsite.puzzles.models as models
 
-admin.site.register(Puzzle)
+admin.site.register(models.Puzzle)
+admin.site.register(models.Guess)
+admin.site.register(models.Solve)
