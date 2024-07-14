@@ -1,3 +1,7 @@
+crispy-bootstrap5
 django
+django-allauth
+django-crispy-forms
 django-debug-toolbar
+environs[django]
 shortuuid

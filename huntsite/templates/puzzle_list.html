@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>List of Puzzles</h1>
+    <h1>Puzzles</h1>
     <ul>
         {% for puzzle in puzzles %}
             <li><a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a></li>

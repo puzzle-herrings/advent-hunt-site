@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
@@ -17,6 +18,7 @@ def puzzle_list(request):
     return TemplateResponse(request, "puzzle_list.html", context)
 
 
+@login_required
 def puzzle_detail(request, slug: str):
     """View to display the content page of a single puzzle."""
     puzzle = get_object_or_404(Puzzle.objects.all(), slug=slug)
@@ -28,6 +30,14 @@ def puzzle_detail(request, slug: str):
     return TemplateResponse(request, "puzzle_detail.html", context)
 
 
+GUESS_EVALUATION_MESSAGES = {
+    puzzle_services.GuessEvaluation.CORRECT: "Correct!",
+    puzzle_services.GuessEvaluation.INCORRECT: "Incorrect.",
+    puzzle_services.GuessEvaluation.ALREADY_SUBMITTED: "You've already submitted that guess.",
+}
+
+
+@login_required
 @require_POST
 def guess_submit(request, slug: str):
     """View to handle a guess submission to a puzzle."""
@@ -35,9 +45,10 @@ def guess_submit(request, slug: str):
     form = GuessForm(request.POST)
     if form.is_valid():
         guess_text = form.cleaned_data["guess"]
-        puzzle_services.guess_submit(puzzle, request.user, guess_text)
+        evaluation = puzzle_services.guess_submit(puzzle, request.user, guess_text)
         all_puzzle_guesses = puzzle_selectors.puzzle_guess_list(puzzle, request.user)
         context = {
+            "evaluation_message": GUESS_EVALUATION_MESSAGES[evaluation],
             "guesses": all_puzzle_guesses,
         }
         return render(request, "partials/puzzle_guess_list.html", context)

@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-tf#_vx^r2ku!ig*yg)foj9k+gxoms&3#q*$@*3&y9&xb$h*uv!"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = []
 
@@ -38,9 +43,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third-party apps
-    "debug_toolbar",
+    "allauth",
+    "allauth.account",
     "crispy_forms",
     "crispy_bootstrap5",
+    "debug_toolbar",
     # Local apps
     "huntsite.puzzles",
     "huntsite.teams",
@@ -55,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Third-party middleware
+    "allauth.account.middleware.AccountMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -71,6 +79,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # allauth
+                "django.template.context_processors.request",
             ],
         },
     },
@@ -90,6 +100,16 @@ DATABASES = {
 }
 
 
+AUTH_USER_MODEL = "teams.User"
+
+# https://docs.djangoproject.com/en/5.0/topics/auth/customizing/
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by email
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -108,18 +128,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# allauth
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_FORMS = {"signup": "huntsite.teams.forms.SignupForm"}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
-USE_I18N = True
-
+USE_I18N = False
 USE_TZ = True
-
+# DATE_FORMAT = "F j, Y"
+# TIME_FORMAT = "h:i:s A e (O)"
+# DATETIME_FORMAT = f"{DATE_FORMAT} {TIME_FORMAT}"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -148,3 +171,10 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 ## TODO MAKE SURE THIS IS FINE
 X_FRAME_OPTIONS = "SAMEORIGIN"
+
+
+LOGIN_REDIRECT_URL = "puzzle_list"
+# LOGOUT_REDIRECT_URL = "home"
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
