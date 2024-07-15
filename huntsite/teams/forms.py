@@ -1,6 +1,9 @@
 from allauth.account.forms import SignupForm as AllAuthSignupForm
+from django.conf import settings
+from django.forms import ModelForm
 from allauth.utils import set_form_field_order
 from django import forms
+from huntsite.teams import models
 
 
 class SignupForm(AllAuthSignupForm):
@@ -22,3 +25,9 @@ class SignupForm(AllAuthSignupForm):
         user.team_name = self.cleaned_data["team_name"]
         user.save()
         return user
+
+
+class AccountManagementForm(ModelForm):
+    class Meta:
+        model = models.User
+        fields = ["username", "team_name"]
