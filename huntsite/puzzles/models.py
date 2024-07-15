@@ -1,15 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-import shortuuid
 
 from huntsite.puzzles.utils import clean_answer, normalize_answer
-
-
-def get_puzzle_pdf_upload_path(instance, filename):
-    slug = instance.slug
-    uuid = shortuuid.uuid()
-    return f"puzzles/{slug}-{uuid}.pdf"
 
 
 class Puzzle(models.Model):

@@ -2,6 +2,8 @@
 #    uv pip compile requirements.in -o requirements.txt
 asgiref==3.8.1
     # via django
+brotli==1.1.0
+    # via whitenoise
 crispy-bootstrap5==2024.2
 dj-database-url==2.2.0
     # via environs
@@ -21,16 +23,19 @@ django-crispy-forms==2.2
     # via crispy-bootstrap5
 django-debug-toolbar==4.3.0
 environs==11.0.0
+gunicorn==22.0.0
 marshmallow==3.21.3
     # via environs
 packaging==24.1
-    # via marshmallow
+    # via
+    #   gunicorn
+    #   marshmallow
 python-dotenv==1.0.1
     # via environs
-shortuuid==1.0.13
 sqlparse==0.5.0
     # via
     #   django
     #   django-debug-toolbar
 typing-extensions==4.12.2
     # via dj-database-url
+whitenoise==6.7.0
