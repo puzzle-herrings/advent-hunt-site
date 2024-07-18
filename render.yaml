@@ -1,5 +1,5 @@
 services:
-  - name: advent-hunt-django
+  - name: advent-hunt-web
     buildCommand: "./scripts/build.sh"
     env: python
     envVars:
