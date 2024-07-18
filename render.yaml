@@ -1,7 +1,7 @@
 services:
   - name: advent-hunt-web
     buildCommand: "./scripts/build.sh"
-    env: python
+    runtime: python
     envVars:
       - key: DATABASE_URL
         fromDatabase:
