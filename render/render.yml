@@ -1,0 +1,23 @@
+services:
+  - name: advent-hunt-django
+    buildCommand: "./render/build.sh"
+    env: python
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: advent-hunt-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+    plan: free
+    region: ohio
+    startCommand: "./render/deploy.sh"
+    type: web
+
+databases:
+  - name: advent-hunt-db
+    databaseName: advent_hunt_db
+    ipAllowList: []
+    plan: free
+    region: ohio
+    user: advent_hunt_db_user
