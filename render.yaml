@@ -1,6 +1,6 @@
 services:
   - name: advent-hunt-django
-    buildCommand: "./render/build.sh"
+    buildCommand: "./scripts/build.sh"
     env: python
     envVars:
       - key: DATABASE_URL
@@ -11,7 +11,7 @@ services:
         generateValue: true
     plan: free
     region: ohio
-    startCommand: "./render/deploy.sh"
+    startCommand: "./scripts/deploy.sh"
     type: web
 
 databases:
