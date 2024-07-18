@@ -16,3 +16,9 @@ drop-db:
 delete-migrations: drop-db
     rm huntsite/puzzles/migrations/0*.py || true
     rm huntsite/teams/migrations/0*.py || true
+
+requirements:
+    uv pip sync dev-requirements.txt
+
+compile-requirements:
+    uv pip compile requirements.in -o requirements.txt
