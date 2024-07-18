@@ -5,4 +5,6 @@ django-crispy-forms
 django-debug-toolbar
 environs[django]
 gunicorn
+psycopg2-binary
+uvicorn
 whitenoise[brotli]

@@ -4,32 +4,46 @@ asgiref==3.8.1
     # via django
 brotli==1.1.0
     # via whitenoise
+click==8.1.7
+    # via uvicorn
 crispy-bootstrap5==2024.2
+    # via -r requirements.in
 dj-database-url==2.2.0
     # via environs
 dj-email-url==1.0.6
     # via environs
 django==5.0.4
     # via
+    #   -r requirements.in
     #   crispy-bootstrap5
     #   dj-database-url
     #   django-allauth
     #   django-crispy-forms
     #   django-debug-toolbar
 django-allauth==0.63.6
+    # via -r requirements.in
 django-cache-url==3.4.5
     # via environs
 django-crispy-forms==2.2
-    # via crispy-bootstrap5
+    # via
+    #   -r requirements.in
+    #   crispy-bootstrap5
 django-debug-toolbar==4.3.0
+    # via -r requirements.in
 environs==11.0.0
+    # via -r requirements.in
 gunicorn==22.0.0
+    # via -r requirements.in
+h11==0.14.0
+    # via uvicorn
 marshmallow==3.21.3
     # via environs
 packaging==24.1
     # via
     #   gunicorn
     #   marshmallow
+psycopg2-binary==2.9.9
+    # via -r requirements.in
 python-dotenv==1.0.1
     # via environs
 sqlparse==0.5.0
@@ -38,4 +52,7 @@ sqlparse==0.5.0
     #   django-debug-toolbar
 typing-extensions==4.12.2
     # via dj-database-url
+uvicorn==0.30.1
+    # via -r requirements.in
 whitenoise==6.7.0
+    # via -r requirements.in
