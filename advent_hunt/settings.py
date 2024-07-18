@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "debug_toolbar",
     # Local apps
+    "huntsite",
     "huntsite.puzzles",
     "huntsite.teams",
 ]
@@ -153,10 +154,11 @@ USE_TZ = True
 ## Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_ROOT = BASE_DIR / "huntsite" / "static"
+STATIC_ROOT = BASE_DIR / ".staticfiles"
 STATIC_URL = "static/"
 
-MEDIA_ROOT = BASE_DIR / "media"
+## Media files
+MEDIA_ROOT = BASE_DIR / ".mediafiles"
 MEDIA_URL = "media/"
 
 ## Storages
