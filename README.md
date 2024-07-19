@@ -28,6 +28,7 @@ pip install -r dev-requirements.txt
 1. Create and activate a Python 3.11.9 virtual environment. You can do this with your virtual environment tool of your choice. For example:
     ```bash
     python -m venv .venv
+    source .venv/bin/activate
     ```
 2. Install dependencies:
     ```bash
