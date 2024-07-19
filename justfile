@@ -33,9 +33,10 @@ compile-requirements:
 
 # Lint the project
 lint:
-    ruff format --check advent_hunt huntsite
-    ruff check advent_hunt huntsite
+    ruff format --check project huntsite
+    ruff check project huntsite
 
 # Autoformat the project
-    ruff format advent_hunt huntsite
-    ruff check --fix advent_hunt huntsite
+format:
+    ruff format project huntsite
+    ruff check --fix project huntsite

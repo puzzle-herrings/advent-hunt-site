@@ -1,8 +1,7 @@
 from django.conf import settings
+from django.core.files import File
 import factory
 from fpdf import FPDF
-
-from django.core.files import File
 
 
 def create_pdf_file():

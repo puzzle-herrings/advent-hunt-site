@@ -1,5 +1,5 @@
 # WSGI
-python -m gunicorn advent_hunt.wsgi:application
+python -m gunicorn project.wsgi:application
 
 # ASGI
-# python -m gunicorn advent_hunt.asgi:application -k uvicorn.workers.UvicornWorker
+# python -m gunicorn project.asgi:application -k uvicorn.workers.UvicornWorker

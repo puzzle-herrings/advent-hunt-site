@@ -16,8 +16,8 @@ services:
 
 databases:
   - name: advent-hunt-db
-    databaseName: advent_hunt_db
+    databaseName: project_db
     ipAllowList: []
     plan: free
     region: ohio
-    user: advent_hunt_db_user
+    user: project_db_user

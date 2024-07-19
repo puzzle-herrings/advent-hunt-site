@@ -1,8 +1,8 @@
 from allauth.account.forms import SignupForm as AllAuthSignupForm
-from django.conf import settings
-from django.forms import ModelForm
 from allauth.utils import set_form_field_order
 from django import forms
+from django.forms import ModelForm
+
 from huntsite.teams import models
 
 

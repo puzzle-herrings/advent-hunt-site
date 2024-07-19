@@ -5,8 +5,8 @@ from django.views.decorators.http import require_POST
 
 from huntsite.puzzles.forms import GuessForm
 from huntsite.puzzles.models import Puzzle
-import huntsite.puzzles.services as puzzle_services
 import huntsite.puzzles.selectors as puzzle_selectors
+import huntsite.puzzles.services as puzzle_services
 
 
 def puzzle_list(request):
