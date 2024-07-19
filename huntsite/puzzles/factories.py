@@ -1,3 +1,5 @@
+import random
+
 from django.conf import settings
 from django.db.models.signals import post_save
 import factory
@@ -12,14 +14,24 @@ MOCK_PUZZLES = [
 ]
 
 
+def title_text_factory() -> str:
+    nb = random.randint(1, 3)
+    return " ".join(fake.words(nb=nb)).title()
+
+
+def answer_text_factory() -> str:
+    nb = random.randint(1, 2)
+    return " ".join(fake.words(nb=nb)).upper()
+
+
 @factory.django.mute_signals(post_save)
 class PuzzleFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "puzzles.Puzzle"
 
-    name = factory.lazy_attribute(lambda _: " ".join(fake.words(nb=3)).title())
+    name = factory.lazy_attribute(title_text_factory)
     slug = factory.Faker("slug")
-    answer = factory.lazy_attribute(lambda _: " ".join(fake.words(nb=2)).title())
+    answer = factory.lazy_attribute(answer_text_factory)
     pdf_url = factory.fuzzy.FuzzyChoice(MOCK_PUZZLES)
 
     calendar_entry = factory.RelatedFactory(
@@ -34,7 +46,7 @@ class GuessFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory("users.factories.UserFactory")
     puzzle = factory.SubFactory(PuzzleFactory)
-    text = factory.Faker("word")
+    text = factory.lazy_attribute(answer_text_factory)
     is_correct = factory.Faker("boolean")
 
 
@@ -51,9 +63,9 @@ class IncorrectGuessFactory(GuessFactory):
 
     @factory.post_generation
     def text(self, create, extracted, **kwargs):
-        word = factory.Faker("word")
+        word = answer_text_factory()
         while word == self.puzzle.answer:
-            word = factory.Faker("word")
+            word = answer_text_factory()
         self.text = word
 
 
