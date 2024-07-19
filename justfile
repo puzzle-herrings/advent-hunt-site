@@ -30,6 +30,7 @@ requirements:
 # Create requirements lockfile
 compile-requirements:
     uv pip compile requirements.in -o requirements.txt
+    uv pip compile dev-requirements.in -o dev-requirements.txt
 
 # Lint the project
 lint:
@@ -40,3 +41,9 @@ lint:
 format:
     ruff format project huntsite
     ruff check --fix project huntsite
+
+createsuperuser:
+    python manage.py createsuperuser --noinput
+
+demo-data:
+    python manage.py create_demo_data

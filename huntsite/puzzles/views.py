@@ -11,9 +11,14 @@ import huntsite.puzzles.services as puzzle_services
 
 def puzzle_list(request):
     """View to display a list of all puzzles."""
-    puzzles = Puzzle.objects.all()
+    puzzles = Puzzle.objects.select_related("calendar_entry").all()
+    if request.user.is_authenticated:
+        solves = {solve.puzzle: solve for solve in puzzle_selectors.solve_list(request.user)}
+    else:
+        solves = {}
     context = {
         "puzzles": puzzles,
+        "solves": solves,
     }
     return TemplateResponse(request, "puzzle_list.html", context)
 

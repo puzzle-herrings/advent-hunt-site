@@ -13,3 +13,4 @@ class UneditableAsReadOnlyAdmin(admin.ModelAdmin):
 admin.site.register(models.Puzzle, UneditableAsReadOnlyAdmin)
 admin.site.register(models.Guess, UneditableAsReadOnlyAdmin)
 admin.site.register(models.Solve, UneditableAsReadOnlyAdmin)
+admin.site.register(models.AdventCalendarEntry, UneditableAsReadOnlyAdmin)

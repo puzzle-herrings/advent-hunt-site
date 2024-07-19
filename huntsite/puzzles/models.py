@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 
 from huntsite.puzzles.utils import clean_answer, normalize_answer
@@ -42,6 +44,9 @@ class Guess(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name_plural = "Guesses"
+
     @property
     def evaluation(self):
         return "Correct" if self.is_correct else "Incorrect"
@@ -65,3 +70,21 @@ class Solve(models.Model):
 
     def __str__(self):
         return f"{self.user.teamprofile.team_name} - {self.puzzle.name} - {self.solved_datetime}"
+
+
+class AdventCalendarEntry(models.Model):
+    puzzle = models.OneToOneField(Puzzle, on_delete=models.CASCADE, related_name="calendar_entry")
+    day = models.IntegerField(default=-1)
+
+    class Meta:
+        ordering = ["day"]
+        verbose_name_plural = "Advent Calendar Entries"
+
+    def __str__(self):
+        return f"{self.day} | {self.puzzle.name}"
+
+
+@receiver(post_save, sender=Puzzle)
+def create_advent_calendar_entry(sender, instance, created, **kwargs):
+    if created:
+        AdventCalendarEntry.objects.create(puzzle=instance)
