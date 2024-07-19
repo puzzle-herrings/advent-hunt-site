@@ -1,5 +1,6 @@
 -r requirements.txt
 
+coverage
 factory-boy
 faker
 pytest-django

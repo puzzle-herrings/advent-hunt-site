@@ -1,0 +1,54 @@
+name: tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: 3.11.9
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: extractions/setup-just@v2
+
+      - name: Set up Python and uv
+        uses: drivendataorg/setup-python-uv-action@v1
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: packages
+          cache-dependency-path: |
+            requirements.txt
+            dev-requirements.txt
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r dev-requirements.txt
+
+      - name: Lint project
+        run: |
+          just lint
+
+      - name: Check for unmade migrations
+        run: |
+          python manage.py makemigrations --check --dry-run
+
+      - name: Migrate
+        run: |
+          python manage.py migrate --noinput
+
+      - name: Run tests
+        run: |
+          coverage run manage.py test
+          coverage report -m
