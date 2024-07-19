@@ -30,3 +30,12 @@ requirements:
 # Create requirements lockfile
 compile-requirements:
     uv pip compile requirements.in -o requirements.txt
+
+# Lint the project
+lint:
+    ruff format --check advent_hunt huntsite
+    ruff check advent_hunt huntsite
+
+# Autoformat the project
+    ruff format advent_hunt huntsite
+    ruff check --fix advent_hunt huntsite

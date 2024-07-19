@@ -1,0 +1,22 @@
+[tool.ruff]
+line-length = 99
+src = ["advent_hunt/**/*.py", "huntsite/**/*.py"]
+extend-exclude = [
+    "manage.py",
+    "advent_hunt/asgi.py",
+    "advent_hunt/wsgi.py",
+    "**/migrations/**/*",
+    "**/apps.py",
+]
+
+[tool.ruff.lint]
+select = [
+    "E", # Pyflakes
+    "F", # Pycodestyle
+    "I", # isort
+]
+unfixable = ["F"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["huntsite"]
+force-sort-within-sections = true
