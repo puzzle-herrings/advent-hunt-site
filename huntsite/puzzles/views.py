@@ -13,9 +13,7 @@ def puzzle_list(request):
     """View to display a list of all puzzles."""
     puzzles = Puzzle.objects.select_related("calendar_entry").all()
     if request.user.is_authenticated:
-        solves = {
-            solve.puzzle: solve for solve in puzzle_selectors.solve_list(request.user)
-        }
+        solves = {solve.puzzle: solve for solve in puzzle_selectors.solve_list(request.user)}
     else:
         solves = {}
     context = {

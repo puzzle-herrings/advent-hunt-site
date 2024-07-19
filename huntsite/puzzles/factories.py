@@ -71,9 +71,7 @@ class IncorrectGuessFactory(GuessFactory):
 
 @factory.django.mute_signals(post_save)
 class AdventCalendarEntryFactory(factory.django.DjangoModelFactory):
-    puzzle = factory.SubFactory(
-        "huntsite.puzzles.factories.PuzzleFactory", calendar_entry=None
-    )
+    puzzle = factory.SubFactory("huntsite.puzzles.factories.PuzzleFactory", calendar_entry=None)
 
     class Meta:
         model = "puzzles.AdventCalendarEntry"

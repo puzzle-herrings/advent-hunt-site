@@ -2,7 +2,6 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from huntsite.puzzles.factories import PuzzleFactory
-from huntsite.puzzles.models import Puzzle
 
 
 class Command(BaseCommand):
