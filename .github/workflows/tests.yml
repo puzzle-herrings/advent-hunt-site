@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: packages
-          cache-dependency-path: |
+          cache-dependency-path: >-
             requirements.txt
             dev-requirements.txt
 

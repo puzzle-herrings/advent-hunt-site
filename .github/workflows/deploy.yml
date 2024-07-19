@@ -1,0 +1,29 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: [tests]
+    types:
+      - completed
+    branches: [main]
+  workflow_dispatch:
+
+concurrency: deploy
+
+jobs:
+  deploy:
+    name: Deploy
+    if: |-
+      ${{
+        (
+          github.ref == 'refs/heads/main'
+          && github.event.workflow_run.event != 'workflow_dispatch'
+          && github.event.workflow_run.conclusion == 'success'
+        )
+        || github.event_name == 'workflow_dispatch'
+      }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Render
+        run: |
+          curl "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
