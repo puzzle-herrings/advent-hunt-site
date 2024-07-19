@@ -20,6 +20,12 @@ class SignupForm(AllAuthSignupForm):
         field_order.insert(field_order.index("username") + 1, "team_name")
         set_form_field_order(self, field_order)
 
+    def clean(self):
+        cleaned_data = super().clean()
+        if models.User.objects.filter(team_name=cleaned_data["team_name"]).exists():
+            self.add_error("team_name", "A team with that name already exists.")
+        return cleaned_data
+
     def save(self, request):
         user = super().save(request)
         user.team_name = self.cleaned_data["team_name"]

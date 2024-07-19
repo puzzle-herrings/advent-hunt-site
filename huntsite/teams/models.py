@@ -7,8 +7,11 @@ class User(AbstractUser):
     team_name = models.CharField(
         max_length=255,
         unique=True,
+        blank=False,
         help_text="How the team will be publicly displayed.",
     )
+
+    REQUIRED_FIELDS = ["team_name"]
 
 
 class TeamProfile(models.Model):
