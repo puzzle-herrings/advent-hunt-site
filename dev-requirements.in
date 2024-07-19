@@ -1,0 +1,8 @@
+-r requirements.txt
+
+coverage
+djlint
+factory-boy
+faker
+pytest-django
+ruff

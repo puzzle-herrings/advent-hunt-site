@@ -29,6 +29,9 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
+if env("BASE_URL", ""):
+    BASE_URL = env("BASE_URL")
+
 ALLOWED_HOSTS = []
 
 RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", "")
