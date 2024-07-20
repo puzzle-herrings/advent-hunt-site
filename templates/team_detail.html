@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% include "partials/timestamp_localize_libraries.html" %}
+    <div class="row">
+        <div class="col">
+            <h1>{{ team.team_name }}</h1>
+            <p>
+                {% if is_self %}
+                    <a class="btn btn-primary"
+                       href="{% url 'account_manage' %}"
+                       role="button">Manage your account</a>
+                {% endif %}
+            </p>
+            {% if team.profile.members %}
+                <p>
+                    <strong>Team Members:</strong> {{ team.profile.members }}
+                </p>
+            {% endif %}
+            <h2>Solves</h2>
+            <p>
+                <strong>Total:</strong> {{ solves|length }}
+            </p>
+            <table class="table table-hover w-auto">
+                <thead>
+                    <tr>
+                        <th scope="col">Puzzle</th>
+                        <th scope="col">Solve Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solve in solves %}
+                        <tr>
+                            <td>{{ solve.puzzle.name }}</td>
+                            <td>
+                                <span class="timestamp">{{ solve.created_at|date:"c" }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row"></div>
+    {% include "partials/timestamp_localize_script.html" %}
+{% endblock content %}

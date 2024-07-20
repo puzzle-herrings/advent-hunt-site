@@ -1,6 +1,4 @@
-{% if evaluation_message %}
-<p>{{ evaluation_message }}</p>
-{% endif %}
+{% if evaluation_message %}<p>{{ evaluation_message }}</p>{% endif %}
 <table class="table">
     <thead>
         <tr>
@@ -13,16 +11,12 @@
         {% for guess in guesses %}
             <tr>
                 <td>{{ guess.text }}</td>
-                <td>{{ guess.display_evaluation}}</td>
-                <td><span class="timestamp">{{ guess.created_at|date:"c"  }}</span></td>
+                <td>{{ guess.display_evaluation }}</td>
+                <td>
+                    <span class="timestamp">{{ guess.created_at|date:"c" }}</span>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
-<script>
-    document.querySelectorAll('.timestamp').forEach((element) => {
-        const timestamp = element.textContent;
-        const localTime = moment.tz(timestamp, userTimeZone).format('MMM D, YYYY hh:mm:ss A z');
-        element.textContent = localTime;
-    });
-</script>
+{% include "partials/timestamp_localize_script.html" %}
