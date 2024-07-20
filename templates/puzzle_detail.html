@@ -2,12 +2,6 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.45/moment-timezone-with-data-10-year-range.min.js"
-            integrity="sha512-v3mDTnfNpDAjWiu1CZZeQrbpI7hKVolNn1Zjc9Spj86hu6jd2HpId4TtJAzbicWZ5ZTAibg72mpG+Zl2F6KQRA=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>
-    <script>const userTimeZone = moment.tz.guess();</script>
     {% include "partials/timestamp_localize_libraries.html" %}
     <div class="row">
         <div class="col">
