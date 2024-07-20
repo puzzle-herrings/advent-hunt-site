@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class User(AbstractUser):
@@ -15,16 +17,16 @@ class User(AbstractUser):
 
 
 class TeamProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="profile"
+    )
+    members = models.CharField(max_length=255, blank=True, help_text="List of team members.")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class TeamMember(models.Model):
-    """A person on a team."""
-
-    team = models.ForeignKey(TeamProfile, on_delete=models.CASCADE)
-
-    name = models.CharField(max_length=255)
-    email = models.EmailField(blank=True)
+@receiver(post_save, sender=User)
+def create_team_profile(sender, instance, created, **kwargs):
+    if created:
+        TeamProfile.objects.create(user=instance)
