@@ -1,6 +1,5 @@
 from django.template.response import TemplateResponse
 
-from huntsite.puzzles import models as puzzle_models
 from huntsite.puzzles import selectors as puzzle_selectors
 from huntsite.teams import models
 
