@@ -1,13 +1,5 @@
-from enum import Enum
-
-from huntsite.puzzles.models import Guess, Puzzle, Solve
+from huntsite.puzzles.models import Guess, GuessEvaluation, Puzzle, Solve
 from huntsite.puzzles.utils import normalize_answer
-
-
-class GuessEvaluation(Enum):
-    CORRECT = "correct"
-    INCORRECT = "incorrect"
-    ALREADY_SUBMITTED = "already_submitted"
 
 
 def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
@@ -20,22 +12,27 @@ def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
     ).exists():
         return GuessEvaluation.ALREADY_SUBMITTED
 
-    is_correct = guess_text_normalized == puzzle.answer_normalized
+    if guess_text_normalized == puzzle.answer_normalized:
+        evaluation = GuessEvaluation.CORRECT
+    elif guess_text_normalized in puzzle.keep_going_inputs:
+        evaluation = GuessEvaluation.KEEP_GOING
+    else:
+        evaluation = GuessEvaluation.INCORRECT
 
     guess = Guess(
         user=user,
         puzzle=puzzle,
         text=guess_text,
         text_normalized=guess_text_normalized,
-        is_correct=is_correct,
+        evaluation=evaluation,
     )
     guess.full_clean()
     guess.save()
 
-    if is_correct:
+    if evaluation == GuessEvaluation.CORRECT:
         solve, created = Solve.objects.get_or_create(user=user, puzzle=puzzle)
         if created:
             solve.full_clean()
             solve.save()
 
-    return GuessEvaluation.CORRECT if is_correct else GuessEvaluation.INCORRECT
+    return evaluation

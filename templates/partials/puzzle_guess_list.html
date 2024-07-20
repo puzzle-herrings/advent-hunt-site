@@ -13,7 +13,7 @@
         {% for guess in guesses %}
             <tr>
                 <td>{{ guess.text }}</td>
-                <td>{{ guess.evaluation}}</td>
+                <td>{{ guess.display_evaluation}}</td>
                 <td><span class="timestamp">{{ guess.created_at|date:"c"  }}</span></td>
             </tr>
         {% endfor %}

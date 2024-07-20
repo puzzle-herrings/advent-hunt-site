@@ -7,12 +7,20 @@ from django.urls import reverse
 from huntsite.puzzles.utils import clean_answer, normalize_answer
 
 
+class GuessEvaluation(models.TextChoices):
+    CORRECT = "correct"
+    INCORRECT = "incorrect"
+    ALREADY_SUBMITTED = "already_submitted"
+    KEEP_GOING = "keep_going"
+
+
 class Puzzle(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
 
     answer = models.CharField(max_length=255)
     answer_normalized = models.CharField(max_length=255, editable=False)
+    keep_going_inputs = models.JSONField(null=False, default=list)
 
     pdf_url = models.URLField()
 
@@ -39,7 +47,7 @@ class Guess(models.Model):
     puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
     text_normalized = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)
+    evaluation = models.CharField(max_length=255, choices=GuessEvaluation)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -48,14 +56,22 @@ class Guess(models.Model):
         verbose_name_plural = "Guesses"
 
     @property
-    def evaluation(self):
-        return "Correct" if self.is_correct else "Incorrect"
+    def display_evaluation(self):
+        match self.evaluation:
+            case GuessEvaluation.CORRECT:
+                return "Correct"
+            case GuessEvaluation.INCORRECT:
+                return "Incorrect"
+            case GuessEvaluation.KEEP_GOING:
+                return "Keep going!"
 
     def clean(self):
         self.text = clean_answer(self.text)
 
     def __str__(self):
-        return f"{self.user.team_name} - {self.puzzle.name} - {self.text} - {self.evaluation}"
+        return (
+            f"{self.user.team_name} - {self.puzzle.name} - {self.text} - {self.display_evaluation}"
+        )
 
 
 class Solve(models.Model):

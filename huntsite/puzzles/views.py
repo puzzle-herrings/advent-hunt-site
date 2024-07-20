@@ -39,6 +39,7 @@ GUESS_EVALUATION_MESSAGES = {
     puzzle_services.GuessEvaluation.CORRECT: "Correct!",
     puzzle_services.GuessEvaluation.INCORRECT: "Incorrect.",
     puzzle_services.GuessEvaluation.ALREADY_SUBMITTED: "You've already submitted that guess.",
+    puzzle_services.GuessEvaluation.KEEP_GOING: "Incorrect.",
 }
 
 
