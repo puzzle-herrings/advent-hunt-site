@@ -1,0 +1,7 @@
+<script>
+    document.querySelectorAll('.timestamp').forEach((element) => {
+        const timestamp = element.textContent;
+        const localTime = moment.tz(timestamp, userTimeZone).format('MMM D, YYYY hh:mm:ss A z');
+        element.textContent = localTime;
+    });
+</script>

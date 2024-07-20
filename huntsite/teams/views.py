@@ -1,15 +1,28 @@
-from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 
-from huntsite.teams.forms import AccountManagementForm
+from huntsite.puzzles import models as puzzle_models
+from huntsite.puzzles import selectors as puzzle_selectors
+from huntsite.teams import models
 
 
-@login_required
-def account_manage(request):
-    """View to manage the account of the user."""
-    user = request.user
+def team_detail(request, pk: int):
+    """View to display the team profile of the user."""
+    team = models.User.objects.select_related("profile").get(pk=pk)
+    solves = puzzle_selectors.solve_list(team)
     context = {
-        "user": user,
-        "form": AccountManagementForm(instance=user),
+        "user": request.user,
+        "team": team,
+        "solves": solves,
+        "is_self": request.user == team,
     }
-    return TemplateResponse(request, "account.html", context)
+    return TemplateResponse(request, "team_detail.html", context)
+
+
+def team_list(request):
+    """View to display a list of all teams."""
+    teams = models.User.objects.select_related("profile").all()
+    context = {
+        "user": request.user,
+        "teams": teams,
+    }
+    return TemplateResponse(request, "team_list.html", context)

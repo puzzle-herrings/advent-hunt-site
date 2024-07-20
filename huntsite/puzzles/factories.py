@@ -14,12 +14,12 @@ MOCK_PUZZLES = [
 ]
 
 
-def title_text_factory(instance) -> str:
+def title_text_factory(instance=None) -> str:
     nb = random.randint(1, 3)
     return " ".join(fake.words(nb=nb)).title()
 
 
-def answer_text_factory(instance) -> str:
+def answer_text_factory(instance=None) -> str:
     nb = random.randint(1, 2)
     return " ".join(fake.words(nb=nb)).upper()
 
