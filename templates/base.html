@@ -9,10 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ META_TITLE }}</title>
     <!-- OpenGraph Metadata-->
-    <meta property="og:image"
-          content="{{ META_OG_IMAGE }}" />
-    <meta property="og:description"
-          content="{{ META_DESCRIPTION }}" />
+    <meta property="og:image" content="{{ META_OG_IMAGE }}" />
+    <meta property="og:description" content="{{ META_DESCRIPTION }}" />
     <meta property="og:title" content="{{ META_TITLE }}" />
     <!-- Favicons -->
     <link rel="icon" href="{% static 'favicon.ico' %}" sizes="48x48">
@@ -66,7 +64,7 @@
             {% if user.is_authenticated %}
               <li class="nav-item">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'account_manage' %}">{{ user.team_name }}</a>
+                  <a class="nav-link" href="{% url 'team_detail' user.id %}">{{ user.team_name }}</a>
                 </li>
               </li>
               <li class="nav-item">
