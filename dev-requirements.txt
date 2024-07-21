@@ -73,6 +73,8 @@ jsbeautifier==1.15.1
     #   djlint
 json5==0.9.25
     # via djlint
+markdown==3.6
+    # via -r requirements.txt
 marshmallow==3.21.3
     # via
     #   -r requirements.txt
