@@ -1,5 +1,10 @@
 {% extends "base.html" %}
+{% load common_extras %}
+{% load static %}
 {% block content %}
+  <link href="{% static 'css/team_list.css' %}" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"
+        rel="stylesheet" />
   <div class="row">
     <div class="col-lg">
       <h1>Teams</h1>
@@ -11,14 +16,24 @@
         <thead>
           <tr>
             <th>Team Name</th>
+            {% for day in days %}<th class="center">{{ day }}</th>{% endfor %}
+            <th class="right">#</th>
           </tr>
         </thead>
         <tbody>
           {% for team in teams %}
             <tr>
               <td>
-                <a href="{% url 'team_detail' team.id %}">{{ team.team_name }}</a>
+                <span {% if team.profile.members %}data-tts aria-label="{{ team.profile.members }}"{% endif %}>
+                  <a href="{% url 'team_detail' team.id %}">{{ team.team_name }}</a>
+                </span>
               </td>
+              {% for day in days %}
+                <td class="center">
+                  {% if day in solves_by_team|dictget:team.id %}❆{% endif %}
+                </td>
+              {% endfor %}
+              <td class="right">{{ solves_by_team|dictget:team.id|length }}</td>
             </tr>
           {% endfor %}
         </tbody>

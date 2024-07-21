@@ -18,8 +18,8 @@ class Command(BaseCommand):
         with transaction.atomic():
             # Puzzles
             puzzles = []
-            for i in range(24):
-                puzzles.append(puzzle_factories.PuzzleFactory(calendar_entry__day=i + 1))
+            for i in range(25):
+                puzzles.append(puzzle_factories.PuzzleFactory(calendar_entry__day=i))
 
             # Teams
             users = []
