@@ -28,6 +28,7 @@ class PuzzleAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         if self.instance:
+            # Populate the keep_going_answers_ field with real keep_going_answers model field
             self.fields["keep_going_answers_"].initial = "\n".join(
                 self.instance.keep_going_answers
             )
