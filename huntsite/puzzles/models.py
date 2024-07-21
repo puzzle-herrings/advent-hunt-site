@@ -91,7 +91,7 @@ class Solve(models.Model):
         unique_together = ("user", "puzzle")
 
     def __str__(self):
-        return f"{self.user.teamprofile.team_name} - {self.puzzle.name} - {self.solved_datetime}"
+        return f"{self.user.team_name} - {self.puzzle.name} - {self.created_at}"
 
 
 class AdventCalendarEntry(models.Model):

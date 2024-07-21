@@ -1,17 +1,11 @@
 from django import forms
 from django.contrib import admin
 
+from huntsite.admin import UneditableAsReadOnlyAdminMixin
 import huntsite.puzzles.models as models
 
 
-class UneditableAsReadOnlyAdmin(admin.ModelAdmin):
-    def get_readonly_fields(self, request, obj=None):
-        if obj:
-            return [field.name for field in obj._meta.fields if not field.editable]
-        return []
-
-
-class PuzzleAdminForm(forms.ModelForm):
+class PuzzleAdminForm(UneditableAsReadOnlyAdminMixin, forms.ModelForm):
     # Custom field to replace the JSON entry for keep_going_answers_
     # New-line delimited text area for easier editing
     keep_going_answers_ = forms.CharField(
@@ -43,11 +37,28 @@ class PuzzleAdminForm(forms.ModelForm):
         return cleaned_data
 
 
-class PuzzleAdmin(UneditableAsReadOnlyAdmin):
+class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     form = PuzzleAdminForm
+    list_display = ("name", "answer")
+    ordering = ("calendar_entry__day",)
+
+
+class GuessAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("id", "user", "puzzle", "text", "evaluation", "created_at")
+    list_filter = ("puzzle", "evaluation")
+    search_fields = ("user__username",)
+
+
+class SolveAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("id", "user", "puzzle", "created_at")
+    list_filter = ("puzzle",)
+
+
+class AdventCalendarEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("day", "puzzle")
 
 
 admin.site.register(models.Puzzle, PuzzleAdmin)
-admin.site.register(models.Guess, UneditableAsReadOnlyAdmin)
-admin.site.register(models.Solve, UneditableAsReadOnlyAdmin)
-admin.site.register(models.AdventCalendarEntry, UneditableAsReadOnlyAdmin)
+admin.site.register(models.Guess, GuessAdmin)
+admin.site.register(models.Solve, SolveAdmin)
+admin.site.register(models.AdventCalendarEntry, AdventCalendarEntryAdmin)
