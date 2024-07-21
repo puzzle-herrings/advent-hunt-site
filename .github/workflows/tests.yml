@@ -20,6 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      META_TITLE: "Test Title"
+      META_AUTHOR: "Test T. Author"
+      META_DESCRIPTION: "Test description"
+      META_KEYWORDS: "test, keywords"
+      META_IMAGE: "https://example.com/test.png"
       SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
     steps:
       - uses: actions/checkout@v4
