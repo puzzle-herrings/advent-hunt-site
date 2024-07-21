@@ -1,0 +1,31 @@
+@font-face {
+    font-display: swap;
+    font-family: 'Liberation Sans';
+    src: url('../fonts/liberationsans/LiberationSans-Regular-webfont.woff') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Liberation Sans';
+    font-weight: bold;
+    src: url('../fonts/liberationsans/LiberationSans-Bold-webfont.woff') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Liberation Sans';
+    font-style: italic;
+    src: url('../fonts/liberationsans/LiberationSans-Italic-webfont.woff') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Liberation Sans';
+    font-weight: bold;
+    font-style: italic;
+    src: url('../fonts/liberationsans/LiberationSans-BoldItalic-webfont.woff') format('woff2');
+}
+
+body {
+    font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
+}
