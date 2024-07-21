@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
 
 from huntsite.puzzles.forms import GuessForm
-from huntsite.puzzles.models import Puzzle
+from huntsite.puzzles.models import GuessEvaluation, Puzzle
 import huntsite.puzzles.selectors as puzzle_selectors
 import huntsite.puzzles.services as puzzle_services
 
@@ -36,9 +36,10 @@ def puzzle_detail(request, slug: str):
 
 
 GUESS_EVALUATION_MESSAGES = {
-    puzzle_services.GuessEvaluation.CORRECT: "Correct!",
-    puzzle_services.GuessEvaluation.INCORRECT: "Incorrect.",
-    puzzle_services.GuessEvaluation.ALREADY_SUBMITTED: "You've already submitted that guess.",
+    GuessEvaluation.CORRECT: "Correct! 🎉",
+    GuessEvaluation.INCORRECT: "Incorrect.",
+    puzzle_services.ALREADY_SUBMITTED: "You've already submitted that guess.",
+    GuessEvaluation.KEEP_GOING: "Not the answer, but keep going!",
 }
 
 
