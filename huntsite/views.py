@@ -8,10 +8,6 @@ def home_page(request):
     return TemplateResponse(request, "home.html", {})
 
 
-def about_page(request):
-    return TemplateResponse(request, "about.html", {})
-
-
 @login_required
 def account_manage(request):
     """View to manage the account of the user."""

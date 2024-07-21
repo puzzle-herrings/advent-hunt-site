@@ -3,6 +3,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
+from huntsite.content import factories as content_factories
 from huntsite.puzzles import factories as puzzle_factories
 from huntsite.puzzles import services as puzzle_services
 from huntsite.teams import factories as team_factories
@@ -44,5 +45,30 @@ class Command(BaseCommand):
                         puzzle_services.guess_submit(
                             puzzle=puzzle, user=user, guess_text=puzzle.answer
                         )
+
+            # Make content
+            for about_entry_title in [
+                "What is a puzzle hunt?",
+                "What is the format for this hunt?",
+                "How difficult is this hunt?",
+                "Who made this hunt?",
+            ]:
+                content_factories.AboutEntryFactory(title=about_entry_title)
+
+            for calendar_day, story_entry_title in [
+                (None, "You've been invited to the North Pole!"),
+                (None, "You arrive at the North Pole..."),
+                (7, "After helping Mrs. Claus..."),
+                (14, "After helping Rudolph..."),
+                (21, "After cleaning up the Toy Factory..."),
+                (24, "You've found Santa!"),
+            ]:
+                if calendar_day is not None:
+                    related_puzzle = puzzles[calendar_day - 1]
+                    content_factories.StoryEntryFactory(
+                        title=story_entry_title, puzzle=related_puzzle
+                    )
+                else:
+                    content_factories.StoryEntryFactory(title=story_entry_title)
 
         self.stdout.write(self.style.SUCCESS("create_demo_data complete."))

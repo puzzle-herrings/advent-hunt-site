@@ -38,6 +38,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'puzzle_list' %}">Puzzles</a>
             </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'story' %}">Story</a>
+              </li>
+            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'team_list' %}">Teams</a>
             </li>
