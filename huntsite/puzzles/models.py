@@ -19,7 +19,10 @@ class Puzzle(models.Model):
 
     answer = models.CharField(max_length=255)
     answer_normalized = models.CharField(max_length=255, editable=False)
-    keep_going_inputs = models.JSONField(null=False, default=list)
+    keep_going_answers = models.JSONField(null=False, blank=True, default=list)
+    keep_going_answers_normalized = models.JSONField(
+        null=False, blank=True, default=list, editable=False
+    )
 
     pdf_url = models.URLField()
 
@@ -35,9 +38,13 @@ class Puzzle(models.Model):
 
     def clean(self):
         self.answer = clean_answer(self.answer)
+        self.keep_going_answers = [clean_answer(ans) for ans in self.keep_going_answers]
 
     def save(self, *args, **kwargs):
         self.answer_normalized = normalize_answer(self.answer)
+        self.keep_going_answers_normalized = [
+            normalize_answer(ans) for ans in self.keep_going_answers
+        ]
         super().save(*args, **kwargs)
 
 

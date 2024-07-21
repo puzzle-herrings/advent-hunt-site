@@ -17,7 +17,7 @@ def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
 
     if guess_text_normalized == puzzle.answer_normalized:
         evaluation = GuessEvaluation.CORRECT
-    elif guess_text_normalized in puzzle.keep_going_inputs:
+    elif guess_text_normalized in puzzle.keep_going_answers_normalized:
         evaluation = GuessEvaluation.KEEP_GOING
     else:
         evaluation = GuessEvaluation.INCORRECT
