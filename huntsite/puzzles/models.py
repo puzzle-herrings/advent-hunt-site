@@ -10,7 +10,6 @@ from huntsite.puzzles.utils import clean_answer, normalize_answer
 class GuessEvaluation(models.TextChoices):
     CORRECT = "correct"
     INCORRECT = "incorrect"
-    ALREADY_SUBMITTED = "already_submitted"
     KEEP_GOING = "keep_going"
 
 

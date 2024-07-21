@@ -1,6 +1,9 @@
 from huntsite.puzzles.models import Guess, GuessEvaluation, Puzzle, Solve
 from huntsite.puzzles.utils import normalize_answer
 
+ALREADY_SUBMITTED = object()
+"""Sentinel object to indicate that a guess has already been submitted."""
+
 
 def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
     """Function to handle the submission of a guess to a puzzle."""
@@ -10,7 +13,7 @@ def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
     if Guess.objects.filter(
         user=user, puzzle=puzzle, text_normalized=guess_text_normalized
     ).exists():
-        return GuessEvaluation.ALREADY_SUBMITTED
+        return ALREADY_SUBMITTED
 
     if guess_text_normalized == puzzle.answer_normalized:
         evaluation = GuessEvaluation.CORRECT
