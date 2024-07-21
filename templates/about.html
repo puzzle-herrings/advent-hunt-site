@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>About</h1>
-    {% for entry in entries %}
-        <h2>{{ entry.title }}</h2>
-        {{ entry.render_content | safe }}
-    {% endfor %}
+  <h1>About</h1>
+  {% for entry in entries %}
+    <h2>{{ entry.title }}</h2>
+    {{ entry.render_content | safe }}
+  {% endfor %}
 {% endblock content %}

@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="row">
-        <div class="col-lg">
-            <h1>Teams</h1>
-        </div>
+  <div class="row">
+    <div class="col-lg">
+      <h1>Teams</h1>
     </div>
-    <div class="row">
-        <div class="col-lg">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Team Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for team in teams %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'team_detail' team.id %}">{{ team.team_name }}</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col-lg">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Team Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for team in teams %}
+            <tr>
+              <td>
+                <a href="{% url 'team_detail' team.id %}">{{ team.team_name }}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 {% endblock content %}

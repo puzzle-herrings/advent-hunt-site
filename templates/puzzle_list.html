@@ -1,53 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="row">
-        <div class="col-lg">
-            <h1>Puzzles</h1>
-        </div>
+  <div class="row">
+    <div class="col-lg">
+      <h1>Puzzles</h1>
     </div>
-    <div class="row">
-        <div class="col-lg">
-            <section>
-                <div class="container">
-                    <div class="row">
-                        {% for puzzle in puzzles %}
-                            <div class="col-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        {{ puzzle.calendar_entry.day }}
-                                        <br>
-                                        <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
-                                        <br>
-                                        {% if puzzle in solves %}<strong>{{ puzzle.answer }}</strong>{% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg">
+      <section>
+        <div class="container">
+          <div class="row">
+            {% for puzzle in puzzles %}
+              <div class="col-3">
+                <div class="card">
+                  <div class="card-body">
+                    {{ puzzle.calendar_entry.day }}
+                    <br>
+                    <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
+                    <br>
+                    {% if puzzle in solves %}<strong>{{ puzzle.answer }}</strong>{% endif %}
+                  </div>
                 </div>
-            </section>
+              </div>
+            {% endfor %}
+          </div>
         </div>
+      </section>
     </div>
-    <div class="row">
-        <div class="col-lg">
-            <section>
-                <h2>List of Puzzles</h2>
-                <table class="table w-auto">
-                    <tbody>
-                        {% for puzzle in puzzles %}
-                            <tr>
-                                <td scope="row">{{ puzzle.calendar_entry.day }}</td>
-                                <td>
-                                    <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
-                                </td>
-                                <td>
-                                    {% if puzzle in solves %}<strong>{{ puzzle.answer }}</strong>{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </section>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col-lg">
+      <section>
+        <h2>List of Puzzles</h2>
+        <table class="table w-auto">
+          <tbody>
+            {% for puzzle in puzzles %}
+              <tr>
+                <td scope="row">{{ puzzle.calendar_entry.day }}</td>
+                <td>
+                  <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
+                </td>
+                <td>
+                  {% if puzzle in solves %}<strong>{{ puzzle.answer }}</strong>{% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
     </div>
+  </div>
 {% endblock content %}

@@ -36,11 +36,15 @@ compile-requirements:
 lint:
     ruff format --check project huntsite
     ruff check project huntsite
+    djlint templates
+    djlint templates --lint
+
 
 # Autoformat the project
 format:
     ruff format project huntsite
     ruff check --fix project huntsite
+    djlint templates --reformat
 
 createsuperuser:
     python manage.py createsuperuser --noinput

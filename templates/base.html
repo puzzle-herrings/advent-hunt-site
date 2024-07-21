@@ -2,7 +2,10 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="puzzles, puzzle hunt, advent calendar" />
+    <meta name="description"
+          content="This is a puzzle hunt released as an advent calendar, brought to you by the Peppermint Herrings 🎏." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advent Calendar Puzzle Hunt</title>
     <link rel="icon" href="{% static 'favicon.ico' %}" sizes="48x48">
@@ -20,7 +23,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-xl">
-        <a class="navbar-brand" href="/">🎅 Advent Hunt</a>
+        <a class="navbar-brand" href="{% url 'home' %}">🎅 Advent Hunt</a>
         <button class="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
@@ -77,10 +80,12 @@
       </div>
     </nav>
     <div class="container my-5">
-      {% block content %}{% endblock %}
+      {% block content %}
+      {% endblock content %}
     </div>
-    <form id="logout-form" method="POST" action="{% url 'account_logout' %}">
+    <form id="logout-form" method="post" action="{% url 'account_logout' %}">
       {% csrf_token %}
       <input type="hidden">
     </form>
   </body>
+</html>

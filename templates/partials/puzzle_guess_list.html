@@ -1,22 +1,22 @@
 {% if evaluation_message %}<p>{{ evaluation_message }}</p>{% endif %}
 <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Guess</th>
-            <th scope="col">Evaluation</th>
-            <th scope="col">Time</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for guess in guesses %}
-            <tr>
-                <td>{{ guess.text }}</td>
-                <td>{{ guess.display_evaluation }}</td>
-                <td>
-                    <span class="timestamp">{{ guess.created_at|date:"c" }}</span>
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
+  <thead>
+    <tr>
+      <th scope="col">Guess</th>
+      <th scope="col">Evaluation</th>
+      <th scope="col">Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for guess in guesses %}
+      <tr>
+        <td>{{ guess.text }}</td>
+        <td>{{ guess.display_evaluation }}</td>
+        <td>
+          <span class="timestamp">{{ guess.created_at|date:"c" }}</span>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% include "partials/timestamp_localize_script.html" %}
