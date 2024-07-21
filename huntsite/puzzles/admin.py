@@ -12,6 +12,8 @@ class UneditableAsReadOnlyAdmin(admin.ModelAdmin):
 
 
 class PuzzleAdminForm(forms.ModelForm):
+    # Custom field to replace the JSON entry for keep_going_answers_
+    # New-line delimited text area for easier editing
     keep_going_answers_ = forms.CharField(
         widget=forms.Textarea(attrs={"rows": "3"}),
         required=False,
