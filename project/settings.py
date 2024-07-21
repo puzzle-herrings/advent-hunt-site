@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     # Local apps
     "huntsite",
+    "huntsite.content",
     "huntsite.puzzles",
     "huntsite.teams",
 ]
