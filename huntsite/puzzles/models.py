@@ -49,11 +49,11 @@ class Puzzle(models.Model):
 
 
 class Guess(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
-    text_normalized = models.CharField(max_length=255)
-    evaluation = models.CharField(max_length=255, choices=GuessEvaluation)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
+    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE, editable=False)
+    text = models.CharField(max_length=255, editable=False)
+    text_normalized = models.CharField(max_length=255, editable=False)
+    evaluation = models.CharField(max_length=255, choices=GuessEvaluation, editable=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -81,8 +81,8 @@ class Guess(models.Model):
 
 
 class Solve(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
+    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE, editable=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
