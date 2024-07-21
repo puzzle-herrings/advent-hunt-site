@@ -36,10 +36,10 @@ def puzzle_detail(request, slug: str):
 
 
 GUESS_EVALUATION_MESSAGES = {
-    GuessEvaluation.CORRECT: "Correct!",
+    GuessEvaluation.CORRECT: "Correct! 🎉",
     GuessEvaluation.INCORRECT: "Incorrect.",
     puzzle_services.ALREADY_SUBMITTED: "You've already submitted that guess.",
-    GuessEvaluation.KEEP_GOING: "Incorrect.",
+    GuessEvaluation.KEEP_GOING: "Not the answer, but keep going!",
 }
 
 
