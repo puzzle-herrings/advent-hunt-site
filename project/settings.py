@@ -33,13 +33,13 @@ DEBUG = env.bool("DEBUG", default=False)
 if env("BASE_URL", ""):
     BASE_URL = env("BASE_URL")
 
-ALLOWED_HOSTS = [
-    "adventhunt.com",
-]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", [])
 
 RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", "")
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+INTERNAL_IPS = env.list("INTERNAL_IPS", [])
 
 # Application definition
 
@@ -193,12 +193,6 @@ filterwarnings("ignore", "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting i
 FORMS_URLFIELD_ASSUME_HTTPS = True
 
 ## Custom stuff
-
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
