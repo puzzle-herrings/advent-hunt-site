@@ -4,5 +4,6 @@ coverage
 djlint
 factory-boy
 faker
+locust
 pytest-django
 ruff

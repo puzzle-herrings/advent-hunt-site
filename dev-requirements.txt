@@ -4,15 +4,28 @@ asgiref==3.8.1
     # via
     #   -r requirements.txt
     #   django
+blinker==1.8.2
+    # via flask
 brotli==1.1.0
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   geventhttpclient
+certifi==2024.7.4
+    # via
+    #   geventhttpclient
+    #   requests
+charset-normalizer==3.3.2
+    # via requests
 click==8.1.7
     # via
     #   -r requirements.txt
     #   djlint
+    #   flask
     #   uvicorn
 colorama==0.4.6
     # via djlint
+configargparse==1.7
+    # via locust
 coverage==7.6.0
     # via -r dev-requirements.in
 crispy-bootstrap5==2024.2
@@ -55,6 +68,23 @@ faker==26.0.0
     # via
     #   -r dev-requirements.in
     #   factory-boy
+flask==3.0.3
+    # via
+    #   flask-cors
+    #   flask-login
+    #   locust
+flask-cors==4.0.1
+    # via locust
+flask-login==0.6.3
+    # via locust
+gevent==24.2.1
+    # via
+    #   geventhttpclient
+    #   locust
+geventhttpclient==2.3.1
+    # via locust
+greenlet==3.0.3
+    # via gevent
 gunicorn==22.0.0
     # via -r requirements.txt
 h11==0.14.0
@@ -65,20 +95,34 @@ html-tag-names==0.1.2
     # via djlint
 html-void-elements==0.1.0
     # via djlint
+idna==3.7
+    # via requests
 iniconfig==2.0.0
     # via pytest
+itsdangerous==2.2.0
+    # via flask
+jinja2==3.1.4
+    # via flask
 jsbeautifier==1.15.1
     # via
     #   cssbeautifier
     #   djlint
 json5==0.9.25
     # via djlint
+locust==2.29.1
+    # via -r dev-requirements.in
 markdown==3.6
     # via -r requirements.txt
+markupsafe==2.1.5
+    # via
+    #   jinja2
+    #   werkzeug
 marshmallow==3.21.3
     # via
     #   -r requirements.txt
     #   environs
+msgpack==1.0.8
+    # via locust
 packaging==24.1
     # via
     #   -r requirements.txt
@@ -89,6 +133,8 @@ pathspec==0.12.1
     # via djlint
 pluggy==1.5.0
     # via pytest
+psutil==6.0.0
+    # via locust
 psycopg2-binary==2.9.9
     # via -r requirements.txt
 pytest==8.2.2
@@ -103,10 +149,18 @@ python-dotenv==1.0.1
     #   environs
 pyyaml==6.0.1
     # via djlint
+pyzmq==26.0.3
+    # via locust
 regex==2023.12.25
     # via djlint
+requests==2.32.3
+    # via locust
 ruff==0.5.3
     # via -r dev-requirements.in
+setuptools==71.1.0
+    # via
+    #   zope-event
+    #   zope-interface
 six==1.16.0
     # via
     #   cssbeautifier
@@ -123,7 +177,20 @@ typing-extensions==4.12.2
     # via
     #   -r requirements.txt
     #   dj-database-url
+urllib3==2.2.2
+    # via
+    #   geventhttpclient
+    #   requests
 uvicorn==0.30.1
     # via -r requirements.txt
+werkzeug==3.0.3
+    # via
+    #   flask
+    #   flask-login
+    #   locust
 whitenoise==6.7.0
     # via -r requirements.txt
+zope-event==5.0
+    # via gevent
+zope-interface==6.4.post2
+    # via gevent
