@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils import timezone
 
 from huntsite.puzzles.utils import clean_answer, normalize_answer
 
@@ -25,6 +26,8 @@ class Puzzle(models.Model):
     )
 
     pdf_url = models.URLField()
+
+    available_at = models.DateTimeField(default=timezone.now)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
