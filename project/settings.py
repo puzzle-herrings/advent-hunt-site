@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from warnings import filterwarnings
 
 from environs import Env
 
@@ -32,7 +33,9 @@ DEBUG = env.bool("DEBUG", default=False)
 if env("BASE_URL", ""):
     BASE_URL = env("BASE_URL")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "adventhunt.com",
+]
 
 RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", "")
 if RENDER_EXTERNAL_HOSTNAME:
@@ -183,6 +186,11 @@ STORAGES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+## Django 5 transition setting
+# https://adamj.eu/tech/2023/12/07/django-fix-urlfield-assume-scheme-warnings/
+filterwarnings("ignore", "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated.")
+FORMS_URLFIELD_ASSUME_HTTPS = True
 
 ## Custom stuff
 
