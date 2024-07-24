@@ -37,28 +37,29 @@ class PuzzleAdminForm(UneditableAsReadOnlyAdminMixin, forms.ModelForm):
         return cleaned_data
 
 
+@admin.register(models.Puzzle)
 class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     form = PuzzleAdminForm
     list_display = ("name", "answer")
     ordering = ("calendar_entry__day",)
 
 
+@admin.register(models.Guess)
 class GuessAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("id", "user", "puzzle", "text", "evaluation", "created_at")
     list_filter = ("puzzle", "evaluation")
     search_fields = ("user__username",)
+    ordering = ("-created_at",)
 
 
+@admin.register(models.Solve)
 class SolveAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("id", "user", "puzzle", "created_at")
     list_filter = ("puzzle",)
+    ordering = ("-created_at",)
 
 
+@admin.register(models.AdventCalendarEntry)
 class AdventCalendarEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("day", "puzzle")
-
-
-admin.site.register(models.Puzzle, PuzzleAdmin)
-admin.site.register(models.Guess, GuessAdmin)
-admin.site.register(models.Solve, SolveAdmin)
-admin.site.register(models.AdventCalendarEntry, AdventCalendarEntryAdmin)
+    ordering = ("day",)

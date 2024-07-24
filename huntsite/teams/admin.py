@@ -4,6 +4,7 @@ from huntsite.admin import UneditableAsReadOnlyAdminMixin
 import huntsite.teams.models as models
 
 
+@admin.register(models.User)
 class UserAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = (
         "username",
@@ -18,6 +19,7 @@ class UserAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     search_fields = ("username", "email", "team_name")
 
 
+@admin.register(models.TeamProfile)
 class TeamProfileAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("user", "team_name")
     list_select_related = ("user",)
@@ -26,8 +28,3 @@ class TeamProfileAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     @admin.display(description="Team Name")
     def team_name(self, obj):
         return obj.user.team_name
-
-
-# Register your models here.
-admin.site.register(models.User, UserAdmin)
-admin.site.register(models.TeamProfile, TeamProfileAdmin)
