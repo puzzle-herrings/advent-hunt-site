@@ -13,7 +13,11 @@ import huntsite.puzzles.services as puzzle_services
 
 def puzzle_list(request):
     """View to display a list of all puzzles."""
-    puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
+    puzzle_manager = (
+        Puzzle.objects
+        if not request.user.is_anonymous and request.user.is_tester
+        else Puzzle.available
+    )
     puzzles = (
         puzzle_manager.with_calendar_entry()
         .with_solves_by_user(request.user)
