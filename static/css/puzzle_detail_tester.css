@@ -1,0 +1,23 @@
+#answer-cheatsheet-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#answer-cheatsheet {
+    float: right;
+    background-color: #f9f9f9;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button#answer-cheatsheet-toggle {
+    float: right;
+}
+
+a.copy-to-clipboard {
+    text-decoration: none;
+}
