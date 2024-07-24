@@ -1,3 +1,5 @@
+from django.db import transaction
+
 from huntsite.puzzles.models import Guess, GuessEvaluation, Puzzle, Solve
 from huntsite.puzzles.utils import normalize_answer
 
@@ -5,6 +7,7 @@ ALREADY_SUBMITTED = object()
 """Sentinel object to indicate that a guess has already been submitted."""
 
 
+@transaction.atomic
 def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
     """Function to handle the submission of a guess to a puzzle."""
     guess_text_normalized = normalize_answer(guess_text)
