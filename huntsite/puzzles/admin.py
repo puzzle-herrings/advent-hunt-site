@@ -17,11 +17,13 @@ class PuzzleAdminForm(UneditableAsReadOnlyAdminMixin, forms.ModelForm):
     class Meta:
         model = models.Puzzle
         fields = "__all__"
-        exclude = ("keep_going_answers",)
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         if self.instance:
+            # Hide keep_going_answers field
+            self.fields["keep_going_answers"].widget = forms.HiddenInput()
+
             # Populate the keep_going_answers_ field with real keep_going_answers model field
             self.fields["keep_going_answers_"].initial = "\n".join(
                 self.instance.keep_going_answers
@@ -29,11 +31,12 @@ class PuzzleAdminForm(UneditableAsReadOnlyAdminMixin, forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        if cleaned_data.get("keep_going_answers_"):
-            cleaned_data["keep_going_answers"] = list(
-                cleaned_data.get("keep_going_answers_").split("\n")
-            )
-
+        if cleaned_data.get("keep_going_answers_").strip():
+            cleaned_data["keep_going_answers"] = [
+                ans.strip() for ans in cleaned_data["keep_going_answers_"].split("\n")
+            ]
+        else:
+            cleaned_data["keep_going_answers"] = []
         return cleaned_data
 
 
