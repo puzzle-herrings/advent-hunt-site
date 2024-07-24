@@ -14,6 +14,21 @@ class GuessEvaluation(models.TextChoices):
     KEEP_GOING = "keep_going"
 
 
+class PuzzleManager(models.Manager):
+    def with_calendar_entry(self):
+        return self.select_related("calendar_entry")
+
+    def with_solves_by_user(self, user):
+        return self.annotate(
+            is_solved=models.Exists(Solve.objects.filter(user=user, puzzle=models.OuterRef("pk")))
+        )
+
+
+class AvailablePuzzleManager(PuzzleManager):
+    def get_queryset(self) -> models.QuerySet:
+        return super().get_queryset().filter(available_at__lte=timezone.now())
+
+
 class Puzzle(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
@@ -31,6 +46,9 @@ class Puzzle(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = PuzzleManager()
+    available = AvailablePuzzleManager()
 
     def __str__(self):
         return self.name
