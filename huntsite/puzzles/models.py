@@ -130,4 +130,6 @@ class AdventCalendarEntry(models.Model):
 @receiver(post_save, sender=Puzzle)
 def create_advent_calendar_entry(sender, instance, created, **kwargs):
     if created:
-        AdventCalendarEntry.objects.create(puzzle=instance)
+        calendar_entry = AdventCalendarEntry(puzzle=instance)
+        calendar_entry.full_clean()
+        calendar_entry.save()
