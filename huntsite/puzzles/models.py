@@ -120,7 +120,6 @@ class AdventCalendarEntry(models.Model):
     day = models.IntegerField(default=-1)
 
     class Meta:
-        ordering = ["day"]
         verbose_name_plural = "Advent Calendar Entries"
 
     def __str__(self):
