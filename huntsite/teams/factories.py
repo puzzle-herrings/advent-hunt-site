@@ -22,6 +22,7 @@ def team_members_text_factory(instance=None) -> str:
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = settings.AUTH_USER_MODEL
+        skip_postgeneration_save = True
 
     username = factory.Faker("user_name")
     email = factory.Faker("email")
@@ -35,6 +36,7 @@ class UserFactory(factory.django.DjangoModelFactory):
             obj.set_password(extracted)
         else:
             obj.set_unusable_password()
+        obj.save()
 
 
 @factory.django.mute_signals(post_save)

@@ -28,6 +28,7 @@ def answer_text_factory(instance=None) -> str:
 class PuzzleFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "puzzles.Puzzle"
+        skip_postgeneration_save = True
 
     name = factory.lazy_attribute(title_text_factory)
     slug = factory.Faker("slug")
@@ -38,35 +39,6 @@ class PuzzleFactory(factory.django.DjangoModelFactory):
         "huntsite.puzzles.factories.AdventCalendarEntryFactory",
         factory_related_name="puzzle",
     )
-
-
-class GuessFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = "puzzles.Guess"
-
-    user = factory.SubFactory("users.factories.UserFactory")
-    puzzle = factory.SubFactory(PuzzleFactory)
-    text = factory.lazy_attribute(answer_text_factory)
-    is_correct = factory.Faker("boolean")
-
-
-class CorrectGuessFactory(GuessFactory):
-    is_correct = True
-
-    @factory.post_generation
-    def text(self, create, extracted, **kwargs):
-        self.text = self.puzzle.answer
-
-
-class IncorrectGuessFactory(GuessFactory):
-    is_correct = False
-
-    @factory.post_generation
-    def text(self, create, extracted, **kwargs):
-        word = answer_text_factory()
-        while word == self.puzzle.answer:
-            word = answer_text_factory()
-        self.text = word
 
 
 @factory.django.mute_signals(post_save)
