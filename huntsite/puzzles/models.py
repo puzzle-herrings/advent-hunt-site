@@ -14,7 +14,9 @@ class GuessEvaluation(models.TextChoices):
     KEEP_GOING = "keep_going"
 
 
-class PuzzleManager(models.Manager):
+class PuzzleQuerySet(models.QuerySet):
+    """Custom QuerySet for the Puzzle model with some useful methods."""
+
     def with_calendar_entry(self):
         return self.select_related("calendar_entry")
 
@@ -24,7 +26,9 @@ class PuzzleManager(models.Manager):
         )
 
 
-class AvailablePuzzleManager(PuzzleManager):
+class AvailablePuzzleManager(models.Manager):
+    """Custom Manager for the Puzzle model that only returns puzzles that are available."""
+
     def get_queryset(self) -> models.QuerySet:
         return super().get_queryset().filter(available_at__lte=timezone.now())
 
@@ -47,8 +51,11 @@ class Puzzle(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    objects = PuzzleManager()
-    available = AvailablePuzzleManager()
+    objects = PuzzleQuerySet.as_manager()
+    available = AvailablePuzzleManager.from_queryset(PuzzleQuerySet)()
+
+    class Meta:
+        default_manager_name = "objects"
 
     def __str__(self):
         return self.name
