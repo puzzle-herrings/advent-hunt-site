@@ -11,14 +11,19 @@ import huntsite.puzzles.services as puzzle_services
 
 def puzzle_list(request):
     """View to display a list of all puzzles."""
-    puzzles = Puzzle.objects.select_related("calendar_entry").all()
-    if request.user.is_authenticated:
-        solves = {solve.puzzle: solve for solve in puzzle_selectors.solve_list(request.user)}
-    else:
-        solves = {}
+    puzzle_manager = (
+        Puzzle.objects
+        if not request.user.is_anonymous and request.user.is_tester
+        else Puzzle.available
+    )
+    puzzles = (
+        puzzle_manager.with_calendar_entry()
+        .with_solves_by_user(request.user)
+        .all()
+        .order_by("calendar_entry__day")
+    )
     context = {
         "puzzles": puzzles,
-        "solves": solves,
     }
     return TemplateResponse(request, "puzzle_list.html", context)
 
@@ -26,7 +31,8 @@ def puzzle_list(request):
 @login_required
 def puzzle_detail(request, slug: str):
     """View to display the content page of a single puzzle."""
-    puzzle = get_object_or_404(Puzzle.objects.all(), slug=slug)
+    puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
+    puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
     context = {
         "puzzle": puzzle,
         "guesses": puzzle_selectors.puzzle_guess_list(puzzle, request.user),
@@ -47,7 +53,9 @@ GUESS_EVALUATION_MESSAGES = {
 @require_POST
 def guess_submit(request, slug: str):
     """View to handle a guess submission to a puzzle."""
-    puzzle = get_object_or_404(Puzzle.objects.all(), slug=slug)
+    puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
+    puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
+
     form = GuessForm(request.POST)
     if form.is_valid():
         guess_text = form.cleaned_data["guess"]

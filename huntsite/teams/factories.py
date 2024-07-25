@@ -8,12 +8,12 @@ from faker import Faker
 fake = Faker()
 
 
-def team_name_text_factory(instance=None) -> str:
+def team_name_text_factory() -> str:
     nb = random.randint(1, 3)
-    return " ".join(fake.words(nb=nb)).title()
+    return " ".join(fake.unique.word() for _ in range(nb)).title()
 
 
-def team_members_text_factory(instance=None) -> str:
+def team_members_text_factory() -> str:
     nb = random.randint(1, 3)
     return ", ".join(fake.first_name() for _ in range(nb))
 
@@ -22,11 +22,12 @@ def team_members_text_factory(instance=None) -> str:
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = settings.AUTH_USER_MODEL
+        skip_postgeneration_save = True
 
     username = factory.Faker("user_name")
     email = factory.Faker("email")
 
-    team_name = factory.lazy_attribute(team_name_text_factory)
+    team_name = factory.LazyFunction(team_name_text_factory)
     profile = factory.RelatedFactory("huntsite.teams.factories.TeamProfileFactory", "user")
 
     @factory.post_generation
@@ -35,6 +36,7 @@ class UserFactory(factory.django.DjangoModelFactory):
             obj.set_password(extracted)
         else:
             obj.set_unusable_password()
+        obj.save()
 
 
 @factory.django.mute_signals(post_save)
@@ -43,4 +45,4 @@ class TeamProfileFactory(factory.django.DjangoModelFactory):
         model = "teams.TeamProfile"
 
     user = factory.SubFactory(UserFactory, profile=None)
-    members = factory.lazy_attribute(team_members_text_factory)
+    members = factory.LazyFunction(team_members_text_factory)

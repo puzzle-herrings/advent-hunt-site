@@ -25,3 +25,7 @@ force-sort-within-sections = true
 profile = "django"
 indent = 2
 extend_exclude = "templates/allauth"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "project.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]

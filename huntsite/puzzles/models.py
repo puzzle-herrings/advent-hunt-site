@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils import timezone
 
 from huntsite.puzzles.utils import clean_answer, normalize_answer
 
@@ -11,6 +12,27 @@ class GuessEvaluation(models.TextChoices):
     CORRECT = "correct"
     INCORRECT = "incorrect"
     KEEP_GOING = "keep_going"
+
+
+class PuzzleQuerySet(models.QuerySet):
+    """Custom QuerySet for the Puzzle model with some useful methods."""
+
+    def with_calendar_entry(self):
+        return self.select_related("calendar_entry")
+
+    def with_solves_by_user(self, user):
+        if user.is_anonymous:
+            return self.annotate(is_solved=models.Value(False, output_field=models.BooleanField()))
+        return self.annotate(
+            is_solved=models.Exists(Solve.objects.filter(user=user, puzzle=models.OuterRef("pk")))
+        )
+
+
+class AvailablePuzzleManager(models.Manager):
+    """Custom Manager for the Puzzle model that only returns puzzles that are available."""
+
+    def get_queryset(self) -> models.QuerySet:
+        return super().get_queryset().filter(available_at__lte=timezone.now())
 
 
 class Puzzle(models.Model):
@@ -26,11 +48,23 @@ class Puzzle(models.Model):
 
     pdf_url = models.URLField()
 
+    available_at = models.DateTimeField(default=timezone.now)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = PuzzleQuerySet.as_manager()
+    available = AvailablePuzzleManager.from_queryset(PuzzleQuerySet)()
+
+    class Meta:
+        default_manager_name = "objects"
+
     def __str__(self):
         return self.name
+
+    @property
+    def is_available(self):
+        return self.available_at <= timezone.now()
 
     def get_url(self):
         """Returns the URL for the detail page of the puzzle."""
@@ -99,7 +133,6 @@ class AdventCalendarEntry(models.Model):
     day = models.IntegerField(default=-1)
 
     class Meta:
-        ordering = ["day"]
         verbose_name_plural = "Advent Calendar Entries"
 
     def __str__(self):
@@ -109,4 +142,6 @@ class AdventCalendarEntry(models.Model):
 @receiver(post_save, sender=Puzzle)
 def create_advent_calendar_entry(sender, instance, created, **kwargs):
     if created:
-        AdventCalendarEntry.objects.create(puzzle=instance)
+        calendar_entry = AdventCalendarEntry(puzzle=instance)
+        calendar_entry.full_clean()
+        calendar_entry.save()

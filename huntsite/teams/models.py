@@ -12,8 +12,14 @@ class User(AbstractUser):
         blank=False,
         help_text="How the team will be publicly displayed.",
     )
+    is_tester = models.BooleanField(default=False)
 
     REQUIRED_FIELDS = ["team_name"]
+
+    def save(self, *args, **kwargs):
+        if self.is_staff:
+            self.is_tester = True
+        super().save(*args, **kwargs)
 
 
 class TeamProfile(models.Model):

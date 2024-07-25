@@ -4,6 +4,8 @@ asgiref==3.8.1
     # via
     #   -r requirements.txt
     #   django
+asttokens==2.4.1
+    # via stack-data
 blinker==1.8.2
     # via flask
 brotli==1.1.0
@@ -32,6 +34,8 @@ crispy-bootstrap5==2024.2
     # via -r requirements.txt
 cssbeautifier==1.15.1
     # via djlint
+decorator==5.1.1
+    # via ipython
 dj-database-url==2.2.0
     # via -r requirements.txt
 dj-email-url==1.0.6
@@ -62,6 +66,8 @@ editorconfig==0.12.4
     #   jsbeautifier
 environs==11.0.0
     # via -r requirements.txt
+executing==2.0.1
+    # via stack-data
 factory-boy==3.3.0
     # via -r dev-requirements.in
 faker==26.0.0
@@ -99,8 +105,12 @@ idna==3.7
     # via requests
 iniconfig==2.0.0
     # via pytest
+ipython==8.26.0
+    # via -r dev-requirements.in
 itsdangerous==2.2.0
     # via flask
+jedi==0.19.1
+    # via ipython
 jinja2==3.1.4
     # via flask
 jsbeautifier==1.15.1
@@ -111,6 +121,8 @@ json5==0.9.25
     # via djlint
 locust==2.29.1
     # via -r dev-requirements.in
+loguru==0.7.2
+    # via -r requirements.txt
 markdown==3.6
     # via -r requirements.txt
 markupsafe==2.1.5
@@ -121,6 +133,8 @@ marshmallow==3.21.3
     # via
     #   -r requirements.txt
     #   environs
+matplotlib-inline==0.1.7
+    # via ipython
 msgpack==1.0.8
     # via locust
 packaging==24.1
@@ -129,14 +143,26 @@ packaging==24.1
     #   gunicorn
     #   marshmallow
     #   pytest
+parso==0.8.4
+    # via jedi
 pathspec==0.12.1
     # via djlint
+pexpect==4.9.0
+    # via ipython
 pluggy==1.5.0
     # via pytest
+prompt-toolkit==3.0.47
+    # via ipython
 psutil==6.0.0
     # via locust
 psycopg2-binary==2.9.9
     # via -r requirements.txt
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.3
+    # via stack-data
+pygments==2.18.0
+    # via ipython
 pytest==8.2.2
     # via pytest-django
 pytest-django==4.8.0
@@ -163,6 +189,7 @@ setuptools==71.1.0
     #   zope-interface
 six==1.16.0
     # via
+    #   asttokens
     #   cssbeautifier
     #   jsbeautifier
     #   python-dateutil
@@ -171,18 +198,29 @@ sqlparse==0.5.0
     #   -r requirements.txt
     #   django
     #   django-debug-toolbar
+stack-data==0.6.3
+    # via ipython
 tqdm==4.66.4
-    # via djlint
+    # via
+    #   -r dev-requirements.in
+    #   djlint
+traitlets==5.14.3
+    # via
+    #   ipython
+    #   matplotlib-inline
 typing-extensions==4.12.2
     # via
     #   -r requirements.txt
     #   dj-database-url
+    #   ipython
 urllib3==2.2.2
     # via
     #   geventhttpclient
     #   requests
 uvicorn==0.30.1
     # via -r requirements.txt
+wcwidth==0.2.13
+    # via prompt-toolkit
 werkzeug==3.0.3
     # via
     #   flask
