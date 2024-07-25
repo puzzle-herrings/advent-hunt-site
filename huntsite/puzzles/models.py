@@ -21,6 +21,8 @@ class PuzzleQuerySet(models.QuerySet):
         return self.select_related("calendar_entry")
 
     def with_solves_by_user(self, user):
+        if user.is_anonymous:
+            return self.annotate(is_solved=models.Value(False, output_field=models.BooleanField()))
         return self.annotate(
             is_solved=models.Exists(Solve.objects.filter(user=user, puzzle=models.OuterRef("pk")))
         )
