@@ -6,7 +6,10 @@
   {% include "partials/timestamp_localize_libraries.html" %}
   <div class="row">
     <div class="col">
-      <h1>{{ puzzle.name }}</h1>
+      <h1>
+        {{ puzzle.name }}
+        {% if not puzzle.is_available %}(Preview){% endif %}
+      </h1>
     </div>
   </div>
   <div class="row mb-2">

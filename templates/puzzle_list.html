@@ -17,6 +17,7 @@
                     {{ puzzle.calendar_entry.day }}
                     <br>
                     <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
+                    {% if not puzzle.is_available %}(Preview){% endif %}
                     <br>
                     {% if puzzle in solves %}<strong>{{ puzzle.answer }}</strong>{% endif %}
                   </div>
@@ -39,6 +40,7 @@
                 <td scope="row">{{ puzzle.calendar_entry.day }}</td>
                 <td>
                   <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
+                  {% if not puzzle.is_available %}(Preview){% endif %}
                 </td>
                 <td>
                   {% if puzzle in solves %}<strong>{{ puzzle.answer }}</strong>{% endif %}
