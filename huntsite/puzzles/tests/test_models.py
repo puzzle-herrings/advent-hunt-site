@@ -58,3 +58,12 @@ def test_available_puzzle_manager():
 
     assert set(Puzzle.objects.all()) == {puzzle_avail, puzzle_not_avail}
     assert set(Puzzle.available.all()) == {puzzle_avail}
+
+
+def test_puzzle_is_available():
+    """Puzzle is_available property returns True if available_at is in the past."""
+    puzzle_avail = PuzzleFactory(available_at=timezone.now() - timezone.timedelta(days=1))
+    puzzle_not_avail = PuzzleFactory(available_at=timezone.now() + timezone.timedelta(days=1))
+
+    assert puzzle_avail.is_available
+    assert not puzzle_not_avail.is_available
