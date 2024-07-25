@@ -43,8 +43,12 @@ class PuzzleAdminForm(UneditableAsReadOnlyAdminMixin, forms.ModelForm):
 @admin.register(models.Puzzle)
 class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     form = PuzzleAdminForm
-    list_display = ("name", "answer")
+    list_display = ("name", "answer", "calendar_entry_day", "available_at")
     ordering = ("calendar_entry__day",)
+
+    @admin.display(description="Calendar Entry Day")
+    def calendar_entry_day(self, obj):
+        return obj.calendar_entry.day
 
 
 @admin.register(models.Guess)
