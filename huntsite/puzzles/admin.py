@@ -43,8 +43,12 @@ class PuzzleAdminForm(UneditableAsReadOnlyAdminMixin, forms.ModelForm):
 @admin.register(models.Puzzle)
 class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     form = PuzzleAdminForm
-    list_display = ("name", "answer", "calendar_entry_day", "available_at")
+    list_display = ("name", "answer", "calendar_entry_day", "available_at", "is_available")
     ordering = ("calendar_entry__day",)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.with_calendar_entry()
 
     @admin.display(description="Calendar Entry Day")
     def calendar_entry_day(self, obj):
