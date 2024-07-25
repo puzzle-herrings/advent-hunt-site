@@ -36,6 +36,8 @@ gunicorn==22.0.0
     # via -r requirements.in
 h11==0.14.0
     # via uvicorn
+loguru==0.7.2
+    # via -r requirements.in
 markdown==3.6
     # via -r requirements.in
 marshmallow==3.21.3

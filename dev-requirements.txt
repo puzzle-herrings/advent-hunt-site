@@ -121,6 +121,8 @@ json5==0.9.25
     # via djlint
 locust==2.29.1
     # via -r dev-requirements.in
+loguru==0.7.2
+    # via -r requirements.txt
 markdown==3.6
     # via -r requirements.txt
 markupsafe==2.1.5

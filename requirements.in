@@ -5,6 +5,7 @@ django-crispy-forms
 django-debug-toolbar
 environs[django]
 gunicorn
+loguru
 markdown
 psycopg2-binary
 uvicorn
