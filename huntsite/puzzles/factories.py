@@ -17,12 +17,12 @@ MOCK_PUZZLES = [
 
 def title_text_factory() -> str:
     nb = random.randint(1, 3)
-    return " ".join(fake.words(nb=nb)).title()
+    return " ".join(fake.word() for _ in range(nb)).title()
 
 
 def answer_text_factory() -> str:
     nb = random.randint(1, 2)
-    return " ".join(fake.words(nb=nb)).upper()
+    return " ".join(fake.word() for _ in range(nb)).upper()
 
 
 @factory.django.mute_signals(post_save)
