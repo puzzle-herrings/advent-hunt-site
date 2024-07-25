@@ -2,6 +2,7 @@ import random
 
 from django.conf import settings
 from django.db.models.signals import post_save
+from django.utils import timezone
 import factory
 import factory.fuzzy
 from faker import Faker
@@ -14,12 +15,12 @@ MOCK_PUZZLES = [
 ]
 
 
-def title_text_factory(instance=None) -> str:
+def title_text_factory() -> str:
     nb = random.randint(1, 3)
     return " ".join(fake.words(nb=nb)).title()
 
 
-def answer_text_factory(instance=None) -> str:
+def answer_text_factory() -> str:
     nb = random.randint(1, 2)
     return " ".join(fake.words(nb=nb)).upper()
 
@@ -30,10 +31,11 @@ class PuzzleFactory(factory.django.DjangoModelFactory):
         model = "puzzles.Puzzle"
         skip_postgeneration_save = True
 
-    name = factory.lazy_attribute(title_text_factory)
+    name = factory.LazyFunction(title_text_factory)
     slug = factory.Faker("slug")
-    answer = factory.lazy_attribute(answer_text_factory)
+    answer = factory.LazyFunction(answer_text_factory)
     pdf_url = factory.fuzzy.FuzzyChoice(MOCK_PUZZLES)
+    available_at = factory.LazyFunction(timezone.now)
 
     calendar_entry = factory.RelatedFactory(
         "huntsite.puzzles.factories.AdventCalendarEntryFactory",
