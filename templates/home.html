@@ -2,53 +2,49 @@
 {% load static %}
 {% block content %}
   <link href="{% static 'css/home.css' %}" rel="stylesheet" />
-  <div class="row">
-    <center>
-      <p>Peppermint Herrings 🎏 present...</p>
-    </center>
-  </div>
-  <div class="row">
-    <center>
-      <h1 class="title">
-        <span class="title-small">the</span> Advent Puzzle Hunt
-      </h1>
-    </center>
-  </div>
-  <div class="row">
-    <center>
-      <img src="https://r2.jayqi.com/placeholder.png"
-           alt="Splash image"
-           height="480px"
-           width="auto" />
-    </img>
-  </center>
-</div>
-<div class="row">
-  <p>
-    Ho ho ho, congratulations! You are cordially invited to visit the North Pole to see how Santa Claus and the elves prepare to bring joy to children around the world.
-  </p>
-  <p>–Santa</p>
-</div>
-<div class="row">
-  <div class="col"></div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">What</h5>
-        <p class="card-text">
-          A puzzle hunt released as an advent calendar—one puzzle a day. See our <a href="{% url 'about' %}">About</a> page for more information.
+  <section class="section">
+    <div class="container">
+      <div class="block center">
+        <p>Peppermint Herrings 🎏 present...</p>
+      </div>
+      <div class="block center">
+        <h1 class="title home-title">
+          <span class="home-title-small">the</span> Advent Puzzle Hunt
+        </h1>
+      </div>
+      <div class="block center">
+        <img src="https://r2.jayqi.com/placeholder.png"
+             alt="Splash image"
+             class="splash"
+             height="480"
+             width="auto" />
+      </div>
+      <div class="block">
+        <p>
+          Ho ho ho, congratulations! You are cordially invited to visit the North Pole to see how Santa Claus and the elves prepare to bring joy to children around the world.
         </p>
+        <p>–Santa</p>
       </div>
     </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">When</h5>
-        <p class="card-text">December 1 through December 24, 2024.</p>
+  </section>
+  <section>
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-one-third">
+          <div class="box">
+            <h2 class="title is-2">What</h2>
+            <p>
+              A puzzle hunt released as an advent calendar—one puzzle a day. See our <a href="{% url 'about' %}">About</a> page for more information.
+            </p>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="box">
+            <h2 class="title is-2">When</h2>
+            <p>December 1 through December 24, 2024.</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col"></div>
-</div>
+  </section>
 {% endblock content %}

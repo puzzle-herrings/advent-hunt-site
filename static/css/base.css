@@ -29,3 +29,14 @@
 body {
     font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
 }
+
+/* Override Bulma colors */
+/* :root {
+    --bulma-text: #f00;
+    --bulma-link: #000;
+    --bulma-primary: #000;
+    --bulma-info: #000;
+    --bulma-success: #000;
+    --bulma-warning: #000;
+    --bulma-danger: #000;
+} */

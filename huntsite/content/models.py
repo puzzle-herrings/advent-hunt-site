@@ -29,8 +29,6 @@ class StoryEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    _PARAGRAPH_ATTRIBUTE_LIST = "{: .card_text }"
-
     class Meta:
         verbose_name_plural = "Story Entries"
 
@@ -38,6 +36,4 @@ class StoryEntry(models.Model):
         return self.title
 
     def render_content(self):
-        paragraphs = self.content.split("\n\n")
-        content = "\n\n".join(para + f"\n{self._PARAGRAPH_ATTRIBUTE_LIST}" for para in paragraphs)
-        return markdown.markdown(content, extensions=["attr_list"])
+        return markdown.markdown(self.content)
