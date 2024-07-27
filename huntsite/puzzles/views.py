@@ -36,7 +36,7 @@ def puzzle_detail(request, slug: str):
     context = {
         "puzzle": puzzle,
         "guesses": puzzle_selectors.puzzle_guess_list(puzzle, request.user),
-        "form": GuessForm(),
+        "form": GuessForm(slug=slug),
     }
     return TemplateResponse(request, "puzzle_detail.html", context)
 
@@ -56,7 +56,7 @@ def guess_submit(request, slug: str):
     puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
     puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
 
-    form = GuessForm(request.POST)
+    form = GuessForm(request.POST, slug=slug)
     if form.is_valid():
         guess_text = form.cleaned_data["guess"]
         evaluation = puzzle_services.guess_submit(puzzle, request.user, guess_text)

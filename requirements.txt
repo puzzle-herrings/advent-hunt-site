@@ -6,7 +6,7 @@ brotli==1.1.0
     # via whitenoise
 click==8.1.7
     # via uvicorn
-crispy-bootstrap5==2024.2
+crispy-bulma==0.11.0
     # via -r requirements.in
 dj-database-url==2.2.0
     # via environs
@@ -15,7 +15,7 @@ dj-email-url==1.0.6
 django==5.0.4
     # via
     #   -r requirements.in
-    #   crispy-bootstrap5
+    #   crispy-bulma
     #   dj-database-url
     #   django-allauth
     #   django-crispy-forms
@@ -27,7 +27,7 @@ django-cache-url==3.4.5
 django-crispy-forms==2.2
     # via
     #   -r requirements.in
-    #   crispy-bootstrap5
+    #   crispy-bulma
 django-debug-toolbar==4.3.0
     # via -r requirements.in
 environs==11.0.0

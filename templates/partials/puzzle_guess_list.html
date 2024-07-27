@@ -1,4 +1,6 @@
 {% if evaluation_message %}<p>{{ evaluation_message }}</p>{% endif %}
+{% load static %}
+<link href="{% static 'css/liberationmono.css' %}" rel="stylesheet" />
 <table class="table">
   <thead>
     <tr>
@@ -10,7 +12,9 @@
   <tbody>
     {% for guess in guesses %}
       <tr>
-        <td>{{ guess.text }}</td>
+        <td>
+          <span class="mono">{{ guess.text }}</span>
+        </td>
         <td>{{ guess.display_evaluation }}</td>
         <td>
           <span class="timestamp">{{ guess.created_at|date:"c" }}</span>

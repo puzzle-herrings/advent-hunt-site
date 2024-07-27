@@ -30,6 +30,10 @@ body {
     font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
 }
 
+span.mono {
+    font-family: "Liberation Mono", monospace, monospace;
+}
+
 /* Override Bulma colors */
 /* :root {
     --bulma-text: #f00;
