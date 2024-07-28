@@ -28,8 +28,9 @@
             <tr>
               <td scope="row">{{ puzzle.calendar_entry.day }}</td>
               <td>
-                <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
-                {% if not puzzle.is_available %}(Preview){% endif %}
+                <strong><a href="{{ puzzle.get_url }}">{{ puzzle.name }}
+                  {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
+                </a></strong>
               </td>
               <td>
                 {% if puzzle.is_solved %}<span class="mono"><strong>{{ puzzle.answer }}</strong></span>{% endif %}

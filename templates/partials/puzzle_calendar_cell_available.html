@@ -2,11 +2,12 @@
   <div class="box available">
     <div class="block">
       <span class="available-day">{{ puzzle.calendar_entry.day }}</span>
-      {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
     </div>
     <div class="block">
       <span class="available-puzzle-name">
-        <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
+        <a href="{{ puzzle.get_url }}">{{ puzzle.name }}
+          {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
+        </a>
       </span>
     </div>
     <div class="block">
