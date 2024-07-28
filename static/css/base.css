@@ -46,10 +46,11 @@ span.mono {
     font-family: "Liberation Mono", monospace, monospace;
 }
 
-.navbar-brand img {
+/* .navbar-brand img {
+    display: inline-flex;
     height: 100%;
     width: auto;
-}
+} */
 
 /* Override Bulma colors */
 
