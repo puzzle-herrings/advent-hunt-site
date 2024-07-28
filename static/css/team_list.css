@@ -7,3 +7,12 @@ th.right,
 td.right {
     text-align: right;
 }
+
+table.xscroll {
+    overflow-x: scroll;
+}
+
+th.sticky,
+td.sticky {
+    position: sticky;
+}

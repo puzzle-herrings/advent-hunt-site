@@ -22,8 +22,10 @@ def puzzle_list(request):
         .all()
         .order_by("calendar_entry__day")
     )
+    days = list(range(1, 25))
     context = {
-        "puzzles": puzzles,
+        "days": days,
+        "puzzles_by_day": {puzzle.calendar_entry.day: puzzle for puzzle in puzzles},
     }
     return TemplateResponse(request, "puzzle_list.html", context)
 
@@ -36,7 +38,7 @@ def puzzle_detail(request, slug: str):
     context = {
         "puzzle": puzzle,
         "guesses": puzzle_selectors.puzzle_guess_list(puzzle, request.user),
-        "form": GuessForm(),
+        "form": GuessForm(slug=slug),
     }
     return TemplateResponse(request, "puzzle_detail.html", context)
 
@@ -56,7 +58,7 @@ def guess_submit(request, slug: str):
     puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
     puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
 
-    form = GuessForm(request.POST)
+    form = GuessForm(request.POST, slug=slug)
     if form.is_valid():
         guess_text = form.cleaned_data["guess"]
         evaluation = puzzle_services.guess_submit(puzzle, request.user, guess_text)

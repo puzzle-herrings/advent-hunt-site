@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="row">
-    <h1>The story so far...</h1>
-  </div>
-  {% for entry in entries %}
-    {% if entry.puzzle is None or entry.puzzle in solves %}
-      <div class="row">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ entry.title }}</h5>
-            {{ entry.render_content | safe }}
-          </div>
-        </div>
+  <section class="section">
+    <div class="container">
+      <div class="block">
+        <h1 class="title is-1">The story so far...</h1>
       </div>
-    {% endif %}
-  {% endfor %}
+      {% for entry in entries %}
+        {% if entry.puzzle is None or entry.puzzle in solves %}
+          <div class="block">
+            <div class="box">
+              <div class="content">
+                <h3>{{ entry.title }}</h3>
+                {{ entry.render_content | safe }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
 {% endblock content %}

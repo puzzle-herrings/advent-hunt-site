@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "crispy_forms",
-    "crispy_bootstrap5",
+    "crispy_bulma",
     "debug_toolbar",
     # Local apps
     "huntsite",
@@ -196,8 +196,8 @@ FORMS_URLFIELD_ASSUME_HTTPS = True
 
 ## Custom stuff
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
+CRISPY_TEMPLATE_PACK = "bulma"
 
 ## TODO MAKE SURE THIS IS FINE
 X_FRAME_OPTIONS = "SAMEORIGIN"

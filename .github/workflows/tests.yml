@@ -37,12 +37,13 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: packages
           cache-dependency-path: >-
-            requirements.txt
-            dev-requirements.txt
+            requirements/deploy.txt
+            requirements/demo.txt
+            requirements/dev.txt
 
       - name: Install dependencies
         run: |
-          uv pip install -r dev-requirements.txt
+          uv pip install -r requirements/dev.txt
 
       - name: Lint project
         run: |

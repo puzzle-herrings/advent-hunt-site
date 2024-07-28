@@ -1,0 +1,5 @@
+-r deploy.txt
+
+factory-boy
+faker
+tqdm
