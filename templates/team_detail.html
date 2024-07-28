@@ -2,26 +2,40 @@
 {% load crispy_forms_tags %}
 {% block body %}
   {% include "partials/timestamp_localize_libraries.html" %}
-  <div class="row">
-    <div class="col">
-      <h1>{{ team.team_name }}</h1>
-      <p>
-        {% if is_self %}
-          <a class="btn btn-primary"
-             href="{% url 'account_manage' %}"
-             role="button">Manage your account</a>
-        {% endif %}
-      </p>
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-1 block">{{ team.team_name }}</h1>
+      {% if is_self %}
+        <div class="notification is-info is-light">
+          <div class="level">
+            <div class="level-item"></div>
+            <div class="level-item"></div>
+            <div class="level-item has-text-centered">
+              <p>
+                <strong>Your username:</strong> {{ team.username }}
+              </p>
+            </div>
+            <div class="level-item"></div>
+            <div class="level-item has-text-centered">
+              <a class="button is-primary"
+                 href="{% url 'account_manage' %}"
+                 role="button">Manage your account</a>
+            </div>
+            <div class="level-item"></div>
+            <div class="level-item"></div>
+          </div>
+        </div>
+      {% endif %}
       {% if team.profile.members %}
-        <p>
+        <p class="block">
           <strong>Team Members:</strong> {{ team.profile.members }}
         </p>
       {% endif %}
-      <h2>Solves</h2>
-      <p>
+      <h2 class="title is-2 block">Solves</h2>
+      <p class="block">
         <strong>Total:</strong> {{ solves|length }}
       </p>
-      <table class="table table-hover w-auto">
+      <table class="table block">
         <thead>
           <tr>
             <th scope="col">Puzzle</th>
@@ -40,7 +54,6 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <div class="row"></div>
+  </section>
   {% include "partials/timestamp_localize_script.html" %}
 {% endblock body %}
