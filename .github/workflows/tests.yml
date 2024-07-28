@@ -37,8 +37,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: packages
           cache-dependency-path: >-
-            requirements.txt
-            dev-requirements.txt
+            requirements/deploy.txt
+            requirements/demo.txt
+            requirements/dev.txt
 
       - name: Install dependencies
         run: |
