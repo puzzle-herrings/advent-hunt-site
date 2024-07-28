@@ -2,14 +2,16 @@
 {% load static %}
 {% block content %}
   <link href="{% static 'css/home.css' %}" rel="stylesheet" />
-  <section class="section">
-    <div class="container">
+  <section class="hero is-primary">
+    <div class="hero-body">
       <div class="block center">
-        <p>Peppermint Herrings 🎏 present...</p>
+        <p>
+          <span class="tag is-large is-link">Peppermint Herrings 🎏 present...</span>
+        </p>
       </div>
       <div class="block center">
         <h1 class="title home-title">
-          <span class="home-title-small">the</span> Advent Puzzle Hunt
+          <span><span class="home-title-small">the</span> Advent Puzzle Hunt</span>
         </h1>
       </div>
       <div class="block center">
@@ -19,11 +21,23 @@
              height="480"
              width="auto" />
       </div>
-      <div class="block">
-        <p>
-          Ho ho ho, congratulations! You are cordially invited to visit the North Pole to see how Santa Claus and the elves prepare to bring joy to children around the world.
-        </p>
-        <p>–Santa</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-two-thirds">
+          <div class="box">
+            <div class="content">
+              <p>Ho ho ho!</p>
+              <p>You are at the top of my nice list this year! Nice job!</p>
+              <p>
+                As a special thanks, I have a special gift for you—a visit to the North Pole this Christmas season! You will get see how the elves and I prepare to bring joy to children around the world. Merry Christmas!
+              </p>
+              <p>–Santa</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -13,22 +13,31 @@
     <meta property="og:description" content="{{ META_DESCRIPTION }}" />
     <meta property="og:title" content="{{ META_TITLE }}" />
     <!-- Favicons -->
-    <link rel="icon" href="{% static 'favicon.ico' %}" sizes="48x48">
-    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" href="{% static 'santa/favicon.ico' %}" sizes="48x48">
+    <link rel="apple-touch-icon"
+          href="{% static 'santa/apple-touch-icon.png' %}">
     <!-- 180×180 -->
-    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <link rel="manifest" href="{% static 'santa-missing/site.webmanifest' %}">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.2/css/bulma.min.css"
-          integrity="sha512-RpeJZX3aH5oZN3U3JhE7Sd+HG8XQsqmP3clIbu4G28p668yNsRNj3zMASKe1ATjl/W80wuEtCx2dFA8xaebG5w=="
+          href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/versions/bulma-no-dark-mode.min.css"
+          integrity="sha384-Mzv683sNGpHoqzflgja8HtOOXwSkg0WYgbi6iV3IjnOLZAsGNzzkdXxfHmJYT5dY"
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
     <link href="{% static 'css/base.css' %}" rel="stylesheet" />
   </head>
   <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-primary"
+         role="navigation"
+         aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item" href="{% url 'home' %}">🎅 Advent Hunt</a>
+          <a class="navbar-item merienda" href="{% url 'home' %}">
+            <img src="{% static 'santa/icon-invert.svg' %}"
+                 height="28"
+                 width="28"
+                 alt="Santa"
+                 onerror="this.src='{% static 'santa/icon-32.png' %}'" />
+            <strong>Advent Hunt</strong></a>
           <a role="button"
              class="navbar-burger"
              data-target="navMenu"

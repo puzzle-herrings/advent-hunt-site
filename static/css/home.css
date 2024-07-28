@@ -6,13 +6,11 @@
     src: url('../fonts/merienda/merienda-v19-latin-500.woff2') format('woff2');
 }
 
-.center {
-    text-align: center;
-}
 
 h1.home-title {
     font-family: "Merienda", "Brush Script MT", cursive;
     font-size: 4.5rem;
+    color: var(--bulma-primary-invert)
 }
 
 span.home-title-small {

@@ -1,0 +1,18 @@
+<div class="cell center puzzle-calendar-cell">
+  <div class="box available">
+    <div class="block">
+      <span class="available-day">{{ puzzle.calendar_entry.day }}</span>
+      {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
+    </div>
+    <div class="block">
+      <span class="available-puzzle-name">
+        <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
+      </span>
+    </div>
+    <div class="block">
+      {% if puzzle.is_solved %}
+        <strong><span class="available-puzzle-answer mono">{{ puzzle.answer }}</span></strong>
+      {% endif %}
+    </div>
+  </div>
+</div>

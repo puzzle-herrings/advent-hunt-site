@@ -11,9 +11,9 @@
   <section class="section no-bottom-padding">
     <div class="container">
       <div class="block">
-        <h1 class="title">
+        <h1 class="title is-1">
           {{ puzzle.name }}
-          {% if not puzzle.is_available %}(Preview){% endif %}
+          {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
         </h1>
       </div>
       <div class="block">

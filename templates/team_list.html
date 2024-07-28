@@ -5,39 +5,35 @@
   <link href="{% static 'css/team_list.css' %}" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"
         rel="stylesheet" />
-  <div class="row">
-    <div class="col-lg">
-      <h1>Teams</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg">
-      <table class="table table-striped">
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-1">Teams</h1>
+      <table class="table is-striped is-narrow xscroll">
         <thead>
-          <tr>
-            <th>Team Name</th>
+          <tr class="sticky">
+            <th class="sticky">Team Name</th>
+            <th class="sticky" align="right">#</th>
             {% for day in days %}<th class="center">{{ day }}</th>{% endfor %}
-            <th class="right">#</th>
           </tr>
         </thead>
         <tbody>
           {% for team in teams %}
             <tr>
-              <td>
+              <td class="sticky">
                 <span {% if team.profile.members %}data-tts aria-label="{{ team.profile.members }}"{% endif %}>
                   <a href="{% url 'team_detail' team.id %}">{{ team.team_name }}</a>
                 </span>
               </td>
+              <td class="sticky" align="right">{{ solves_by_team|dictget:team.id|length }}</td>
               {% for day in days %}
                 <td class="center">
                   {% if day in solves_by_team|dictget:team.id %}❆{% endif %}
                 </td>
               {% endfor %}
-              <td class="right">{{ solves_by_team|dictget:team.id|length }}</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-  </div>
+  </section>
 {% endblock content %}

@@ -1,0 +1,42 @@
+.puzzle-calendar-cell>.box {
+    height: 100%;
+    width: 100%;
+}
+
+.puzzle-calendar-cell>.available {
+    background-color: var(--bulma-primary);
+}
+
+.puzzle-calendar-cell>.available a {
+    color: var(--bulma-primary-invert);
+}
+
+span.available-day {
+    color: var(--bulma-primary-invert);
+    font-size: 1.1em;
+}
+
+span.available-puzzle-name {
+    color: var(--bulma-primary-invert);
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+span.available-puzzle-answer {
+    color: var(--bulma-primary-invert);
+}
+
+span.unavailable-day {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.puzzle-calendar-cell>.unavailable {
+    background-color: var(--bulma-link);
+    color: var(--bulma-link-invert);
+}
+
+.puzzle-calendar-cell>.unavailable {
+    background-color: var(--bulma-link);
+    color: var(--bulma-link-invert);
+}

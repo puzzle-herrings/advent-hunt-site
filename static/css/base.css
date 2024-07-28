@@ -26,6 +26,18 @@
     src: url('../fonts/liberationsans/LiberationSans-BoldItalic-webfont.woff') format('woff2');
 }
 
+@font-face {
+    font-display: swap;
+    font-family: 'Merienda';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../fonts/merienda/merienda-v19-latin-500.woff2') format('woff2');
+}
+
+.merienda {
+    font-family: "Merienda", "Brush Script MT", cursive;
+}
+
 body {
     font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
 }
@@ -34,13 +46,104 @@ span.mono {
     font-family: "Liberation Mono", monospace, monospace;
 }
 
+.navbar-brand img {
+    height: 100%;
+    width: auto;
+}
+
 /* Override Bulma colors */
-/* :root {
-    --bulma-text: #f00;
-    --bulma-link: #000;
-    --bulma-primary: #000;
-    --bulma-info: #000;
-    --bulma-success: #000;
-    --bulma-warning: #000;
-    --bulma-danger: #000;
+
+:root {
+    /* text primary link info success warning danger */
+
+    /* background */
+    /* tan */
+    /* --bulma-scheme-h: 43deg;
+    --bulma-scheme-s: 30%;
+    --bulma-scheme-main-l: 95%; */
+
+    --red-h: 359deg;
+    --red-s: 73%;
+    --red-l: 20%;
+    --red-l-invert: 90%;
+    --red: hsl(var(--red-h), var(--red-s), var(--red-l));
+
+    --dark-green-h: 132deg;
+    --dark-green-s: 32%;
+    --dark-green-l: 24%;
+    --dark-green-l-invert: 90%;
+    --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
+
+    --green-h: 98deg;
+    --green-s: 32%;
+    --green-l: 45%;
+    --green-l-invert: 70%;
+    --green: hsl(var(--green-h), var(--green-s), var(--green-l));
+
+    --bright-green-h: 78deg;
+    --bright-green-s: 51%;
+    --bright-green-l: 56%;
+    --bright-green-l-invert: 24%;
+    --bright-green: hsl(var(--bright-green-h), var(--bright-green-s), var(--bright-green-l));
+
+    --gold-h: 42deg;
+    --gold-s: 100%;
+    --gold-l: 75%;
+    --gold-l-invert: 25%;
+    --gold: hsl(var(--gold-h), var(--gold-s), var(--gold-l));
+
+    --blue-h: 182deg;
+    --blue-s: 52%;
+    --blue-l: 42%;
+    --blue-l-invert: 58%;
+    --blue: hsl(var(--blue-h), var(--blue-s), var(--blue-l));
+
+    --white-h: 214deg;
+    --white-s: 13%;
+    --white-l: 90%;
+    --white-l-invert: 10%;
+    --white: hsl(var(--white-h), var(--white-s), var(--white-l));
+
+    --bulma-primary-h: var(--red-h);
+    --bulma-primary-s: var(--red-s);
+    --bulma-primary-l: var(--red-l);
+    --bulma-primary-invert-l: var(--red-l-invert);
+
+    --bulma-link-h: var(--dark-green-h);
+    --bulma-link-s: var(--dark-green-s);
+    --bulma-link-l: var(--dark-green-l);
+    --bulma-link-invert-l: var(--dark-green-l-invert);
+
+    --bulma-info-h: var(--blue-h);
+    --bulma-info-s: var(--blue-s);
+    --bulma-info-l: var(--blue-l);
+    --bulma-info-invert-l: var(--blue-l-invert);
+
+    --bulma-success-h: var(--green-h);
+    --bulma-success-s: var(--green-s);
+    --bulma-success-l: var(--green-l);
+    --bulma-success-invert-l: var(--green-l-invert);
+
+    --bulma-warning-h: var(--bright-green-h);
+    --bulma-warning-s: var(--bright-green-s);
+    --bulma-warning-l: var(--bright-green-l);
+    --bulma-warning-invert-l: var(--bright-green-l-invert);
+
+    --bulma-danger-h: var(--gold-h);
+    --bulma-danger-s: var(--gold-s);
+    --bulma-danger-l: var(--gold-l);
+    --bulma-danger-invert-l: var(--gold-l-invert);
+}
+
+.center {
+    text-align: center;
+}
+
+/*
+.gold-text {
+    color: var(--gold);
+}
+
+.white-text {
+    color: var(--white);
 } */

@@ -22,8 +22,10 @@ def puzzle_list(request):
         .all()
         .order_by("calendar_entry__day")
     )
+    days = list(range(1, 25))
     context = {
-        "puzzles": puzzles,
+        "days": days,
+        "puzzles_by_day": {puzzle.calendar_entry.day: puzzle for puzzle in puzzles},
     }
     return TemplateResponse(request, "puzzle_list.html", context)
 

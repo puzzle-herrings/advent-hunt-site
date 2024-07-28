@@ -26,7 +26,7 @@ class GuessForm(forms.Form):
         self.helper.layout = Layout(
             FormGroup(
                 Field("guess"),
-                Submit("submit", "Submit"),
+                Submit("submit", "Submit", css_class="is-primary"),
             )
         )
 
