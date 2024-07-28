@@ -25,12 +25,13 @@ delete-migrations: drop-db
 
 # Sync requirements in current virtual environment
 requirements:
-    uv pip sync dev-requirements.txt
+    uv pip sync requirements/dev.txt
 
 # Create requirements lockfile
 compile-requirements:
-    uv pip compile requirements.in -o requirements.txt
-    uv pip compile dev-requirements.in -o dev-requirements.txt
+    uv pip compile requirements/deploy.in -o requirements/deploy.txt
+    uv pip compile requirements/demo.in -o requirements/demo.txt
+    uv pip compile requirements/dev.in -o requirements/dev.txt
 
 # Lint the project
 lint:
