@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # WSGI
 python -m gunicorn project.wsgi:application
 
