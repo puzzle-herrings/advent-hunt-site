@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% block content %}
+{% block body %}
   <h1>Manage your account</h1>
   <a href="{% url 'account_email' %}" class="btn btn-primary">Change your email</a>
   <a href="{% url 'account_change_password' %}" class="btn btn-primary">Change your password</a>
@@ -10,4 +10,4 @@
     {{ form | crispy }}
     <button type="submit" class="btn btn-primary">Save</button>
   </form>
-{% endblock content %}
+{% endblock body %}

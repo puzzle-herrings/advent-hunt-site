@@ -71,8 +71,8 @@
         </div>
       </div>
     </nav>
-    {% block content %}
-    {% endblock content %}
+    {% block body %}
+    {% endblock body %}
     <form id="logout-form" method="post" action="{% url 'account_logout' %}">
       {% csrf_token %}
       <input type="hidden">

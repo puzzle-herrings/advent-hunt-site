@@ -7,11 +7,11 @@
 {% if attrs.type %}type="{{ attrs.type }}"{% endif %}
 {% if attrs.value %}value="{{ attrs.value }}"{% endif %}
 class="{% block class %}
-    btn
-    {% if "link" in attrs.tags %}btn-link
+    button
+    {% if "link" in attrs.tags %}is-link
     {% else %}
-      {% if "prominent" in attrs.tags %}btn-lg{% elif "minor" in attrs.tags %}btn-sm{% endif %}
-      btn-{% if 'outline' in attrs.tags %}outline-{% endif %}{% if "danger" in attrs.tags %}danger{% elif "secondary" in attrs.tags %}secondary{% elif "warning" in attrs.tags %}warning{% else %}primary{% endif %}
+      {% if "prominent" in attrs.tags %}is-normal{% elif "minor" in attrs.tags %}is-small{% endif %}
+      {% if 'outline' in attrs.tags %}is-outline{% endif %}{% if "danger" in attrs.tags %}is-danger{% elif "success" in attrs.tags %}is-success{% elif "warning" in attrs.tags %}is-warning{% else %}is-primary{% endif %}
     {% endif %}{% endblock %}">
     {% if "tool" in attrs.tags %}
     {% if "delete" in attrs.tags %}
