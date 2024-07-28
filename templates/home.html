@@ -3,7 +3,8 @@
 {% block body %}
   <link href="{% static 'css/home.css' %}" rel="stylesheet" />
   <section class="hero is-primary">
-    <div class="hero-body">
+    <div class="hero-body container">
+      {% include "partials/messages.html" %}
       <div class="block center">
         <p>
           <span class="tag is-large is-link">Peppermint Herrings 🎏 present...</span>

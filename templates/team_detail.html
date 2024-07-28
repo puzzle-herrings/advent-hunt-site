@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% block body %}
+{% block content %}
   {% include "partials/timestamp_localize_libraries.html" %}
-  <section class="section">
-    <div class="container">
       <h1 class="title is-1 block">{{ team.team_name }}</h1>
       {% if is_self %}
         <div class="notification is-info is-light">
@@ -53,7 +51,5 @@
           {% endfor %}
         </tbody>
       </table>
-    </div>
-  </section>
   {% include "partials/timestamp_localize_script.html" %}
-{% endblock body %}
+{% endblock content %}

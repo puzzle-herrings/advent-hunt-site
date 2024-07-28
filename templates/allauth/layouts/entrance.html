@@ -1,19 +1,1 @@
 {% extends "allauth/layouts/base.html" %}
-{% load i18n allauth %}
-{% block body %}
-    <section class="section">
-        <div class="container">
-            {% if messages %}
-                {% for message in messages %}
-                    {% element alert level=message.tags %}
-                    {% slot message %}
-                    {{ message }}
-                {% endslot message %}
-            {% endelement %}
-        {% endfor %}
-    {% endif %}
-    {% block content %}
-    {% endblock content %}
-</div>
-</section>
-{% endblock body %}

@@ -1,0 +1,20 @@
+{% load common_extras %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="notification {% if message.tags %} {% with message.tags|split as tags %} {% for tag in tags %}is-{{ tag }}{% endfor %} {% endwith %} {% endif %}">
+      <button class="delete"></button>
+      {{ message }}
+    </div>
+  {% endfor %}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        const $notification = $delete.parentNode;
+
+        $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification);
+        });
+      });
+    });
+  </script>
+{% endif %}

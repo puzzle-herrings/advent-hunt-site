@@ -1,13 +1,35 @@
-{% extends "base.html" %}
+{% extends "allauth/layouts/manage.html" %}
 {% load crispy_forms_tags %}
-{% block body %}
-  <h1>Manage your account</h1>
-  <a href="{% url 'account_email' %}" class="btn btn-primary">Change your email</a>
-  <a href="{% url 'account_change_password' %}" class="btn btn-primary">Change your password</a>
+{% block content %}
+  <h1 class="title is-1 block">Manage your account</h1>
   <hr>
-  <form method="post">
+  <form class="block" method="post">
     {% csrf_token %}
     {{ form | crispy }}
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="button is-primary">Save</button>
   </form>
-{% endblock body %}
+  <hr />
+  <h2 class="title is-3 block">More Options</h2>
+  <p class="block">
+    {% url 'account_email' as email_url %}
+    {% if email_url %}
+      <a class="{% block nav_class_email %}button is-primary{% endblock nav_class_email %}"
+         href="{% url 'account_email' %}">Change or Add Emails</a>
+    {% endif %}
+    {% url 'account_change_password' as change_password_url %}
+    {% if change_password_url %}
+      <a class="{% block nav_class_password %}button is-primary{% endblock nav_class_password %}"
+         href="{% url 'account_change_password' %}">Change Password</a>
+    {% endif %}
+    {% url 'mfa_index' as mfa_index_url %}
+    {% if mfa_index_url %}
+      <a class="{% block nav_class_mfa %}button is-primary{% endblock nav_class_mfa %}"
+         href="{% url 'mfa_index' %}">Two-Factor Authentication</a>
+    {% endif %}
+    {% url 'usersessions_list' as usersessions_list_url %}
+    {% if usersessions_list_url %}
+      <a class="{% block nav_class_usersessions %}button is-primary{% endblock nav_class_usersessions %}"
+         href="{{ usersessions_list_url }}">Sessions</a>
+    {% endif %}
+  </p>
+{% endblock content %}
