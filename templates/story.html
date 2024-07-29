@@ -6,7 +6,11 @@
       <div class="box block">
         <div class="content">
           <h3>{{ entry.title }}</h3>
-          {{ entry.render_content | safe }}
+          {% if entry.is_final %}
+            <a href="{% url "victory" %}">Click here to view the final story entry.</a>
+          {% else %}
+            {{ entry.render_content | safe }}
+          {% endif %}
         </div>
       </div>
     {% endif %}
