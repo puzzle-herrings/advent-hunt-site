@@ -1,16 +1,16 @@
 {% load allauth %}
 <div class="block">
-    {% for err in attrs.form.non_field_errors %}<div class="notification is-danger">{{ err }}</div>{% endfor %}
-    <form class="{% block form_class %}{% if not attrs.no_visible_fields %}{% endif %}{% endblock form_class %}"
-          method="{{ attrs.method }}"
-          action="{{ attrs.action }}">
-        {% if not attrs.no_visible_fields %}<div class="block">{% endif %}
-            {% slot body %}
-            {% endslot body %}
-            {% if not attrs.no_visible_fields %}</div>{% endif %}
-        {% if not attrs.no_visible_fields %}<div class="block">{% endif %}
-            {% slot actions %}
-            {% endslot actions %}
-            {% if not attrs.no_visible_fields %}</div>{% endif %}
-    </form>
+  {% for err in attrs.form.non_field_errors %}<div class="notification is-danger">{{ err }}</div>{% endfor %}
+  <form class="{% block form_class %}{% if not attrs.no_visible_fields %}{% endif %}{% endblock form_class %}"
+        method="{{ attrs.method }}"
+        action="{{ attrs.action }}">
+    {% if not attrs.no_visible_fields %}<div class="block">{% endif %}
+      {% slot body %}
+      {% endslot body %}
+      {% if not attrs.no_visible_fields %}</div>{% endif %}
+    {% if not attrs.no_visible_fields %}<div class="block">{% endif %}
+      {% slot actions %}
+      {% endslot actions %}
+      {% if not attrs.no_visible_fields %}</div>{% endif %}
+  </form>
 </div>

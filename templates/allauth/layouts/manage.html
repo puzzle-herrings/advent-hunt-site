@@ -1,23 +1,23 @@
 {% extends "allauth/layouts/base.html" %}
 {% load allauth %}
 {% block body %}
-    <section class="section">
-        <div class="container">
-            {% include "partials/messages.html" %}
-            <nav class="breadcrumb" aria-label="breadcrumbs">
-                <ul>
-                    {% block breadcrumbs %}
-                        <li>
-                            <a href="{% url 'team_detail' user.id %}">Your Profile</a>
-                        </li>
-                        <li class="is-active">
-                            <a href="#" aria-current="page">Manage Your Account</a>
-                        </li>
-                    {% endblock breadcrumbs %}
-                </ul>
-            </nav>
-            {% block content %}
-            {% endblock content %}
-        </div>
-    </section>
+  <section class="section">
+    <div class="container">
+      {% include "partials/messages.html" %}
+      <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          {% block breadcrumbs %}
+            <li>
+              <a href="{% url 'team_detail' user.id %}">Your Profile</a>
+            </li>
+            <li class="is-active">
+              <a href="#" aria-current="page">Manage Your Account</a>
+            </li>
+          {% endblock breadcrumbs %}
+        </ul>
+      </nav>
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </section>
 {% endblock body %}
