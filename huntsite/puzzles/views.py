@@ -18,6 +18,7 @@ def puzzle_list(request):
     )
     puzzles = (
         puzzle_manager.with_calendar_entry()
+        .with_meta_info()
         .with_solves_by_user(request.user)
         .all()
         .order_by("calendar_entry__day")

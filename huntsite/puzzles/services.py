@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from huntsite.puzzles.models import Guess, GuessEvaluation, Puzzle, Solve
+from huntsite.puzzles.models import Finish, Guess, GuessEvaluation, Puzzle, Solve
 from huntsite.puzzles.utils import normalize_answer
 
 ALREADY_SUBMITTED = object()
@@ -36,9 +36,13 @@ def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
     guess.save()
 
     if evaluation == GuessEvaluation.CORRECT:
-        solve, created = Solve.objects.get_or_create(user=user, puzzle=puzzle)
-        if created:
-            solve.full_clean()
-            solve.save()
+        solve = Solve(user=user, puzzle=puzzle)
+        solve.full_clean()
+        solve.save()
+
+        if hasattr(puzzle, "meta_info") and puzzle.meta_info.is_final:
+            finish = Finish(user=user)
+            finish.full_clean()
+            finish.save()
 
     return evaluation

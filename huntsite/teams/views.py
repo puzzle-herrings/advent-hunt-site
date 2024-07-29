@@ -1,3 +1,5 @@
+from typing import NamedTuple
+
 from django.db.models import Prefetch
 from django.template.response import TemplateResponse
 
@@ -18,6 +20,12 @@ def team_detail(request, pk: int):
     return TemplateResponse(request, "team_detail.html", context)
 
 
+class LeaderboardEntry(NamedTuple):
+    team: models.User
+    solves: list[int]
+    rank: int
+
+
 def team_list(request):
     """View to display a list of all teams."""
     teams = (
@@ -31,21 +39,60 @@ def team_list(request):
         .all()
     )
     days = list(range(25))
+
     solves_by_team = {
         team.id: [solve.puzzle.calendar_entry.day for solve in team.solve_set.all()]
         for team in teams
     }
-    teams = sorted(
-        teams,
-        key=lambda team: (
+    metas_by_day = {
+        meta_info.puzzle.calendar_entry.day: meta_info
+        for meta_info in puzzle_models.MetapuzzleInfo.objects.select_related(
+            "puzzle__calendar_entry"
+        ).all()
+    }
+
+    def _rank_key(team):
+        return (
             24 not in solves_by_team[team.id],  # False < True
+            -len(tuple(day for day in solves_by_team[team.id] if day in metas_by_day)),
             -len(solves_by_team[team.id]),
-            team.team_name,
+        )
+
+    def _rank_data(teams):
+        ranks_map = {}
+        rank = 0
+        step_size = 1
+        rank_keys_by_team = {team.id: _rank_key(team) for team in teams}
+        for key in sorted(rank_keys_by_team.values()):
+            if key in ranks_map:
+                step_size += 1
+            else:
+                ranks_map[key] = rank + step_size
+                rank += step_size
+                # Reset step size
+                step_size = 1
+        return {team.id: ranks_map[rank_keys_by_team[team.id]] for team in teams}
+
+    ranks = _rank_data(teams)
+
+    leaderboard_data = sorted(
+        (
+            LeaderboardEntry(
+                team=team,
+                solves=solves_by_team[team.id],
+                rank=ranks[team.id],
+            )
+            for team in teams
+        ),
+        key=lambda entry: (
+            entry.rank,
+            entry.team.team_name,
         ),
     )
+
     context = {
-        "teams": teams,
+        "leaderboard_data": leaderboard_data,
         "days": days,
-        "solves_by_team": solves_by_team,
+        "metas_by_day": metas_by_day,
     }
     return TemplateResponse(request, "team_list.html", context)

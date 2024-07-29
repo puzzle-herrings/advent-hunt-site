@@ -20,9 +20,10 @@
     <tbody>
       {% for puzzle in puzzles_by_day.values %}
         <tr>
-          <td scope="row">{{ puzzle.calendar_entry.day }}</td>
+          <td scope="row" class="has-text-right">{{ puzzle.calendar_entry.day }}</td>
           <td>
             <strong><a href="{{ puzzle.get_url }}">{{ puzzle.name }}
+              {% if puzzle.meta_info %}<span class="tag">{{ puzzle.meta_info.icon }}</span>{% endif %}
               {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
             </a></strong>
           </td>
