@@ -1,18 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-  <section class="section">
-    <div class="container">
-      <div class="block">
-        <h1 class="title is-1">About</h1>
-      </div>
-      {% for entry in entries %}
-        <div class="block">
-          <div class="content">
-            <h2>{{ entry.title }}</h2>
-            {{ entry.render_content | safe }}
-          </div>
-        </div>
-      {% endfor %}
+  <h1 class="title is-1 block">About</h1>
+  {% for entry in entries %}
+    <div class="content block">
+      <h2>{{ entry.title }}</h2>
+      {{ entry.render_content | safe }}
     </div>
-  </section>
+  {% endfor %}
 {% endblock content %}

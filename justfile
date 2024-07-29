@@ -37,7 +37,7 @@ compile-requirements:
 lint:
     ruff format --check project huntsite
     ruff check project huntsite
-    djlint templates
+    djlint templates --check
     djlint templates --lint
 
 

@@ -1,0 +1,12 @@
+{% extends "account/email.html" %}
+{% block breadcrumbs %}
+  <li>
+    <a href="{% url 'team_detail' user.id %}">Your Profile</a>
+  </li>
+  <li>
+    <a href="{% url 'account_manage' %}">Manage Your Account</a>
+  </li>
+  <li class="is-active">
+    <a href="#" aria-current="page">Change or Add Emails</a>
+  </li>
+{% endblock breadcrumbs %}
