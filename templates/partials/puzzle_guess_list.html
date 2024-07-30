@@ -5,8 +5,8 @@
   <thead>
     <tr>
       <th scope="col">Guess</th>
-      <th scope="col">Evaluation</th>
-      <th scope="col">Time</th>
+      <th scope="col" align="center">Evaluation</th>
+      <th scope="col" align="center">Time</th>
     </tr>
   </thead>
   <tbody>
@@ -15,8 +15,8 @@
         <td>
           <span class="mono">{{ guess.text }}</span>
         </td>
-        <td>{{ guess.display_evaluation }}</td>
-        <td>
+        <td align="center">{{ guess.display_evaluation }}</td>
+        <td align="right" class="nowrap">
           <span class="timestamp">{{ guess.created_at|date:"c" }}</span>
         </td>
       </tr>
