@@ -1,79 +1,75 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
-{% block content %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.12/htmx.min.js"
-          integrity="sha512-JvpjarJlOl4sW26MnEb3IdSAcGdeTeOaAlu2gUZtfFrRgnChdzELOZKl0mN6ZvI0X+xiX5UMvxjK2Rx2z/fliw=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"></script>
-  {% include "partials/timestamp_localize_libraries.html" %}
-  <link href="{% static 'css/puzzle_detail.css' %}" rel="stylesheet" />
-  <div class="block">
-    <h1 class="title is-1">
-      {{ puzzle.name }}
-      {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
-    </h1>
-  </div>
-  <div class="block">
-    <div id="answer-checker" class="card is-toggleable block">
-      <header class="card-header">
-        <p class="card-header-title">Check answer</p>
-        {% include "partials/card_toggle_indicator.html" %}
-      </header>
-      <div class="card-content">
-        <div id="guess-form" class="block">{% crispy form %}</div>
-        <div id="guesses-table" class="block">
-          {% if guesses %}
-            {% include "partials/puzzle_guess_list.html" %}
-          {% endif %}
+{% block body %}
+  <section class="section no-bottom-padding">
+    <div class="container">
+      {% include "partials/messages.html" %}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.12/htmx.min.js"
+              integrity="sha512-JvpjarJlOl4sW26MnEb3IdSAcGdeTeOaAlu2gUZtfFrRgnChdzELOZKl0mN6ZvI0X+xiX5UMvxjK2Rx2z/fliw=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer"></script>
+      {% include "partials/timestamp_localize_libraries.html" %}
+      <link href="{% static 'css/puzzle_detail.css' %}" rel="stylesheet" />
+      <h1 class="title is-1 bloack">
+        {{ puzzle.name }}
+        {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
+      </h1>
+      <div id="answer-checker" class="card is-toggleable block">
+        <header class="card-header">
+          <p class="card-header-title">Check answer</p>
+          {% include "partials/card_toggle_indicator.html" %}
+        </header>
+        <div class="card-content">
+          <div id="guess-form" class="block">{% crispy form %}</div>
+          <div id="guesses-table" class="block">
+            {% if guesses %}
+              {% include "partials/puzzle_guess_list.html" %}
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="block">
-    <object data="{{ puzzle.pdf_url }}"
-            type="application/pdf"
-            class="puzzle-pdf-frame">
-      <p>
-        Something prevented us from displaying the puzzle! Click <a href="{{ puzzle.pdf_url }}">here</a> to download it instead.
-      </p>
-    </object>
-  </div>
-  {% include "partials/card_toggle_script.html" %}
-  {% if user.is_tester %}
-    <link href="{% static 'css/puzzle_detail_tester.css' %}" rel="stylesheet" />
-    <div id="answer-cheatsheet-container">
-      <div id="answer-cheatsheet">
-        <p>
-          Answer: <strong>{{ puzzle.answer }}</strong>
-        </p>
-        {% if puzzle.keep_going_answers %}
+      {% include "partials/card_toggle_script.html" %}
+      <div class="block">
+        <object data="{{ puzzle.pdf_url }}"
+                type="application/pdf"
+                class="puzzle-pdf-frame">
           <p>
-            Keep Going: <strong>{{ puzzle.keep_going_answers|join:"</strong>, <strong>" }}</strong>
+            Something prevented us from displaying the puzzle! Click <a href="{{ puzzle.pdf_url }}">here</a> to download it instead.
           </p>
+        </object>
+        {% if user.is_tester %}
+          <link href="{% static 'css/puzzle_detail_tester.css' %}" rel="stylesheet" />
+          <div id="answer-cheatsheet-container">
+            <div id="answer-cheatsheet">
+              <p>
+                Answer: <strong>{{ puzzle.answer }}</strong>
+              </p>
+              {% if puzzle.keep_going_answers %}
+                <p>
+                  Keep Going: <strong>{{ puzzle.keep_going_answers|join:"</strong>, <strong>" }}</strong>
+                </p>
+              {% endif %}
+            </div>
+            <div>
+              <button type="button" id="answer-cheatsheet-toggle" class="button is-danger">Testing: Show Answer</button>
+            </div>
+          </div>
+          <script>
+            const button = document.getElementById("answer-cheatsheet-toggle");
+            const cheatsheet = document.getElementById("answer-cheatsheet");
+            cheatsheet.style.display = "none";
+
+            button.addEventListener("click", () => {
+              if (cheatsheet.style.display === "none") {
+                cheatsheet.style.display = "block";
+              } else {
+                cheatsheet.style.display = "none";
+              }
+            });
+          </script>
         {% endif %}
       </div>
-      <div>
-        <button type="button" id="answer-cheatsheet-toggle" class="button is-danger">Testing: Show Answer</button>
-      </div>
     </div>
-    <script>
-      const button = document.getElementById("answer-cheatsheet-toggle");
-      const cheatsheet = document.getElementById("answer-cheatsheet");
-      cheatsheet.style.display = "none";
-
-      button.addEventListener("click", () => {
-        if (cheatsheet.style.display === "none") {
-          cheatsheet.style.display = "block";
-        } else {
-          cheatsheet.style.display = "none";
-        }
-      });
-
-      function copyToClipboard(elem) {
-        // Copy the text inside the text field
-        navigator.clipboard.writeText(elem.dataset.copy);
-      }
-    </script>
-  {% endif %}
-{% endblock content %}
+  </section>
+{% endblock body %}
