@@ -1,0 +1,10 @@
+<button class="card-header-icon card-toggle"
+        aria-label="toggle answer checker">
+  {% if start_hidden %}
+    <span class="icon toggle-open is-hidden">▾</span>
+    <span class="icon toggle-closed">◂</span>
+  {% else %}
+    <span class="icon toggle-open">▾</span>
+    <span class="icon toggle-closed is-hidden">◂</span>
+  {% endif %}
+</button>

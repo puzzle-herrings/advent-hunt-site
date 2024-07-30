@@ -1,4 +1,4 @@
-{% if evaluation_message %}<p>{{ evaluation_message }}</p>{% endif %}
+{% if evaluation_message %}<p class="block">{{ evaluation_message }}</p>{% endif %}
 {% load static %}
 <link href="{% static 'css/liberationmono.css' %}" rel="stylesheet" />
 <table class="table">
@@ -22,5 +22,5 @@
       </tr>
     {% endfor %}
   </tbody>
+  {% include "partials/timestamp_localize_script.html" %}
 </table>
-{% include "partials/timestamp_localize_script.html" %}

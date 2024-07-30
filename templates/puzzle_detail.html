@@ -15,18 +15,14 @@
     </h1>
   </div>
   <div class="block">
-    <div class="card">
+    <div id="answer-checker" class="card is-toggleable block">
       <header class="card-header">
         <p class="card-header-title">Check answer</p>
-        <button class="card-header-icon" aria-label="more options">
-          <span class="icon">
-            <i class="fas fa-angle-down" aria-hidden="false"></i>
-          </span>
-        </button>
+        {% include "partials/card_toggle_indicator.html" %}
       </header>
       <div class="card-content">
-        {% crispy form %}
-        <div id="guesses-table">
+        <div id="guess-form" class="block">{% crispy form %}</div>
+        <div id="guesses-table" class="block">
           {% if guesses %}
             {% include "partials/puzzle_guess_list.html" %}
           {% endif %}
@@ -43,6 +39,7 @@
       </p>
     </object>
   </div>
+  {% include "partials/card_toggle_script.html" %}
   {% if user.is_tester %}
     <link href="{% static 'css/puzzle_detail_tester.css' %}" rel="stylesheet" />
     <div id="answer-cheatsheet-container">

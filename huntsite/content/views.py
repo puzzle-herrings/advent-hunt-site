@@ -21,8 +21,8 @@ def story_page(request):
         solves = {}
     else:
         solves = {solve.puzzle: solve for solve in solve_list(request.user)}
+    entries = [entry for entry in entries if entry.puzzle is None or entry.puzzle in solves]
     context = {
-        "solves": solves,
         "entries": entries,
     }
     return TemplateResponse(request, "story.html", context)

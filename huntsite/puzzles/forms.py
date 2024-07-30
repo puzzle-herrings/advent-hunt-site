@@ -10,7 +10,7 @@ class GuessForm(forms.Form):
         label="",
         help_text="",
         max_length=128,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
+        widget=forms.TextInput(attrs={"class": "input", "style": "min-width: 24em;"}),
     )
 
     def __init__(self, *args, slug: str, **kwargs):
@@ -22,6 +22,7 @@ class GuessForm(forms.Form):
         self.helper.attrs = {
             "hx-post": reverse("guess_submit", kwargs={"slug": slug}),
             "hx-target": "#guesses-table",
+            "hx-on::after-request": " if(event.detail.successful) this.reset()",
         }
         self.helper.layout = Layout(
             FormGroup(
@@ -29,5 +30,3 @@ class GuessForm(forms.Form):
                 Submit("submit", "Submit", css_class="is-primary"),
             )
         )
-
-        # self.helper.add_input(Submit("submit", "Submit"))
