@@ -5,17 +5,13 @@
   <section class="hero is-primary">
     <div class="hero-body container">
       {% include "partials/messages.html" %}
-      <div class="block center">
-        <p>
-          <span class="tag is-large is-link">Peppermint Herrings 🎏 present...</span>
-        </p>
-      </div>
-      <div class="block center">
-        <h1 class="title home-title">
-          <span><span class="home-title-small">the</span> Advent Puzzle Hunt</span>
-        </h1>
-      </div>
-      <div class="block center">
+      <p class="has-text-centered block">
+        <span class="tag is-large is-link">Peppermint Herrings 🎏 present...</span>
+      </p>
+      <h1 class="title home-title has-text-centered block">
+        <span><span class="home-title-small">the</span> Advent Puzzle Hunt</span>
+      </h1>
+      <div class="has-text-centered block">
         <img src="https://r2.jayqi.com/placeholder.png"
              alt="Splash image"
              class="splash"
@@ -28,9 +24,7 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-two-thirds">
-          <div class="block">
-            <p>You find an extravagant holiday card in your mailbox. It reads:</p>
-          </div>
+          <p class="block">You find an extravagant holiday card in your mailbox. It reads:</p>
           <div class="box">
             <div class="content">
               <p>Ho ho ho!</p>
@@ -54,17 +48,20 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-one-third">
-          <div class="box">
-            <h2 class="title is-2">What</h2>
+          <div class="box info-box">
+            <h2 class="title is-3">What</h2>
             <p>
               A puzzle hunt released as an advent calendar—one puzzle a day. See our <a href="{% url 'about' %}">About</a> page for more information.
             </p>
           </div>
         </div>
         <div class="column is-one-third">
-          <div class="box">
-            <h2 class="title is-2">When</h2>
-            <p>December 1 through December 24, 2024.</p>
+          <div class="box info-box">
+            <h2 class="title is-3">When</h2>
+            <p>
+              December 1 through December 24, 2024. Puzzle pages and answer checkers will be released daily at <a href="https://everytimezone.com/?t=674cf880,1"
+    rel="noopener noreferrer">12:01 a.m. (midnight) UTC</a>.
+            </p>
           </div>
         </div>
       </div>
