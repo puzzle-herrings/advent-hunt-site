@@ -1,0 +1,15 @@
+<script>
+  // Toggles card-content based on click by card header
+  document.addEventListener('DOMContentLoaded', function() {
+    let toggleables = document.getElementsByClassName('is-toggleable');
+    for (let i = 0; i < toggleables.length; i++) {
+      let header = toggleables[i].querySelector(".card-header");
+      header.classList.add('is-clickable');
+      header.addEventListener('click', e => {
+        e.currentTarget.parentElement.querySelector(".card-content").classList.toggle('is-hidden');
+        e.currentTarget.parentElement.querySelector(".toggle-closed").classList.toggle('is-hidden');
+        e.currentTarget.parentElement.querySelector(".toggle-open").classList.toggle('is-hidden');
+      });
+    }
+  });
+</script>

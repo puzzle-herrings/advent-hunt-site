@@ -66,6 +66,11 @@ class Command(BaseCommand):
             puzzles[0].full_clean()
             puzzles[0].save()
 
+            # Puzzles for days 7, 14, and 23 are metas. Puzzle 24 is the final.
+            for day, icon in [(7, "🤶"), (14, "🦌"), (23, "🧸")]:
+                puzzle_factories.MetapuzzleInfoFactory(puzzle=puzzles[day], icon=icon)
+            puzzle_factories.MetapuzzleInfoFactory(puzzle=puzzles[24], icon="🎅", is_final=True)
+
             # Test users
             logger.info("Creating test users...")
             testers = []
@@ -122,20 +127,20 @@ class Command(BaseCommand):
                 content_factories.AboutEntryFactory(title=about_entry_title)
 
             logger.info("Creating story content...")
-            for calendar_day, story_entry_title in tqdm(
+            for calendar_day, story_entry_title, is_final in tqdm(
                 [
-                    (None, "You've been invited to the North Pole!"),
-                    (None, "You arrive at the North Pole..."),
-                    (7, "After helping Mrs. Claus..."),
-                    (14, "After helping Rudolph..."),
-                    (21, "After cleaning up the Toy Factory..."),
-                    (24, "You've found Santa!"),
+                    (None, "You've been invited to the North Pole!", False),
+                    (None, "You arrive at the North Pole...", False),
+                    (7, "After helping Mrs. Claus...", False),
+                    (14, "After helping Rudolph...", False),
+                    (23, "After cleaning up the Toy Factory..., False"),
+                    (24, "You've found Santa!", True),
                 ]
             ):
                 if calendar_day is not None:
-                    related_puzzle = puzzles[calendar_day - 1]
+                    related_puzzle = puzzles[calendar_day]
                     content_factories.StoryEntryFactory(
-                        title=story_entry_title, puzzle=related_puzzle
+                        title=story_entry_title, puzzle=related_puzzle, is_final=is_final
                     )
                 else:
                     content_factories.StoryEntryFactory(title=story_entry_title)

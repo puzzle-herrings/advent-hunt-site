@@ -55,6 +55,20 @@ class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
         return obj.calendar_entry.day
 
 
+@admin.register(models.MetapuzzleInfo)
+class MetapuzzleInfoAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("puzzle", "calendar_entry_day", "icon")
+    ordering = ("puzzle__calendar_entry__day",)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related("puzzle__calendar_entry")
+
+    @admin.display(description="Calendar Entry Day")
+    def calendar_entry_day(self, obj):
+        return obj.puzzle.calendar_entry.day
+
+
 @admin.register(models.Guess)
 class GuessAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("id", "user", "puzzle", "text", "evaluation", "created_at")
@@ -67,6 +81,14 @@ class GuessAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
 class SolveAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("id", "user", "puzzle", "created_at")
     list_filter = ("puzzle",)
+    search_fields = ("user__username",)
+    ordering = ("-created_at",)
+
+
+@admin.register(models.Finish)
+class FinishAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("id", "user", "created_at")
+    search_fields = ("user__username",)
     ordering = ("-created_at",)
 
 

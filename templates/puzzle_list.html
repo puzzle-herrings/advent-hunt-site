@@ -4,8 +4,18 @@
 {% block content %}
   <link href="{% static 'css/puzzle_list.css' %}" rel="stylesheet" />
   <h1 class="title is-1 block">Puzzles</h1>
+  {% if 0 in puzzles_by_day %}
+    {% with puzzle=puzzles_by_day|dictget:0 %}
+      <div class="box has-background-primary has-text-centered block">
+        <p class="block has-text-primary-invert">Teaser</p>
+        <p class="block">
+          <span class="available-puzzle-name"><a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a></span>
+        </p>
+      </div>
+    {% endwith %}
+  {% endif %}
   <div class="grid is-col-min-8 block">
-    {% for day in days %}
+    {% for day in day_spine %}
       {% if day in puzzles_by_day %}
         {% with puzzle=puzzles_by_day|dictget:day %}
           {% include "partials/puzzle_calendar_cell_available.html" %}
@@ -20,9 +30,10 @@
     <tbody>
       {% for puzzle in puzzles_by_day.values %}
         <tr>
-          <td scope="row">{{ puzzle.calendar_entry.day }}</td>
+          <td scope="row" class="has-text-right">{{ puzzle.calendar_entry.day }}</td>
           <td>
             <strong><a href="{{ puzzle.get_url }}">{{ puzzle.name }}
+              {% if puzzle.meta_info %}<span class="tag">{{ puzzle.meta_info.icon }}</span>{% endif %}
               {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
             </a></strong>
           </td>

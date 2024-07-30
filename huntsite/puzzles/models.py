@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -8,17 +9,14 @@ from django.utils import timezone
 from huntsite.puzzles.utils import clean_answer, normalize_answer
 
 
-class GuessEvaluation(models.TextChoices):
-    CORRECT = "correct"
-    INCORRECT = "incorrect"
-    KEEP_GOING = "keep_going"
-
-
 class PuzzleQuerySet(models.QuerySet):
     """Custom QuerySet for the Puzzle model with some useful methods."""
 
     def with_calendar_entry(self):
         return self.select_related("calendar_entry")
+
+    def with_meta_info(self):
+        return self.select_related("meta_info")
 
     def with_solves_by_user(self, user):
         if user.is_anonymous:
@@ -82,6 +80,23 @@ class Puzzle(models.Model):
         super().save(*args, **kwargs)
 
 
+class MetapuzzleInfo(models.Model):
+    puzzle = models.OneToOneField(Puzzle, on_delete=models.CASCADE, related_name="meta_info")
+    icon = models.CharField(max_length=255, blank=False)
+    is_final = models.BooleanField(default=False)
+
+    def clean(self):
+        if self.is_final:
+            if MetapuzzleInfo.objects.filter(is_final=True).exists():
+                raise ValidationError("There can only be one final metapuzzle.")
+
+
+class GuessEvaluation(models.TextChoices):
+    CORRECT = "correct"
+    INCORRECT = "incorrect"
+    KEEP_GOING = "keep_going"
+
+
 class Guess(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
     puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE, editable=False)
@@ -126,6 +141,19 @@ class Solve(models.Model):
 
     def __str__(self):
         return f"{self.user.team_name} - {self.puzzle.name} - {self.created_at}"
+
+
+class Finish(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, editable=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Finishes"
+
+    def __str__(self):
+        return f"{self.user.team_name} - {self.created_at}"
 
 
 class AdventCalendarEntry(models.Model):

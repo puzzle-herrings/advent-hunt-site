@@ -18,13 +18,14 @@ def puzzle_list(request):
     )
     puzzles = (
         puzzle_manager.with_calendar_entry()
+        .with_meta_info()
         .with_solves_by_user(request.user)
         .all()
         .order_by("calendar_entry__day")
     )
-    days = list(range(1, 25))
+    day_spine = list(range(1, 25))
     context = {
-        "days": days,
+        "day_spine": day_spine,
         "puzzles_by_day": {puzzle.calendar_entry.day: puzzle for puzzle in puzzles},
     }
     return TemplateResponse(request, "puzzle_list.html", context)

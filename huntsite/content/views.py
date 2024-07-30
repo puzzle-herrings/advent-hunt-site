@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.template.response import TemplateResponse
 
 from huntsite.content import models
@@ -15,9 +17,25 @@ def about_page(request):
 
 def story_page(request):
     entries = models.StoryEntry.objects.all().order_by("order_by")
-    solves = {solve.puzzle: solve for solve in solve_list(request.user)}
+    if request.user.is_anonymous:
+        solves = {}
+    else:
+        solves = {solve.puzzle: solve for solve in solve_list(request.user)}
+    entries = [entry for entry in entries if entry.puzzle is None or entry.puzzle in solves]
     context = {
-        "solves": solves,
         "entries": entries,
     }
     return TemplateResponse(request, "story.html", context)
+
+
+@login_required
+def victory_page(request):
+    is_finished = hasattr(request.user, "finish")
+    if not is_finished or not request.user.is_tester:
+        raise Http404
+
+    entry = models.StoryEntry.objects.get(is_final=True)
+    context = {
+        "entry": entry,
+    }
+    return TemplateResponse(request, "victory.html", context)

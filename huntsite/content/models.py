@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 import markdown
 
@@ -26,6 +27,8 @@ class StoryEntry(models.Model):
     puzzle = models.OneToOneField(
         "puzzles.Puzzle", on_delete=models.SET_NULL, null=True, blank=True
     )
+    is_final = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -34,6 +37,10 @@ class StoryEntry(models.Model):
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        if self.is_final and self.puzzle is None:
+            raise ValidationError("Final story entries must be associated with a puzzle.")
 
     def render_content(self):
         return markdown.markdown(self.content)

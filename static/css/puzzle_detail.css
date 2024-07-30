@@ -2,7 +2,35 @@ section.no-bottom-padding {
     padding-bottom: 0;
 }
 
+#answer-checker {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 40rem;
+}
+
+#guess-form>form>.field {
+    justify-content: center;
+}
+
+#guesses-table>table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td.nowrap {
+    white-space: nowrap;
+}
+
+.help-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 110vh;
+    gap: 2em;
+}
+
 .puzzle-pdf-frame {
     width: 100%;
+    max-width: 110vh;
     height: 100vh;
 }

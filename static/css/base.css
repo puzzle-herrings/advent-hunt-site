@@ -42,26 +42,20 @@ body {
     font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
 }
 
+code,
+pre,
+tt,
+kbd,
+samp {
+    font-family: "Liberation Mono", monospace, monospace;
+}
+
 span.mono {
     font-family: "Liberation Mono", monospace, monospace;
 }
 
-/* .navbar-brand img {
-    display: inline-flex;
-    height: 100%;
-    width: auto;
-} */
-
 /* Override Bulma colors */
-
 :root {
-    /* text primary link info success warning danger */
-
-    /* background */
-    /* tan */
-    /* --bulma-scheme-h: 43deg;
-    --bulma-scheme-s: 30%;
-    --bulma-scheme-main-l: 95%; */
 
     --red-h: 359deg;
     --red-s: 73%;

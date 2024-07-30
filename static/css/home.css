@@ -21,3 +21,7 @@ img.splash {
     max-height: 480px;
     width: auto;
 }
+
+.info-box {
+    height: 100%;
+}

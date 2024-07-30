@@ -16,7 +16,7 @@ MOCK_PUZZLES = [
 
 
 def title_text_factory() -> str:
-    nb = random.randint(1, 3)
+    nb = random.randint(2, 5)
     return " ".join(fake.word() for _ in range(nb)).title()
 
 
@@ -41,6 +41,15 @@ class PuzzleFactory(factory.django.DjangoModelFactory):
         "huntsite.puzzles.factories.AdventCalendarEntryFactory",
         factory_related_name="puzzle",
     )
+
+
+class MetapuzzleInfoFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "puzzles.MetapuzzleInfo"
+
+    puzzle = factory.SubFactory(PuzzleFactory)
+    icon = factory.Faker("emoji")
+    is_final = False
 
 
 @factory.django.mute_signals(post_save)
