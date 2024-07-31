@@ -16,7 +16,7 @@ span.available-day {
     font-size: 1.1em;
 }
 
-span.available-puzzle-name {
+span.available-puzzle-name a {
     color: var(--bulma-primary-invert);
     font-size: 1.15em;
     font-weight: bold;

@@ -32,10 +32,15 @@
         <tr>
           <td scope="row" class="has-text-right">{{ puzzle.calendar_entry.day }}</td>
           <td>
-            <strong><a href="{{ puzzle.get_url }}">{{ puzzle.name }}
-              {% if puzzle.meta_info %}<span class="tag">{{ puzzle.meta_info.icon }}</span>{% endif %}
+            <a href="{{ puzzle.get_url }}">
+              {% if puzzle.meta_info %}<strong>{% endif %}
+                {{ puzzle.name }}
+                {% if puzzle.meta_info %}</strong>{% endif %}
               {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
-            </a></strong>
+            </a>
+          </td>
+          <td>
+            {% if puzzle.meta_info %}{{ puzzle.meta_info.icon }}{% endif %}
           </td>
           <td>
             {% if puzzle.is_solved %}<span class="mono"><strong>{{ puzzle.answer }}</strong></span>{% endif %}

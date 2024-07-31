@@ -58,46 +58,63 @@ span.mono {
 :root {
 
     --red-h: 359deg;
-    --red-s: 73%;
-    --red-l: 20%;
-    --red-l-invert: 90%;
+    --red-s: 47%;
+    --red-l: 51%;
+    --red-l-invert: 93%;
     --red: hsl(var(--red-h), var(--red-s), var(--red-l));
 
     --dark-green-h: 132deg;
-    --dark-green-s: 32%;
-    --dark-green-l: 24%;
-    --dark-green-l-invert: 90%;
+    --dark-green-s: 29%;
+    --dark-green-l: 31%;
+    --dark-green-l-invert: 93%;
     --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
 
     --green-h: 98deg;
     --green-s: 32%;
     --green-l: 45%;
-    --green-l-invert: 70%;
+    --green-l-invert: 93%;
     --green: hsl(var(--green-h), var(--green-s), var(--green-l));
 
-    --bright-green-h: 78deg;
-    --bright-green-s: 51%;
-    --bright-green-l: 56%;
-    --bright-green-l-invert: 24%;
-    --bright-green: hsl(var(--bright-green-h), var(--bright-green-s), var(--bright-green-l));
+    --yellow-green-h: 78deg;
+    --yellow-green-s: 51%;
+    --yellow-green-l: 56%;
+    --yellow-green-l-invert: 7%;
+    --yellow-green: hsl(var(--yellow-green-h), var(--yellow-green-s), var(--yellow-green-l));
 
-    --gold-h: 42deg;
-    --gold-s: 100%;
-    --gold-l: 75%;
-    --gold-l-invert: 25%;
-    --gold: hsl(var(--gold-h), var(--gold-s), var(--gold-l));
+    --parchment-h: 43deg;
+    --parchment-s: 57%;
+    --parchment-l: 88%;
+    --parchment-l-invert: 7%;
+    --parchment: hsl(var(--parchment-h), var(--parchment-s), var(--parchment-l));
 
-    --blue-h: 182deg;
-    --blue-s: 52%;
-    --blue-l: 42%;
-    --blue-l-invert: 58%;
-    --blue: hsl(var(--blue-h), var(--blue-s), var(--blue-l));
-
-    --white-h: 214deg;
-    --white-s: 13%;
-    --white-l: 90%;
-    --white-l-invert: 10%;
+    --white-h: 0deg;
+    --white-s: 0%;
+    --white-l: 93%;
+    --white-l-invert: 7%;
     --white: hsl(var(--white-h), var(--white-s), var(--white-l));
+
+    --black-h: 0deg;
+    --black-s: 0%;
+    --black-l: 7%;
+    --black-l-invert: 93%;
+    --black: hsl(var(--black-h), var(--black-s), var(--black-l));
+
+    --black-green-h: 133deg;
+    --black-green-s: 29%;
+    --black-green-l: 16%;
+    --black-green-l-invert: 5%;
+    --black-green: hsl(var(--black-green-h), var(--black-green-s), var(--black-green-l));
+
+    --bulma-body-background-color: var(--parchment);
+    --bulma-box-background-color: var(--white);
+    --bulma-card-background-color: var(--white);
+    --bulma-card-header-background-color: var(--white);
+    --bulma-card-content-background-color: var(--white);
+
+    --bulma-text-h: var(--black-green-h);
+    --bulma-text-s: var(--black-green-s);
+    --bulma-text-l: var(--black-green-l);
+    --bulma-text-invert-l: var(--black-green-l-invert);
 
     --bulma-primary-h: var(--red-h);
     --bulma-primary-s: var(--red-s);
@@ -109,25 +126,32 @@ span.mono {
     --bulma-link-l: var(--dark-green-l);
     --bulma-link-invert-l: var(--dark-green-l-invert);
 
-    --bulma-info-h: var(--blue-h);
-    --bulma-info-s: var(--blue-s);
-    --bulma-info-l: var(--blue-l);
-    --bulma-info-invert-l: var(--blue-l-invert);
+    --bulma-info-h: var(--green-h);
+    --bulma-info-s: var(--green-s);
+    --bulma-info-l: var(--green-l);
+    --bulma-info-invert-l: var(--green-l-invert);
 
-    --bulma-success-h: var(--green-h);
-    --bulma-success-s: var(--green-s);
-    --bulma-success-l: var(--green-l);
-    --bulma-success-invert-l: var(--green-l-invert);
+    --bulma-success-h: var(--yellow-green-h);
+    --bulma-success-s: var(--yellow-green-s);
+    --bulma-success-l: var(--yellow-green-l);
+    --bulma-success-invert-l: var(--yellow-green-l-invert);
 
-    --bulma-warning-h: var(--bright-green-h);
-    --bulma-warning-s: var(--bright-green-s);
-    --bulma-warning-l: var(--bright-green-l);
-    --bulma-warning-invert-l: var(--bright-green-l-invert);
+    --bulma-warning-h: var(--yellow-green-h);
+    --bulma-warning-s: var(--yellow-green-s);
+    --bulma-warning-l: var(--yellow-green-l);
+    --bulma-warning-invert-l: var(--yellow-green-l-invert);
 
-    --bulma-danger-h: var(--gold-h);
-    --bulma-danger-s: var(--gold-s);
-    --bulma-danger-l: var(--gold-l);
-    --bulma-danger-invert-l: var(--gold-l-invert);
+    --bulma-danger-h: var(--yellow-green-h);
+    --bulma-danger-s: var(--yellow-green-s);
+    --bulma-danger-l: var(--yellow-green-l);
+    --bulma-danger-invert-l: var(--yellow-green-l-invert);
+}
+
+.table {
+    --bulma-table-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
+    --bulma-table-body-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
+    --bulma-table-cell-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
+    --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
 
 .center {
