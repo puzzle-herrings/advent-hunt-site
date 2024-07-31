@@ -3,7 +3,7 @@ from django.http import Http404
 from django.template.response import TemplateResponse
 
 from huntsite.content import models
-from huntsite.puzzles.selectors import solve_list
+from huntsite.puzzles import models as puzzle_models
 
 
 # Create your views here.
@@ -16,11 +16,16 @@ def about_page(request):
 
 
 def story_page(request):
-    entries = models.StoryEntry.objects.all().order_by("order_by")
+    entries = models.StoryEntry.objects.select_related("puzzle").all().order_by("order_by")
     if request.user.is_anonymous:
         solves = {}
     else:
-        solves = {solve.puzzle: solve for solve in solve_list(request.user)}
+        solves = {
+            solve.puzzle: solve
+            for solve in puzzle_models.Solve.objects.filter(user=request.user).select_related(
+                "puzzle"
+            )
+        }
     entries = [entry for entry in entries if entry.puzzle is None or entry.puzzle in solves]
     context = {
         "entries": entries,
