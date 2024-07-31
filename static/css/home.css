@@ -1,15 +1,17 @@
-@font-face {
+/* used by home title */
+/* navbar uses 800 */
+/* @font-face {
     font-display: swap;
     font-family: 'Merienda';
     font-style: normal;
-    font-weight: 500;
-    src: url('../fonts/merienda/merienda-v19-latin-500.woff2') format('woff2');
-}
-
+    font-weight: 800;
+    src: url('../fonts/merienda/merienda-v19-latin-800.woff2') format('woff2');
+} */
 
 h1.home-title {
     font-family: "Merienda", "Brush Script MT", cursive;
     font-size: 4.5rem;
+    font-weight: 700;
     color: var(--bulma-primary-invert)
 }
 

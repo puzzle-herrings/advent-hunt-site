@@ -30,12 +30,14 @@
     font-display: swap;
     font-family: 'Merienda';
     font-style: normal;
-    font-weight: 500;
-    src: url('../fonts/merienda/merienda-v19-latin-500.woff2') format('woff2');
+    font-weight: 700;
+    src: url('../fonts/merienda/merienda-v19-latin-700.woff2') format('woff2');
 }
 
-.merienda {
+.navbar-brand {
     font-family: "Merienda", "Brush Script MT", cursive;
+    font-weight: 700;
+    font-size: 1.15em;
 }
 
 body {
