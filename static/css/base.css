@@ -63,11 +63,11 @@ span.mono {
     --red-l-invert: 93%;
     --red: hsl(var(--red-h), var(--red-s), var(--red-l));
 
-    --dark-green-h: 132deg;
-    --dark-green-s: 29%;
-    --dark-green-l: 31%;
-    --dark-green-l-invert: 93%;
-    --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
+    --hunter-green-h: 132deg;
+    --hunter-green-s: 29%;
+    --hunter-green-l: 31%;
+    --hunter-green-l-invert: 93%;
+    --hunter-green: hsl(var(--hunter-green-h), var(--hunter-green-s), var(--hunter-green-l));
 
     --green-h: 98deg;
     --green-s: 32%;
@@ -99,11 +99,11 @@ span.mono {
     --black-l-invert: 93%;
     --black: hsl(var(--black-h), var(--black-s), var(--black-l));
 
-    --black-green-h: 133deg;
-    --black-green-s: 29%;
-    --black-green-l: 16%;
-    --black-green-l-invert: 5%;
-    --black-green: hsl(var(--black-green-h), var(--black-green-s), var(--black-green-l));
+    --dark-green-h: 133deg;
+    --dark-green-s: 29%;
+    --dark-green-l: 16%;
+    --dark-green-l-invert: 5%;
+    --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
 
     --bulma-body-background-color: var(--parchment);
     --bulma-box-background-color: var(--white);
@@ -111,20 +111,20 @@ span.mono {
     --bulma-card-header-background-color: var(--white);
     --bulma-card-content-background-color: var(--white);
 
-    --bulma-text-h: var(--black-green-h);
-    --bulma-text-s: var(--black-green-s);
-    --bulma-text-l: var(--black-green-l);
-    --bulma-text-invert-l: var(--black-green-l-invert);
+    --bulma-text-h: var(--dark-green-h);
+    --bulma-text-s: var(--dark-green-s);
+    --bulma-text-l: var(--dark-green-l);
+    --bulma-text-invert-l: var(--dark-green-l-invert);
 
     --bulma-primary-h: var(--red-h);
     --bulma-primary-s: var(--red-s);
     --bulma-primary-l: var(--red-l);
     --bulma-primary-invert-l: var(--red-l-invert);
 
-    --bulma-link-h: var(--dark-green-h);
-    --bulma-link-s: var(--dark-green-s);
-    --bulma-link-l: var(--dark-green-l);
-    --bulma-link-invert-l: var(--dark-green-l-invert);
+    --bulma-link-h: var(--hunter-green-h);
+    --bulma-link-s: var(--hunter-green-s);
+    --bulma-link-l: var(--hunter-green-l);
+    --bulma-link-invert-l: var(--hunter-green-l-invert);
 
     --bulma-info-h: var(--green-h);
     --bulma-info-s: var(--green-s);
