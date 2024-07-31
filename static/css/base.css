@@ -52,7 +52,11 @@ samp {
     font-family: "Liberation Mono", monospace, monospace;
 }
 
-span.mono {
+.merienda {
+    font-family: "Merienda", "Brush Script MT", cursive;
+}
+
+.mono {
     font-family: "Liberation Mono", monospace, monospace;
 }
 

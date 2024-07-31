@@ -22,26 +22,36 @@
   </section>
   <section class="section in-front">
     <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-two-thirds">
-          <p class="block">You find an extravagant holiday card in your mailbox. It reads:</p>
-          <div class="box">
-            <div class="content">
-              <p>Ho ho ho!</p>
-              <p>You are at the top of my nice list this year! Nice job!</p>
-              <p>
-                As thanks for being super, I have a special gift for you—a visit to the North Pole this Christmas season! You will get to see the elves and I in action as we prepare to bring joy to children around the world.
-              </p>
-              <p>Merry Christmas!</p>
-              <p>
-                Sincerely,
-                <br />
-                <span class="merienda">Santa</span>
-              </p>
-            </div>
+      <p class="block has-text-centered">You find an extravagant holiday card in your mailbox. You open it:</p>
+      <!--...-->
+      <div class="holiday-card block">
+        <div class="holiday-card-outer has-text-centered">
+          <p class="merienda">Merry Christmas!</p>
+        </div>
+        <div class="holiday-card-inner-left has-text-centered">
+          <img src="{% static 'santa/icon.svg' %}"
+               height="64"
+               width="64"
+               alt="Santa"
+               onerror="this.src='{% static 'santa/icon-32.png' %}'" />
+        </div>
+        <div class="holiday-card-inner-right">
+          <div class="holiday-card-message content">
+            <p>Ho ho ho!</p>
+            <p>You are at the top of my nice list this year! Nice job!</p>
+            <p>
+              As thanks for being super, I have a special gift for you—a visit to the North Pole this Christmas season! You will get to see the elves and I in action as we prepare to bring joy to children around the world.
+            </p>
+            <p>Merry Christmas!</p>
+            <p>
+              Sincerely,
+              <br />
+              <span class="merienda">Santa</span>
+            </p>
           </div>
         </div>
       </div>
+      <!--...-->
     </div>
   </section>
   <section class="in-front">
