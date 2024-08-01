@@ -40,6 +40,11 @@
     font-size: 1.15em;
 }
 
+.navbar-brand img {
+    width: 1.75rem;
+    height: auto;
+}
+
 body {
     font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
 }
