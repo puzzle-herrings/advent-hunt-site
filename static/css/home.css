@@ -195,15 +195,84 @@ section.in-front {
 
 
 .holiday-card-outer {
-    background-color: var(--hunter-green);
+    background-color: var(--red);
+    color: var(--gold);
     /* background: url('winter_scene.jpg') no-repeat center darkred; */
     /* background-size: cover; */
     z-index: 1100;
 }
 
+
+
+.holiday-card-gift-1,
+.holiday-card-gift-2 {
+    position: absolute;
+    color: var(--gold);
+    top: 85%;
+    transform: translate(-50%, -80%);
+}
+
+.holiday-card-gift-1 {
+    font-size: 1.5em;
+    left: 40%;
+}
+
+.holiday-card-gift-2 {
+    font-size: 2.2em;
+    left: 60%;
+}
+
+.holiday-card-tree {
+    position: absolute;
+    color: var(--green);
+    font-size: 12em;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+}
+
+.holiday-card-candy-cane-1,
+.holiday-card-candy-cane-2,
+.holiday-card-candy-cane-3,
+.holiday-card-candy-cane-4 {
+    font-size: 2em;
+    position: absolute;
+    color: var(--gold);
+}
+
+.holiday-card-candy-cane-1 {
+    top: 3%;
+    left: 5%;
+}
+
+.holiday-card-candy-cane-2 {
+    top: 3%;
+    left: 95%;
+    transform: translateX(-100%) rotateY(180deg);
+}
+
+.holiday-card-candy-cane-3 {
+    top: 95%;
+    left: 5%;
+    transform: translateY(-80%) rotateX(180deg);
+}
+
+.holiday-card-candy-cane-4 {
+    top: 95%;
+    left: 95%;
+    transform: translateX(-100%) translateY(-80%) rotateX(180deg) rotateY(180deg);
+}
+
 .holiday-card-inner-left {
     background-color: var(--hunter-green);
     z-index: 1000;
+}
+
+.holiday-card-santa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .holiday-card-inner-right {

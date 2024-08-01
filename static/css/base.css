@@ -93,6 +93,12 @@ samp {
     --parchment-l-invert: 7%;
     --parchment: hsl(var(--parchment-h), var(--parchment-s), var(--parchment-l));
 
+    --dark-green-h: 133deg;
+    --dark-green-s: 29%;
+    --dark-green-l: 16%;
+    --dark-green-l-invert: 5%;
+    --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
+
     --white-h: 0deg;
     --white-s: 0%;
     --white-l: 93%;
@@ -105,11 +111,9 @@ samp {
     --black-l-invert: 93%;
     --black: hsl(var(--black-h), var(--black-s), var(--black-l));
 
-    --dark-green-h: 133deg;
-    --dark-green-s: 29%;
-    --dark-green-l: 16%;
-    --dark-green-l-invert: 5%;
-    --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
+    --gold: hsla(51, 100%, 50%, 1);
+
+    /* Bulma variables */
 
     --bulma-body-background-color: var(--parchment);
     --bulma-box-background-color: var(--white);
