@@ -206,7 +206,7 @@ section.in-front {
 .holiday-card-gift-2 {
     position: absolute;
     color: var(--gold);
-    top: 85%;
+    top: 85.3%;
     transform: translate(-50%, -80%);
 }
 
@@ -307,7 +307,7 @@ section.in-front {
 }
 
 .holiday-card:hover .holiday-card-inner-left {
-    transform: rotateY(-159deg);
+    transform: rotateY(-159.5deg);
     box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
 }
 
