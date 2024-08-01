@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils import timezone
 
 
 def meta(request):
@@ -10,6 +11,11 @@ def meta(request):
         "META_KEYWORDS": settings.META_KEYWORDS,
         "META_OG_IMAGE": settings.META_OG_IMAGE,
     }
+
+
+def santa_missing(request):
+    """Context processor to add the Santa missing flag to the context."""
+    return {"santa_missing": timezone.now() >= settings.SANTA_MISSING_DATETIME}
 
 
 def user(request):

@@ -6,6 +6,8 @@ asgiref==3.8.1
     #   django
 asttokens==2.4.1
     # via stack-data
+beautifulsoup4==4.12.3
+    # via -r requirements/dev.in
 blinker==1.8.2
     # via flask
 brotli==1.1.0
@@ -199,6 +201,8 @@ six==1.16.0
     #   cssbeautifier
     #   jsbeautifier
     #   python-dateutil
+soupsieve==2.5
+    # via beautifulsoup4
 sqlparse==0.5.0
     # via
     #   -r requirements/demo.txt

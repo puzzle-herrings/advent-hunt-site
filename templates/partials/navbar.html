@@ -3,11 +3,19 @@
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item merienda" href="{% url 'home' %}">
-        <img src="{% static 'santa/icon.svg' %}"
-             height="56"
-             width="56"
-             alt="Santa"
-             onerror="this.src='{% static 'santa/icon-56.png' %}'" />
+        {% if santa_missing %}
+          <img src="{% static 'santa-missing-dark/icon.svg' %}"
+               height="56"
+               width="56"
+               alt="Santa"
+               onerror="this.src='{% static 'santa-missing-dark/icon-56.png' %}'" />
+        {% else %}
+          <img src="{% static 'santa/icon.svg' %}"
+               height="56"
+               width="56"
+               alt="Santa"
+               onerror="this.src='{% static 'santa/icon-56.png' %}'" />
+        {% endif %}
         Advent Hunt
       </a>
       <a role="button"

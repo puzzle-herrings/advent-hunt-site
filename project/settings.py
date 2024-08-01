@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import datetime
 from pathlib import Path
 from warnings import filterwarnings
 
+from django.utils import timezone
 from environs import Env
 
 env = Env()
@@ -101,6 +103,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 # Local custom context processors
                 "huntsite.context_processors.meta",
+                "huntsite.context_processors.santa_missing",
                 "huntsite.context_processors.user",
             ],
         },
@@ -234,3 +237,7 @@ META_DESCRIPTION = env("META_DESCRIPTION")
 META_AUTHOR = env("META_AUTHOR")
 META_KEYWORDS = env("META_KEYWORDS")
 META_OG_IMAGE = env("META_OG_IMAGE")
+
+SANTA_MISSING_DATETIME = env.datetime("SANTA_MISSING_DATETIME", default=timezone.now().isoformat())
+if SANTA_MISSING_DATETIME.tzinfo is None:
+    SANTA_MISSING_DATETIME = SANTA_MISSING_DATETIME.replace(tzinfo=datetime.timezone.utc)

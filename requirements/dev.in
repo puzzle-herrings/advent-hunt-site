@@ -1,5 +1,6 @@
 -r demo.txt
 
+beautifulsoup4
 coverage
 djlint
 factory-boy
