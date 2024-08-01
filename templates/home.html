@@ -22,26 +22,55 @@
   </section>
   <section class="section in-front">
     <div class="container">
-      <div class="columns is-centered">
-        <div class="column is-two-thirds">
-          <p class="block">You find an extravagant holiday card in your mailbox. It reads:</p>
-          <div class="box">
-            <div class="content">
-              <p>Ho ho ho!</p>
-              <p>You are at the top of my nice list this year! Nice job!</p>
-              <p>
-                As thanks for being super, I have a special gift for you—a visit to the North Pole this Christmas season! You will get to see the elves and I in action as we prepare to bring joy to children around the world.
-              </p>
-              <p>Merry Christmas!</p>
-              <p>
-                Sincerely,
-                <br />
-                <span class="merienda">Santa</span>
-              </p>
-            </div>
+      <p class="block has-text-centered">You find an extravagant holiday card in your mailbox. You open it:</p>
+      <!--...-->
+      <div class="holiday-card block">
+        <div class="holiday-card-outer has-text-centered">
+          <p class="merienda is-size-2">Merry Christmas!</p>
+          <div class="holiday-card-tree">
+            <i class="bi bi-tree-fill"></i>
+          </div>
+          <div class="holiday-card-gift-1">
+            <i class="bi bi-gift-fill"></i>
+          </div>
+          <div class="holiday-card-gift-2">
+            <i class="bi bi-gift-fill"></i>
+          </div>
+          <div class="holiday-card-candy-cane-1">{% include "partials/svgs/candy-cane.svg" %}</div>
+          <div class="holiday-card-candy-cane-2">{% include "partials/svgs/candy-cane.svg" %}</div>
+          <div class="holiday-card-candy-cane-3">{% include "partials/svgs/candy-cane.svg" %}</div>
+          <div class="holiday-card-candy-cane-4">{% include "partials/svgs/candy-cane.svg" %}</div>
+        </div>
+        <div class="holiday-card-inner-left has-text-centered">
+          <div class="holiday-card-santa">
+            <img src="{% static 'santa/icon.svg' %}"
+                 height="192"
+                 width="192"
+                 alt="Santa"
+                 onerror="this.src='{% static 'santa/icon-192.png' %}'" />
+          </div>
+          <div class="holiday-card-candy-cane-1">{% include "partials/svgs/candy-cane.svg" %}</div>
+          <div class="holiday-card-candy-cane-2">{% include "partials/svgs/candy-cane.svg" %}</div>
+          <div class="holiday-card-candy-cane-3">{% include "partials/svgs/candy-cane.svg" %}</div>
+          <div class="holiday-card-candy-cane-4">{% include "partials/svgs/candy-cane.svg" %}</div>
+        </div>
+        <div class="holiday-card-inner-right">
+          <div class="holiday-card-message content">
+            <p>Ho ho ho!</p>
+            <p>You are at the top of my nice list this year! Nice job!</p>
+            <p>
+              As thanks for being super, I have a special gift for you—a visit to the North Pole this Christmas season! You will get to see the elves and I in action as we prepare to bring joy to children around the world.
+            </p>
+            <p>Merry Christmas!</p>
+            <p>
+              Sincerely,
+              <br />
+              <span class="merienda">Santa</span>
+            </p>
           </div>
         </div>
       </div>
+      <!--...-->
     </div>
   </section>
   <section class="in-front">

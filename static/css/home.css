@@ -1,17 +1,17 @@
 /* used by home title */
-/* navbar uses 800 */
-/* @font-face {
+/* navbar uses 700 */
+@font-face {
     font-display: swap;
     font-family: 'Merienda';
     font-style: normal;
     font-weight: 800;
     src: url('../fonts/merienda/merienda-v19-latin-800.woff2') format('woff2');
-} */
+}
 
 h1.home-title {
     font-family: "Merienda", "Brush Script MT", cursive;
     font-size: 4.5rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--bulma-primary-invert)
 }
 
@@ -181,4 +181,137 @@ section.in-front {
 .snowflake:nth-of-type(11) {
     left: 65%;
     animation-delay: 2.5s
+}
+
+/* https://www.codewizardshq.com/html-css-tutorial-holiday-card/ */
+
+.holiday-card {
+    --card-height: 30em;
+    width: calc(var(--card-height) * 0.75);
+    height: var(--card-height);
+    transform-style: preserve-3d;
+    position: relative;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+
+.holiday-card-outer {
+    background-color: var(--red);
+    color: var(--gold);
+    z-index: 1100;
+}
+
+.holiday-card-gift-1,
+.holiday-card-gift-2 {
+    position: absolute;
+    color: var(--gold);
+    top: 85.3%;
+    transform: translate(-50%, -80%);
+}
+
+.holiday-card-gift-1 {
+    font-size: 1.5em;
+    left: 40%;
+}
+
+.holiday-card-gift-2 {
+    font-size: 2.2em;
+    left: 60%;
+}
+
+.holiday-card-tree {
+    position: absolute;
+    color: var(--green);
+    font-size: 12em;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+}
+
+.holiday-card-candy-cane-1,
+.holiday-card-candy-cane-2,
+.holiday-card-candy-cane-3,
+.holiday-card-candy-cane-4 {
+    font-size: 2em;
+    position: absolute;
+    color: var(--gold);
+}
+
+.holiday-card-candy-cane-1 {
+    top: 3%;
+    left: 5%;
+}
+
+.holiday-card-candy-cane-2 {
+    top: 3%;
+    left: 95%;
+    transform: translateX(-100%) rotateY(180deg);
+}
+
+.holiday-card-candy-cane-3 {
+    top: 95%;
+    left: 5%;
+    transform: translateY(-80%) rotateX(180deg);
+}
+
+.holiday-card-candy-cane-4 {
+    top: 95%;
+    left: 95%;
+    transform: translateX(-100%) translateY(-80%) rotateX(180deg) rotateY(180deg);
+}
+
+.holiday-card-inner-left {
+    background-color: var(--hunter-green);
+    z-index: 1000;
+}
+
+.holiday-card-santa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.holiday-card-santa img {
+    width: 8em;
+    height: auto;
+}
+
+.holiday-card-inner-right {
+    background-color: var(--white);
+    z-index: 900;
+}
+
+.holiday-card-message {
+    color: var(--dark-green);
+}
+
+.holiday-card-outer,
+.holiday-card-inner-right,
+.holiday-card-inner-left {
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: transform .5s ease-in-out, box-shadow .5s ease-in-out;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 3em;
+}
+
+.holiday-card:hover .holiday-card-outer {
+    transform: rotateY(-160deg);
+    box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.holiday-card:hover .holiday-card-inner-left {
+    transform: rotateY(-159.5deg);
+    box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
+}
+
+.holiday-card:hover .holiday-card-inner-right {
+    transform: rotateY(-20deg);
+    box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
 }

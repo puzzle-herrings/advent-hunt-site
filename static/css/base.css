@@ -40,6 +40,11 @@
     font-size: 1.15em;
 }
 
+.navbar-brand img {
+    width: 1.75rem;
+    height: auto;
+}
+
 body {
     font-family: "Liberation Sans", Arial, Helvetica, sans-serif;
 }
@@ -52,7 +57,11 @@ samp {
     font-family: "Liberation Mono", monospace, monospace;
 }
 
-span.mono {
+.merienda {
+    font-family: "Merienda", "Brush Script MT", cursive;
+}
+
+.mono {
     font-family: "Liberation Mono", monospace, monospace;
 }
 
@@ -89,6 +98,12 @@ span.mono {
     --parchment-l-invert: 7%;
     --parchment: hsl(var(--parchment-h), var(--parchment-s), var(--parchment-l));
 
+    --dark-green-h: 133deg;
+    --dark-green-s: 29%;
+    --dark-green-l: 16%;
+    --dark-green-l-invert: 5%;
+    --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
+
     --white-h: 0deg;
     --white-s: 0%;
     --white-l: 93%;
@@ -101,11 +116,9 @@ span.mono {
     --black-l-invert: 93%;
     --black: hsl(var(--black-h), var(--black-s), var(--black-l));
 
-    --dark-green-h: 133deg;
-    --dark-green-s: 29%;
-    --dark-green-l: 16%;
-    --dark-green-l-invert: 5%;
-    --dark-green: hsl(var(--dark-green-h), var(--dark-green-s), var(--dark-green-l));
+    --gold: hsla(51, 100%, 50%, 1);
+
+    /* Bulma variables */
 
     --bulma-body-background-color: var(--parchment);
     --bulma-box-background-color: var(--white);
