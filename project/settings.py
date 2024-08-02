@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "huntsite.content",
     "huntsite.puzzles",
     "huntsite.teams",
+    "huntsite.tester_utils",
 ]
 
 MIDDLEWARE = [
@@ -105,6 +106,7 @@ TEMPLATES = [
                 "huntsite.context_processors.meta",
                 "huntsite.context_processors.santa_missing",
                 "huntsite.context_processors.user",
+                "huntsite.tester_utils.context_processors.time_travel",
             ],
         },
     },

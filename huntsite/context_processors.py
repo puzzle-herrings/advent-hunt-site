@@ -24,9 +24,3 @@ def santa_missing(request):
 def user(request):
     """Context processor to add the user to the context."""
     return {"user": request.user}
-
-
-def time_travel(request):
-    if request.user.is_authenticated and request.user.is_tester:
-        return {"time_traveling_at": request.user.time_traveling_at()}
-    return {}
