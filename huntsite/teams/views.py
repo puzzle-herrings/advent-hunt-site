@@ -41,7 +41,12 @@ def team_list(request):
         if solve.puzzle_id in metapuzzle_ids:
             meta_solves_by_team[solve.user_id].append(solve.puzzle_id)
 
-    final_puzzle_id = next(meta_info.puzzle_id for meta_info in meta_infos if meta_info.is_final)
+    try:
+        final_puzzle_id = next(
+            meta_info.puzzle_id for meta_info in meta_infos if meta_info.is_final
+        )
+    except StopIteration:
+        final_puzzle_id = None
 
     def _rank_key(team):
         return (
