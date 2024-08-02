@@ -8,7 +8,7 @@
   <h1 class="title is-1 block">Teams</h1>
   <p class="block has-text-grey">
     <i class="bi bi-info-circle"></i>
-    Teams are ranked by (solving the final puzzle, number of meta solves, number of puzzle solves).
+    Teams are ranked by (solving the final puzzle, number of metapuzzle solves, number of puzzle solves).
   </p>
   <table id="leaderboard" class="table is-striped is-narrow xscroll block">
     <thead>
@@ -16,7 +16,7 @@
         <th class="sticky" align="right">Rank</th>
         <th class="sticky">Team Name</th>
         <th class="sticky" align="right">Solves</th>
-        {% for day in days %}<th align="center">{{ day }}</th>{% endfor %}
+        {% for day in day_spine %}<th align="center">{{ day }}</th>{% endfor %}
       </tr>
     </thead>
     <tbody>
@@ -28,15 +28,15 @@
               <a href="{% url 'team_detail' entry.team.id %}">{{ entry.team.team_name }}</a>
             </span>
           </td>
-          <td class="sticky" align="right">{{ entry.solves|length }}</td>
-          {% for day in days %}
+          <td class="sticky" align="right">{{ entry.solved_days|length }}</td>
+          {% for day in day_spine %}
             <td align="center">
               {% if day in metas_by_day %}
                 {% with metas_by_day|dictget:day as meta_info %}
-                  {% if day in entry.solves %}{{ meta_info.icon }}{% endif %}
+                  {% if day in entry.solved_days %}{{ meta_info.icon }}{% endif %}
                 {% endwith %}
               {% else %}
-                {% if day in entry.solves %}❆{% endif %}
+                {% if day in entry.solved_days %}❆{% endif %}
               {% endif %}
             </td>
           {% endfor %}

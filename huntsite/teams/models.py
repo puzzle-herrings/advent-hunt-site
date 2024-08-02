@@ -5,6 +5,26 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
+class UserQuerySet(models.QuerySet):
+    """Custom QuerySet for the Puzzle model with some useful methods."""
+
+    def with_profile(self):
+        return self.select_related("team_profile")
+
+
+class NonprivilegedUserManager(models.Manager):
+    """Custom Manager for the Puzzle model that only returns puzzles that are available."""
+
+    def get_queryset(self) -> models.QuerySet:
+        return (
+            super()
+            .get_queryset()
+            .filter(is_tester=False)
+            .filter(is_staff=False)
+            .filter(is_superuser=False)
+        )
+
+
 class User(AbstractUser):
     team_name = models.CharField(
         max_length=255,
@@ -15,6 +35,9 @@ class User(AbstractUser):
     is_tester = models.BooleanField(default=False)
 
     REQUIRED_FIELDS = ["team_name"]
+
+    objects = UserQuerySet.as_manager()
+    nonprivileged = NonprivilegedUserManager.from_queryset(UserQuerySet)()
 
     def save(self, *args, **kwargs):
         if self.is_staff:
