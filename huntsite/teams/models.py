@@ -49,6 +49,9 @@ class User(AbstractUser):
             self.is_tester = True
         super().save(*args, **kwargs)
 
+    def time_traveling_at(self):
+        return self.time_travel.time_traveling_at if hasattr(self, "time_travel") else None
+
 
 class TeamProfile(models.Model):
     user = models.OneToOneField(

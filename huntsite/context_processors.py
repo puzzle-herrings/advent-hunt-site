@@ -15,9 +15,18 @@ def meta(request):
 
 def santa_missing(request):
     """Context processor to add the Santa missing flag to the context."""
+    if request.user.is_authenticated and request.user.is_tester:
+        if time_traveling_at := request.user.time_traveling_at():
+            return {"santa_missing": time_traveling_at >= settings.SANTA_MISSING_DATETIME}
     return {"santa_missing": timezone.now() >= settings.SANTA_MISSING_DATETIME}
 
 
 def user(request):
     """Context processor to add the user to the context."""
     return {"user": request.user}
+
+
+def time_travel(request):
+    if request.user.is_authenticated and request.user.is_tester:
+        return {"time_traveling_at": request.user.time_traveling_at()}
+    return {}
