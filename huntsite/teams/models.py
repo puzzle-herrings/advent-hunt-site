@@ -9,7 +9,7 @@ class UserQuerySet(models.QuerySet):
     """Custom QuerySet for the Puzzle model with some useful methods."""
 
     def with_profile(self):
-        return self.select_related("team_profile")
+        return self.select_related("profile")
 
 
 class NonprivilegedUserManager(models.Manager):

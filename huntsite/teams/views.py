@@ -9,7 +9,7 @@ from huntsite.teams import models
 
 def team_detail(request, pk: int):
     """View to display the team profile of the user."""
-    team = models.User.objects.select_related("profile").get(pk=pk)
+    team = models.User.objects.with_profile().get(pk=pk)
     solves = puzzle_models.Solve.objects.filter(user=team).select_related("puzzle")
     context = {
         "team": team,
@@ -28,7 +28,7 @@ class LeaderboardEntry(NamedTuple):
 def team_list(request):
     """View to display a list of all teams."""
 
-    teams = models.User.nonprivileged.select_related("profile").all()
+    teams = models.User.nonprivileged.with_profile().all()
     solves = puzzle_models.Solve.objects.exclude(user__is_tester=True)
     puzzles = puzzle_models.Puzzle.objects.with_calendar_entry().all()
     meta_infos = puzzle_models.MetapuzzleInfo.objects.order_by("-is_final").all()
