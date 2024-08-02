@@ -51,6 +51,7 @@
     </tbody>
   </table>
   {% if user.is_tester %}
+    {% if request.session.time_travel_to %}request.session.time_travel_to{% endif %}
     <div id="tester-controls block">{% crispy time_travel_form %}</div>
   {% endif %}
 {% endblock content %}
