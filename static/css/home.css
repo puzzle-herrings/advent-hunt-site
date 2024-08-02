@@ -229,6 +229,15 @@ section.in-front {
     transform: translate(-50%, -80%);
 }
 
+.holiday-card-star {
+    position: absolute;
+    color: var(--gold);
+    font-size: 2em;
+    top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .holiday-card-candy-cane-1,
 .holiday-card-candy-cane-2,
 .holiday-card-candy-cane-3,
