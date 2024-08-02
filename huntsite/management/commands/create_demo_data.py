@@ -133,7 +133,7 @@ class Command(BaseCommand):
                     (None, "You arrive at the North Pole...", False),
                     (7, "After helping Mrs. Claus...", False),
                     (14, "After helping Rudolph...", False),
-                    (23, "After cleaning up the Toy Factory..., False"),
+                    (23, "After cleaning up the Toy Factory...", False),
                     (24, "You've found Santa!", True),
                 ]
             ):
