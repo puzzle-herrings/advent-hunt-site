@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -10,6 +11,10 @@ class UserQuerySet(models.QuerySet):
 
     def with_profile(self):
         return self.select_related("profile")
+
+
+class UserManager(DefaultUserManager.from_queryset(UserQuerySet)):
+    pass
 
 
 class NonprivilegedUserManager(models.Manager):
@@ -36,7 +41,7 @@ class User(AbstractUser):
 
     REQUIRED_FIELDS = ["team_name"]
 
-    objects = UserQuerySet.as_manager()
+    objects = UserManager()
     nonprivileged = NonprivilegedUserManager.from_queryset(UserQuerySet)()
 
     def save(self, *args, **kwargs):
