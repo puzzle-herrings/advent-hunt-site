@@ -104,6 +104,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 # Local custom context processors
                 "huntsite.context_processors.meta",
+                "huntsite.context_processors.robots",
                 "huntsite.context_processors.santa_missing",
                 "huntsite.context_processors.user",
                 "huntsite.tester_utils.context_processors.time_travel",

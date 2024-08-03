@@ -38,3 +38,8 @@ def santa_missing(request):
 def user(request):
     """Context processor to add the user to the context."""
     return {"user": request.user}
+
+
+def robots(request):
+    """Context processor for robots settings."""
+    return {"robots_disallow_all": False}

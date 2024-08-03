@@ -19,10 +19,7 @@ def account_manage(request):
 
 
 def robots_txt(request):
-    context = {
-        "robots_disallow_all": False,
-    }
-    return TemplateResponse(request, "robots.txt", context, content_type="text/plain")
+    return TemplateResponse(request, "robots.txt", {}, content_type="text/plain")
 
 
 def server_error(request):
