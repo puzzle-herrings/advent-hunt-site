@@ -38,6 +38,7 @@ class User(AbstractUser):
         help_text="How the team will be publicly displayed.",
     )
     is_tester = models.BooleanField(default=False)
+    is_finished = models.BooleanField(default=False, editable=False)
 
     REQUIRED_FIELDS = ["team_name"]
 
@@ -48,9 +49,6 @@ class User(AbstractUser):
         if self.is_staff:
             self.is_tester = True
         super().save(*args, **kwargs)
-
-    def time_traveling_at(self):
-        return self.time_travel.time_traveling_at if hasattr(self, "time_travel") else None
 
 
 class TeamProfile(models.Model):

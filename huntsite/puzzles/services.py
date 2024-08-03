@@ -44,5 +44,7 @@ def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
             finish = Finish(user=user)
             finish.full_clean()
             finish.save()
+            user.is_finished = True
+            user.save()
 
     return evaluation
