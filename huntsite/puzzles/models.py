@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -25,12 +27,15 @@ class PuzzleQuerySet(models.QuerySet):
             is_solved=models.Exists(Solve.objects.filter(user=user, puzzle=models.OuterRef("pk")))
         )
 
+    def filter_available_at(self, dt: datetime.datetime):
+        return self.filter(available_at__lte=dt)
+
 
 class AvailablePuzzleManager(models.Manager):
     """Custom Manager for the Puzzle model that only returns puzzles that are available."""
 
     def get_queryset(self) -> models.QuerySet:
-        return super().get_queryset().filter(available_at__lte=timezone.now())
+        return super().get_queryset().filter_available_at(timezone.now())
 
 
 class Puzzle(models.Model):

@@ -1,4 +1,4 @@
-from crispy_bulma.layout import FormGroup, Submit
+from crispy_bulma.layout import Button, FormGroup, Submit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Field, Layout
 from django import forms
@@ -23,5 +23,11 @@ class TimeTravelForm(forms.Form):
             FormGroup(
                 Field("time_travel_to"),
                 Submit("submit", "Time Travel", css_class="is-primary"),
+                Button(
+                    "Return",
+                    css_class="is-primary",
+                    hx_trigger="click",
+                    hx_post=reverse("time_travel_reset"),
+                ),
             )
         )

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% load common_extras %}
-{% load crispy_forms_tags %}
 {% block content %}
   <link href="{% static 'css/puzzle_list.css' %}" rel="stylesheet" />
   <h1 class="title is-1 block">Puzzles</h1>
@@ -50,8 +49,4 @@
       {% endfor %}
     </tbody>
   </table>
-  {% if user.is_tester %}
-    {% if request.session.time_travel_to %}request.session.time_travel_to{% endif %}
-    <div id="tester-controls block">{% crispy time_travel_form %}</div>
-  {% endif %}
 {% endblock content %}

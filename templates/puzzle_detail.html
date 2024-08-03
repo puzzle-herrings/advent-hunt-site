@@ -68,37 +68,6 @@
         </object>
         <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"
               rel="stylesheet" />
-        {% if user.is_tester %}
-          <link href="{% static 'css/puzzle_detail_tester.css' %}" rel="stylesheet" />
-          <div id="answer-cheatsheet-container">
-            <div id="answer-cheatsheet">
-              <p>
-                Answer: <strong>{{ puzzle.answer }}</strong>
-              </p>
-              {% if puzzle.keep_going_answers %}
-                <p>
-                  Keep Going: <strong>{{ puzzle.keep_going_answers|join:"</strong>, <strong>" }}</strong>
-                </p>
-              {% endif %}
-            </div>
-            <div>
-              <button type="button" id="answer-cheatsheet-toggle" class="button is-danger">Testing: Show Answer</button>
-            </div>
-          </div>
-          <script>
-            const button = document.getElementById("answer-cheatsheet-toggle");
-            const cheatsheet = document.getElementById("answer-cheatsheet");
-            cheatsheet.style.display = "none";
-
-            button.addEventListener("click", () => {
-              if (cheatsheet.style.display === "none") {
-                cheatsheet.style.display = "block";
-              } else {
-                cheatsheet.style.display = "none";
-              }
-            });
-          </script>
-        {% endif %}
       </div>
     </div>
   </section>

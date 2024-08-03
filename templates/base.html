@@ -68,5 +68,8 @@
         });
       });
     </script>
+    {% if user.is_tester %}
+      {% include "partials/tester_controls.html" %}
+    {% endif %}
   </body>
 </html>
