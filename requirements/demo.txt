@@ -32,7 +32,9 @@ django-crispy-forms==2.2
     # via
     #   -r requirements/deploy.txt
     #   crispy-bulma
-django-debug-toolbar==4.3.0
+django-debug-toolbar==4.4.6
+    # via -r requirements/deploy.txt
+django-robots==6.1
     # via -r requirements/deploy.txt
 environs==11.0.0
     # via -r requirements/deploy.txt
