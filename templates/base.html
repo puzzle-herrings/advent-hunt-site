@@ -52,6 +52,13 @@
         </div>
       </section>
     {% endblock body %}
+    {% block footer %}
+      <footer class="footer pt-5 pb-4">
+        <div class="content has-text-centered">
+          <p class="is-size-7 has-text-grey">© 2024 Peppermint Herrings 🎏</p>
+        </div>
+      </footer>
+    {% endblock footer %}
     <form id="logout-form" method="post" action="{% url 'account_logout' %}">
       {% csrf_token %}
       <input type="hidden">

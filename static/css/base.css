@@ -162,6 +162,10 @@ samp {
     --bulma-danger-invert-l: var(--yellow-green-l-invert);
 }
 
+footer.footer {
+    --bulma-footer-background-color: var(--parchment);
+}
+
 .table {
     --bulma-table-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
     --bulma-table-body-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
