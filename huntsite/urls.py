@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path, re_path
 
@@ -17,7 +18,11 @@ urlpatterns = [
     path("accounts/", views.account_manage, name="account_manage"),
     path("testing/", include("huntsite.tester_utils.urls")),
     path("500/", views.server_error, name="server_error"),
-    re_path(r"^robots\.txt", include("robots.urls")),
+    (
+        path("robots.txt", views.robots_disallow_all, name="robots_disallow_all")
+        if settings.ROBOTS_DISALLOW_ALL
+        else re_path(r"^robots\.txt", include("robots.urls"))
+    ),
     path(
         "sitemap.xml",
         sitemap,

@@ -49,6 +49,8 @@ SITE_ID = 1
 if env("BASE_URL", ""):
     BASE_URL = env("BASE_URL")
 
+ROBOTS_DISALLOW_ALL = env.bool("ROBOTS_DISALLOW_ALL", default=False)
+
 ## Applications
 
 INSTALLED_APPS = [
@@ -112,7 +114,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 # Local custom context processors
                 "huntsite.context_processors.meta",
-                "huntsite.context_processors.robots",
+                "huntsite.context_processors.canonical",
                 "huntsite.context_processors.santa_missing",
                 "huntsite.context_processors.user",
                 "huntsite.tester_utils.context_processors.time_travel",
