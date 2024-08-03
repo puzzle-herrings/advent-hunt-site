@@ -1,0 +1,86 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load common_extras %}
+<link href="{% static 'css/tester_controls.css' %}" rel="stylesheet" />
+<div class="tester-controls-container">
+  <div class="tester-controls-popup-container block">
+    {% comment %} Answer Cheatsheet Popup {% endcomment %}
+    {% if puzzle %}
+      <div id="tester-controls-answer-cheatsheet" class="box">
+        <p class="block">
+          Answer: <strong><span class="mono">{{ puzzle.answer }}</span></strong>
+        </p>
+        {% if puzzle.keep_going_answers %}
+          <p class="block">
+            Keep Going:
+            <strong><span class="mono">{{ puzzle.keep_going_answers|join:'</span></strong> • <strong><span class="mono">' }}</span></strong>
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% comment %} Time Travel Popup {% endcomment %}
+    <div id="tester-time-travel-form" class="box">{% crispy time_travel_form %}</div>
+    {% comment %} --- {% endcomment %}
+  </div>
+  <div class="tester-controls-buttons-container is-flex is-justify-content-right block">
+    {% comment %} Answer Cheatsheet Toggle {% endcomment %}
+    {% if puzzle %}
+      <button type="button" id="tester-answer-toggle" class="button is-danger">
+        <i id="tester-answer-toggle-icon" class="bi bi-dash-lg"></i>&nbsp;
+        Reveal Answer
+      </button>
+    {% endif %}
+    {% comment %} Time Travel Toggle {% endcomment %}
+    <button type="button"
+            id="tester-time-travel-toggle"
+            class="button is-danger ml-4">
+      <i id="tester-time-travel-toggle-icon" class="bi bi-dash-lg"></i>&nbsp;
+      {% if time_traveling_at %}
+        Time Traveling at {{ time_traveling_at|date:'Y-m-d H\:i' }} UTC
+      {% else %}
+        Time Travel
+      {% endif %}
+    </button>
+    {% comment %} --- {% endcomment %}
+  </div>
+</div>
+<script>
+  // Time travel toggle
+  {
+    const button = document.getElementById("tester-time-travel-toggle");
+    const toggleIcon = document.getElementById("tester-time-travel-toggle-icon");
+    const popup = document.getElementById("tester-time-travel-form");
+    popup.style.display = "none";
+
+    button.addEventListener("click", () => {
+      if (popup.style.display === "none") {
+        popup.style.display = "block";
+        toggleIcon.className = "bi bi-chevron-up";
+      } else {
+        popup.style.display = "none";
+        toggleIcon.className = "bi bi-dash-lg";
+      }
+    });
+  }
+</script>
+{% if puzzle %}
+  <script>
+    // Answer cheatsheet toggle
+    {
+      const button = document.getElementById("tester-answer-toggle");
+      const toggleIcon = document.getElementById("tester-answer-toggle-icon");
+      const popup = document.getElementById("tester-controls-answer-cheatsheet");
+      popup.style.display = "none";
+
+      button.addEventListener("click", () => {
+        if (popup.style.display === "none") {
+          popup.style.display = "block";
+          toggleIcon.className = "bi bi-chevron-up";
+        } else {
+          popup.style.display = "none";
+          toggleIcon.className = "bi bi-dash-lg";
+        }
+      });
+    }
+  </script>
+{% endif %}

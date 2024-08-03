@@ -38,6 +38,7 @@ class User(AbstractUser):
         help_text="How the team will be publicly displayed.",
     )
     is_tester = models.BooleanField(default=False)
+    is_finished = models.BooleanField(default=False, editable=False)
 
     REQUIRED_FIELDS = ["team_name"]
 

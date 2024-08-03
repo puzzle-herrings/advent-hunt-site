@@ -10,10 +10,10 @@ def test_home_page(client):
 
 
 def test_santa_missing(client, monkeypatch):
-    """Favicon and Navbar logo should change based on the SANTA_MISSING_DATETIME setting."""
+    """Favicon and Navbar logo should change based on the HUNT_IS_LIVE_DATETIME setting."""
     # Before changeover date, normal santa
     monkeypatch.setattr(
-        settings, "SANTA_MISSING_DATETIME", timezone.now() + timezone.timedelta(days=1)
+        settings, "HUNT_IS_LIVE_DATETIME", timezone.now() + timezone.timedelta(days=1)
     )
     response = client.get("/")
     assert response.status_code == 200
@@ -27,7 +27,7 @@ def test_santa_missing(client, monkeypatch):
 
     # After changeover date, santa missing
     monkeypatch.setattr(
-        settings, "SANTA_MISSING_DATETIME", timezone.now() - timezone.timedelta(days=1)
+        settings, "HUNT_IS_LIVE_DATETIME", timezone.now() - timezone.timedelta(days=1)
     )
     response = client.get("/")
     assert response.status_code == 200

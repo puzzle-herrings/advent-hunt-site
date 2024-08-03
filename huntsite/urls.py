@@ -8,4 +8,6 @@ urlpatterns = [
     path("puzzles/", include("huntsite.puzzles.urls")),
     path("teams/", include("huntsite.teams.urls")),
     path("accounts/", views.account_manage, name="account_manage"),
+    path("testing/", include("huntsite.tester_utils.urls")),
+    path("500/", views.server_error, name="server_error"),
 ]
