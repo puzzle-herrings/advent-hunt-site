@@ -12,11 +12,25 @@
         <span><span class="home-title-small">the</span> Advent Puzzle Hunt</span>
       </h1>
       <div class="has-text-centered block">
-        <img src="https://r2.jayqi.com/placeholder.png"
-             alt="Splash image"
-             class="splash"
-             height="480"
-             width="auto" />
+        <picture class="splash">
+          <source srcset="{% static 'images/cover_art-808x600-q50.avif' %} 1x,
+                          {% static 'images/cover_art-1616x1200-q50.avif' %} 2x,
+                          {% static 'images/cover_art-2424x1800-q50.avif' %} 3x"
+                  width="808"
+                  height="600"
+                  type="image/avif"
+                  alt="Illustration of two people solving puzzles with an elf in front of an advent calendar board.">
+          <source srcset="{% static 'images/cover_art-808x600-q75.webp' %} 1x,
+                          {% static 'images/cover_art-1616x1200-q75.webp' %} 2x"
+                  width="808"
+                  height="600"
+                  type="image/webp"
+                  alt="Illustration of two people solving puzzles with an elf in front of an advent calendar board.">
+          <img src="{% static 'images/cover_art-808x600x.png' %}"
+               width="808"
+               height="600"
+               alt="Illustration of two people solving puzzles with an elf in front of an advent calendar board.">
+        </picture>
       </div>
     </div>
   </section>
