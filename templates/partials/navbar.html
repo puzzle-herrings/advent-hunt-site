@@ -3,18 +3,28 @@
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item merienda" href="{% url 'home' %}">
-        {% if santa_missing %}
-          <img src="{% static 'santa-missing-dark/icon.svg' %}"
-               height="56"
-               width="56"
-               alt="Santa"
-               onerror="this.src='{% static 'santa-missing-dark/icon-56.png' %}'" />
+        {% if not santa_missing %}
+          <picture>
+            <source srcset="{% static 'santa/icon.svg' %}"
+                    width="56"
+                    height="56"
+                    type="image/svg+xml">
+            <img src="{% static 'santa/icon-56.png' %}"
+                 width="56"
+                 height="56"
+                 alt="Santa" />
+          </picture>
         {% else %}
-          <img src="{% static 'santa/icon.svg' %}"
-               height="56"
-               width="56"
-               alt="Santa"
-               onerror="this.src='{% static 'santa/icon-56.png' %}'" />
+          <picture>
+            <source srcset="{% static 'santa-missing-dark/icon.svg' %}"
+                    width="56"
+                    height="56"
+                    type="image/svg+xml">
+            <img src="{% static 'santa-missing-dark/icon-56.png' %}"
+                 width="56"
+                 height="56"
+                 alt="Silhouette of Santa with a question mark" />
+          </picture>
         {% endif %}
         Advent Hunt
       </a>
