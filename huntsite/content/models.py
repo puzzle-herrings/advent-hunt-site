@@ -24,9 +24,7 @@ class StoryEntry(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     order_by = models.IntegerField(default=0)
-    puzzle = models.OneToOneField(
-        "puzzles.Puzzle", on_delete=models.SET_NULL, null=True, blank=True
-    )
+    puzzle = models.OneToOneField("puzzles.Puzzle", on_delete=models.CASCADE)
     is_final = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)

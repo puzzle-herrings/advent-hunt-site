@@ -21,60 +21,30 @@
     </div>
   </section>
   <section class="section in-front">
-    <div class="container">
-      <p class="block has-text-centered">You find an extravagant holiday card in your mailbox. You open it:</p>
-      <!--...-->
-      <div class="holiday-card block">
-        <div class="holiday-card-outer has-text-centered">
-          <p class="merienda is-size-2">Merry Christmas!</p>
-          <div class="holiday-card-tree">
-            <i class="bi bi-tree-fill"></i>
-          </div>
-          <div class="holiday-card-gift-1">
-            <i class="bi bi-gift-fill"></i>
-          </div>
-          <div class="holiday-card-gift-2">
-            <i class="bi bi-gift-fill"></i>
-          </div>
-          <div class="holiday-card-star">
-            <i class="bi bi-star-fill"></i>
-          </div>
-          <div class="holiday-card-candy-cane-1">{% include "partials/svgs/candy-cane.svg" %}</div>
-          <div class="holiday-card-candy-cane-2">{% include "partials/svgs/candy-cane.svg" %}</div>
-          <div class="holiday-card-candy-cane-3">{% include "partials/svgs/candy-cane.svg" %}</div>
-          <div class="holiday-card-candy-cane-4">{% include "partials/svgs/candy-cane.svg" %}</div>
+    {% if not santa_missing %}
+      <div class="container">{% include "partials/story_prehunt.html" %}</div>
+    {% else %}
+      <div class="columns is-centered">
+        <div class="column is-one-quarter has-text-centered">
+          <img src="https://r2.jayqi.com/placeholder.png"
+               alt="Red, Santa's Chief of Staff"
+               class="story-art-red"
+               height="240"
+               width="auto" />
         </div>
-        <div class="holiday-card-inner-left has-text-centered">
-          <div class="holiday-card-santa">
-            <img src="{% static 'santa/icon.svg' %}"
-                 height="192"
-                 width="192"
-                 alt="Santa"
-                 onerror="this.src='{% static 'santa/icon-192.png' %}'" />
-          </div>
-          <div class="holiday-card-candy-cane-1">{% include "partials/svgs/candy-cane.svg" %}</div>
-          <div class="holiday-card-candy-cane-2">{% include "partials/svgs/candy-cane.svg" %}</div>
-          <div class="holiday-card-candy-cane-3">{% include "partials/svgs/candy-cane.svg" %}</div>
-          <div class="holiday-card-candy-cane-4">{% include "partials/svgs/candy-cane.svg" %}</div>
-        </div>
-        <div class="holiday-card-inner-right">
-          <div class="holiday-card-message content">
-            <p>Ho ho ho!</p>
-            <p>You are at the top of my nice list this year! Nice job!</p>
-            <p>
-              As thanks for being super, I have a special gift for you—a visit to the North Pole this Christmas season! You will get to see the elves and I in action as we prepare to bring joy to children around the world.
-            </p>
-            <p>Merry Christmas!</p>
-            <p>
-              Sincerely,
-              <br />
-              <span class="merienda">Santa</span>
-            </p>
-          </div>
+        <div class="column is-half">
+          <p class="block">
+            You arrive at the North Pole on time, after a safe and smooth flight. As you step off the sleigh, you notice an elf, impeccably dressed in a festive yet formal-looking Christmas suit, walking briskly to meet you. Just as he's about to greet you, another elf comes running suddenly.
+          </p>
+          <p class="block">
+            "Red! Red!" she shouts. She runs up to who you assume must be Red, the elf that you've been in contact with to coordinate your trip. The two elves enter into a furious whispered conversation. As they confer, you see Red becoming more and more distressed.
+          </p>
+          <p class="block">
+            <a class="button is-primary" href="{% url "story" %}">Continue reading...</a>
+          </p>
         </div>
       </div>
-      <!--...-->
-    </div>
+    {% endif %}
   </section>
   <section class="in-front">
     <div class="container">
