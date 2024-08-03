@@ -6,8 +6,9 @@ from django.conf import settings
 def set_site_domain(apps, schema_editor):
     """Set site domain from settings."""
     Site = apps.get_model("sites", "Site")
-    site = Site.objects.get(pk=settings.SITE_ID)
+    site, _ = Site.objects.get_or_create(pk=settings.SITE_ID)
     site.domain = settings.SITE_DOMAIN
+    site.name = "Advent Hunt"
     site.save()
 
 class Migration(migrations.Migration):
