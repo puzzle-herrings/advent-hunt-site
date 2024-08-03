@@ -10,7 +10,7 @@ from faker import Faker
 fake = Faker()
 
 MOCK_PUZZLES = [
-    f"{settings.BASE_URL}/static/mock_puzzles/{mock_file.name}"
+    f"{settings.SITE_DOMAIN}/static/mock_puzzles/{mock_file.name}"
     for mock_file in (settings.BASE_DIR / "static" / "mock_puzzles").glob("*.pdf")
 ]
 

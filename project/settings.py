@@ -46,8 +46,7 @@ INTERNAL_IPS = env.list("INTERNAL_IPS", [])
 
 SITE_ID = 1
 
-if env("BASE_URL", ""):
-    BASE_URL = env("BASE_URL")
+SITE_DOMAIN = env("SITE_DOMAIN", "www.adventhunt.com")
 
 ROBOTS_DISALLOW_ALL = env.bool("ROBOTS_DISALLOW_ALL", default=False)
 
