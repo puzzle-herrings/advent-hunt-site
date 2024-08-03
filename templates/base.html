@@ -14,19 +14,27 @@
     <meta property="og:description" content="{{ META_DESCRIPTION }}" />
     <meta property="og:title" content="{{ META_TITLE }}" />
     <!-- Favicons -->
-    {% if santa_missing %}
+    {% if not santa_missing %}
+      <link rel="icon" href="{% static 'santa/favicon.ico' %}" sizes="32x32">
+      <link rel="icon"
+            href="{% static 'santa/icon.svg' %}"
+            sizes="any"
+            type="image/svg+xml">
+      <link rel="apple-touch-icon"
+            href="{% static 'santa/apple-touch-icon.png' %}">
+      <link rel="manifest" href="{% static 'santa/site.webmanifest' %}">
+    {% else %}
       <link rel="icon"
             href="{% static 'santa-missing-dark/favicon.ico' %}"
-            sizes="48x48">
+            sizes="32x32">
+      <link rel="icon"
+            href="{% static 'santa-missing-dark/icon.svg' %}"
+            sizes="any"
+            type="image/svg+xml">
       <link rel="apple-touch-icon"
             href="{% static 'santa-missing-dark/apple-touch-icon.png' %}">
       <link rel="manifest"
             href="{% static 'santa-missing-dark/site.webmanifest' %}">
-    {% else %}
-      <link rel="icon" href="{% static 'santa/favicon.ico' %}" sizes="48x48">
-      <link rel="apple-touch-icon"
-            href="{% static 'santa/apple-touch-icon.png' %}">
-      <link rel="manifest" href="{% static 'santa/site.webmanifest' %}">
     {% endif %}
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/versions/bulma-no-dark-mode.min.css"
