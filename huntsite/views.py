@@ -1,4 +1,7 @@
+from textwrap import dedent
+
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
 from huntsite.teams.forms import AccountManagementForm
@@ -18,8 +21,16 @@ def account_manage(request):
     return TemplateResponse(request, "account.html", context)
 
 
-def robots_txt(request):
-    return TemplateResponse(request, "robots.txt", {}, content_type="text/plain")
+_ROBOTS_TXT_DISALLOW_ALL = dedent(
+    """\
+    User-agent: *
+    Disallow: /
+    """
+)
+
+
+def robots_disallow_all(request):
+    return HttpResponse(_ROBOTS_TXT_DISALLOW_ALL, content_type="text/plain")
 
 
 def server_error(request):

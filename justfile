@@ -47,6 +47,10 @@ format:
     ruff check --fix project huntsite
     djlint templates --reformat
 
+# Run tests
+test:
+    pytest
+
 createsuperuser:
     python manage.py createsuperuser --noinput
 

@@ -34,9 +34,6 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-if env("BASE_URL", ""):
-    BASE_URL = env("BASE_URL")
-
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", [])
 
 RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", "")
@@ -44,6 +41,14 @@ if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 INTERNAL_IPS = env.list("INTERNAL_IPS", [])
+
+## Site
+
+SITE_ID = 1
+
+SITE_DOMAIN = env("SITE_DOMAIN", "www.adventhunt.com")
+
+ROBOTS_DISALLOW_ALL = env.bool("ROBOTS_DISALLOW_ALL", default=False)
 
 ## Applications
 
@@ -57,12 +62,16 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     #
     "django.contrib.staticfiles",
+    # Optional
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
     # Third-party apps
     "allauth",
     "allauth.account",
     "crispy_forms",
     "crispy_bulma",
     "debug_toolbar",
+    "robots",
     # Local apps
     "huntsite",
     "huntsite.content",
@@ -104,7 +113,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 # Local custom context processors
                 "huntsite.context_processors.meta",
-                "huntsite.context_processors.robots",
+                "huntsite.context_processors.canonical",
                 "huntsite.context_processors.santa_missing",
                 "huntsite.context_processors.user",
                 "huntsite.tester_utils.context_processors.time_travel",

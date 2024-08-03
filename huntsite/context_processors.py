@@ -1,7 +1,14 @@
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
 
 from huntsite.tester_utils.session_handlers import read_time_travel_session_var
+
+
+def canonical(request):
+    """Add canonical URL for the current page. Used to populate rel="canonical" meta tag."""
+    site = get_current_site(request)
+    return {"CANONICAL_URL": f"https://{site.domain}{request.path}"}
 
 
 def meta(request):
@@ -13,11 +20,6 @@ def meta(request):
         "META_KEYWORDS": settings.META_KEYWORDS,
         "META_OG_IMAGE": settings.META_OG_IMAGE,
     }
-
-
-def robots(request):
-    """Context processor for robots settings."""
-    return {"robots_disallow_all": False}
 
 
 def santa_missing(request):

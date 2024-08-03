@@ -3,12 +3,12 @@
 <html lang="en" class="h-100">
   <head>
     <meta charset="UTF-8" />
-    {% if robots_disallow_all %}<meta name="robots" content="noindex, nofollow" />{% endif %}
+    <title>{{ META_TITLE }}</title>
+    <link rel="canonical" href="{{ CANONICAL_URL }}" />
     <meta name="description" content="{{ META_DESCRIPTION }}" />
     <meta name="keywords" content="{{ META_KEYWORDS }}" />
     <meta name="author" content="{{ META_AUTHOR }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ META_TITLE }}</title>
     <!-- OpenGraph Metadata-->
     <meta property="og:image" content="{{ META_OG_IMAGE }}" />
     <meta property="og:description" content="{{ META_DESCRIPTION }}" />
