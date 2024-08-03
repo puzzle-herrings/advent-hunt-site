@@ -129,20 +129,15 @@ class Command(BaseCommand):
             logger.info("Creating story content...")
             for calendar_day, story_entry_title, is_final in tqdm(
                 [
-                    (None, "You've been invited to the North Pole!", False),
-                    (None, "You arrive at the North Pole...", False),
                     (7, "After helping Mrs. Claus...", False),
                     (14, "After helping Rudolph...", False),
                     (23, "After cleaning up the Toy Factory...", False),
                     (24, "You've found Santa!", True),
                 ]
             ):
-                if calendar_day is not None:
-                    related_puzzle = puzzles[calendar_day]
-                    content_factories.StoryEntryFactory(
-                        title=story_entry_title, puzzle=related_puzzle, is_final=is_final
-                    )
-                else:
-                    content_factories.StoryEntryFactory(title=story_entry_title)
+                related_puzzle = puzzles[calendar_day]
+                content_factories.StoryEntryFactory(
+                    title=story_entry_title, puzzle=related_puzzle, is_final=is_final
+                )
 
         logger.success("create_demo_data complete.")

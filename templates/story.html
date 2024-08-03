@@ -1,6 +1,38 @@
 {% extends "base.html" %}
+{% load common_extras %}
 {% block content %}
   <h1 class="title is-1 block">The story so far...</h1>
+  {% comment %} Pre-hunt story {% endcomment %}
+  <div class="card block is-toggleable">
+    <header class="card-header">
+      <h3 class="card-header-title is-size-4">You find an extravagant holiday card in your mailbox...</h3>
+      {% if santa_missing %}
+        {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
+      {% else %}
+        {% include "partials/card_toggle_indicator.html" %}
+      {% endif %}
+    </header>
+    <div class="card-content content{% if santa_missing %} is-hidden{% endif %}">
+      {% include "partials/story_prehunt.html" %}
+    </div>
+  </div>
+  {% comment %} Hunt live story {% endcomment %}
+  {% if santa_missing %}
+    <div class="card block is-toggleable">
+      <header class="card-header">
+        <h3 class="card-header-title is-size-4">You arrive at the North Pole…</h3>
+        {% if entries %}
+          {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
+        {% else %}
+          {% include "partials/card_toggle_indicator.html" %}
+        {% endif %}
+      </header>
+      <div class="card-content content{% if entries %} is-hidden{% endif %}">
+        {% markdown "partials/md/story_hunt_live.md" %}
+      </div>
+    </div>
+  {% endif %}
+  {% comment %} --- {% endcomment %}
   {% for entry in entries %}
     <div class="card block is-toggleable">
       <header class="card-header">
