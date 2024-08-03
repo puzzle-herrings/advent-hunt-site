@@ -7,15 +7,22 @@ from huntsite.puzzles.forms import GuessForm
 from huntsite.puzzles.models import GuessEvaluation, Puzzle
 import huntsite.puzzles.selectors as puzzle_selectors
 import huntsite.puzzles.services as puzzle_services
+from huntsite.tester_utils.session_handlers import read_time_travel_session_var
 
 
 def puzzle_list(request):
     """View to display a list of all puzzles."""
-    puzzle_manager = (
-        Puzzle.objects
-        if not request.user.is_anonymous and request.user.is_tester
-        else Puzzle.available
-    )
+    if (
+        not request.user.is_anonymous
+        and request.user.is_tester
+        and (time_traveling_at := read_time_travel_session_var(request))
+    ):
+        # Get puzzles based on time travel
+        puzzle_manager = Puzzle.objects.filter_available_at(time_traveling_at)
+    else:
+        # Only get available puzzles
+        puzzle_manager = Puzzle.available
+
     puzzles = (
         puzzle_manager.with_calendar_entry()
         .with_meta_info()

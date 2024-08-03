@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "huntsite.content",
     "huntsite.puzzles",
     "huntsite.teams",
+    "huntsite.tester_utils",
 ]
 
 MIDDLEWARE = [
@@ -105,6 +106,7 @@ TEMPLATES = [
                 "huntsite.context_processors.meta",
                 "huntsite.context_processors.santa_missing",
                 "huntsite.context_processors.user",
+                "huntsite.tester_utils.context_processors.time_travel",
             ],
         },
     },
@@ -238,6 +240,6 @@ META_AUTHOR = env("META_AUTHOR")
 META_KEYWORDS = env("META_KEYWORDS")
 META_OG_IMAGE = env("META_OG_IMAGE")
 
-SANTA_MISSING_DATETIME = env.datetime("SANTA_MISSING_DATETIME", default=timezone.now().isoformat())
-if SANTA_MISSING_DATETIME.tzinfo is None:
-    SANTA_MISSING_DATETIME = SANTA_MISSING_DATETIME.replace(tzinfo=datetime.timezone.utc)
+HUNT_IS_LIVE_DATETIME = env.datetime("HUNT_IS_LIVE_DATETIME", default=timezone.now().isoformat())
+if HUNT_IS_LIVE_DATETIME.tzinfo is None:
+    HUNT_IS_LIVE_DATETIME = HUNT_IS_LIVE_DATETIME.replace(tzinfo=datetime.timezone.utc)

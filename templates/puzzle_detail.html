@@ -5,10 +5,6 @@
   <section class="section no-bottom-padding">
     <div class="container has-text-centered">
       {% include "partials/messages.html" %}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.12/htmx.min.js"
-              integrity="sha512-JvpjarJlOl4sW26MnEb3IdSAcGdeTeOaAlu2gUZtfFrRgnChdzELOZKl0mN6ZvI0X+xiX5UMvxjK2Rx2z/fliw=="
-              crossorigin="anonymous"
-              referrerpolicy="no-referrer"></script>
       {% include "partials/timestamp_localize_libraries.html" %}
       <link href="{% static 'css/puzzle_detail.css' %}" rel="stylesheet" />
       <h1 class="title is-1 block">
@@ -68,37 +64,6 @@
         </object>
         <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"
               rel="stylesheet" />
-        {% if user.is_tester %}
-          <link href="{% static 'css/puzzle_detail_tester.css' %}" rel="stylesheet" />
-          <div id="answer-cheatsheet-container">
-            <div id="answer-cheatsheet">
-              <p>
-                Answer: <strong>{{ puzzle.answer }}</strong>
-              </p>
-              {% if puzzle.keep_going_answers %}
-                <p>
-                  Keep Going: <strong>{{ puzzle.keep_going_answers|join:"</strong>, <strong>" }}</strong>
-                </p>
-              {% endif %}
-            </div>
-            <div>
-              <button type="button" id="answer-cheatsheet-toggle" class="button is-danger">Testing: Show Answer</button>
-            </div>
-          </div>
-          <script>
-            const button = document.getElementById("answer-cheatsheet-toggle");
-            const cheatsheet = document.getElementById("answer-cheatsheet");
-            cheatsheet.style.display = "none";
-
-            button.addEventListener("click", () => {
-              if (cheatsheet.style.display === "none") {
-                cheatsheet.style.display = "block";
-              } else {
-                cheatsheet.style.display = "none";
-              }
-            });
-          </script>
-        {% endif %}
       </div>
     </div>
   </section>

@@ -1,8 +1,33 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+class UserQuerySet(models.QuerySet):
+    """Custom QuerySet for the Puzzle model with some useful methods."""
+
+    def with_profile(self):
+        return self.select_related("profile")
+
+
+class UserManager(DefaultUserManager.from_queryset(UserQuerySet)):
+    pass
+
+
+class NonprivilegedUserManager(models.Manager):
+    """Custom Manager for the Puzzle model that only returns puzzles that are available."""
+
+    def get_queryset(self) -> models.QuerySet:
+        return (
+            super()
+            .get_queryset()
+            .filter(is_tester=False)
+            .filter(is_staff=False)
+            .filter(is_superuser=False)
+        )
 
 
 class User(AbstractUser):
@@ -13,8 +38,12 @@ class User(AbstractUser):
         help_text="How the team will be publicly displayed.",
     )
     is_tester = models.BooleanField(default=False)
+    is_finished = models.BooleanField(default=False, editable=False)
 
     REQUIRED_FIELDS = ["team_name"]
+
+    objects = UserManager()
+    nonprivileged = NonprivilegedUserManager.from_queryset(UserQuerySet)()
 
     def save(self, *args, **kwargs):
         if self.is_staff:
