@@ -8,11 +8,12 @@
     {% if puzzle %}
       <div id="tester-controls-answer-cheatsheet" class="box">
         <p class="block">
-          Answer: <strong>{{ puzzle.answer }}</strong>
+          Answer: <strong><span class="mono">{{ puzzle.answer }}</span></strong>
         </p>
         {% if puzzle.keep_going_answers %}
           <p class="block">
-            Keep Going: <strong>{{ puzzle.keep_going_answers|join:"</strong>, <strong>" }}</strong>
+            Keep Going:
+            <strong><span class="mono">{{ puzzle.keep_going_answers|join:'</span></strong> • <strong><span class="mono">' }}</span></strong>
           </p>
         {% endif %}
       </div>
