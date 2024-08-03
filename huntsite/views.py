@@ -18,5 +18,9 @@ def account_manage(request):
     return TemplateResponse(request, "account.html", context)
 
 
+def robots_txt(request):
+    return TemplateResponse(request, "robots.txt", {}, content_type="text/plain")
+
+
 def server_error(request):
     return TemplateResponse(request, "500.html", status=500)

@@ -15,6 +15,11 @@ def meta(request):
     }
 
 
+def robots(request):
+    """Context processor for robots settings."""
+    return {"robots_disallow_all": False}
+
+
 def santa_missing(request):
     """Context processor to add the Santa missing flag to the context."""
     if (

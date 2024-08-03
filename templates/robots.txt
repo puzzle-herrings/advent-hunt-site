@@ -1,0 +1,7 @@
+{% if robots_disallow_all %}User-agent: *
+Disallow: /
+{% else %}User-agent: *
+Disallow: /account/
+Disallow: /teams/
+Disallow: /puzzles/
+{% endif %}
