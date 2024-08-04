@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from django.template.response import TemplateResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_safe
 
 from huntsite.puzzles.forms import GuessForm
 from huntsite.puzzles.models import GuessEvaluation, Puzzle
@@ -10,6 +10,7 @@ import huntsite.puzzles.services as puzzle_services
 from huntsite.tester_utils.session_handlers import read_time_travel_session_var
 
 
+@require_safe
 def puzzle_list(request):
     """View to display a list of all puzzles."""
     if (

@@ -4,12 +4,14 @@ from typing import NamedTuple
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.template.response import TemplateResponse
+from django.views.decorators.http import require_http_methods, require_safe
 
 from huntsite.puzzles import models as puzzle_models
 from huntsite.teams import forms, models
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def account_manage(request):
     """View to manage the account of the user."""
     user = request.user
@@ -41,6 +43,8 @@ def account_manage(request):
         return render(request, "partials/form.html", context)
 
 
+@login_required
+@require_http_methods(["GET", "POST"])
 def account_username_update(request):
     """View to update the username of the user."""
     user = request.user
@@ -63,6 +67,7 @@ def account_username_update(request):
         return render(request, "partials/form.html", context)
 
 
+@require_safe
 def team_detail(request, pk: int):
     """View to display the team profile of the user."""
     team = models.User.objects.with_profile().get(pk=pk)
@@ -81,6 +86,7 @@ class LeaderboardEntry(NamedTuple):
     rank: int
 
 
+@require_safe
 def team_list(request):
     """View to display a list of all teams."""
 

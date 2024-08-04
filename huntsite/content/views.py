@@ -1,12 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.template.response import TemplateResponse
+from django.views.decorators.http import require_safe
 
 from huntsite.content import models
 from huntsite.puzzles import models as puzzle_models
 
 
-# Create your views here.
+@require_safe
 def about_page(request):
     entries = models.AboutEntry.objects.all().order_by("order_by")
     context = {
@@ -15,6 +16,7 @@ def about_page(request):
     return TemplateResponse(request, "about.html", context)
 
 
+@require_safe
 def story_page(request):
     entries = models.StoryEntry.objects.select_related("puzzle").all().order_by("order_by")
     if request.user.is_anonymous:
@@ -33,6 +35,7 @@ def story_page(request):
     return TemplateResponse(request, "story.html", context)
 
 
+@require_safe
 @login_required
 def victory_page(request):
     if not request.user.is_finished or not request.user.is_tester:
