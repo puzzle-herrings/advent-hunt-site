@@ -164,8 +164,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ## allauth
 
+ACCOUNT_ADAPTER = "huntsite.teams.adapter.AccountAdapter"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_FORMS = {"signup": "huntsite.teams.forms.SignupForm"}
+
+# Custom
+ACCOUNT_DISABLE_REGISTRATION = env.bool("ACCOUNT_DISABLE_REGISTRATION", default=False)
 
 ## Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
