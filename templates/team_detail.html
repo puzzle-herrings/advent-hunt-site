@@ -2,15 +2,14 @@
 {% load crispy_forms_tags %}
 {% block content %}
   {% include "partials/timestamp_localize_libraries.html" %}
-  <h1 class="title is-1 block">{{ team.team_name }}</h1>
   {% if is_self %}
-    <div class="notification is-info is-light">
+    <div class="notification is-info">
       <div class="level">
         <div class="level-item"></div>
         <div class="level-item"></div>
         <div class="level-item has-text-centered">
-          <p>
-            <strong>Your username:</strong> {{ team.username }}
+          <p class="is-size-5">
+            <strong>Your team's profile</strong>
           </p>
         </div>
         <div class="level-item"></div>
@@ -24,6 +23,7 @@
       </div>
     </div>
   {% endif %}
+  <h1 class="title is-1 block">{{ team.team_name }}</h1>
   {% if team.profile.members %}
     <p class="block">
       <strong>Team Members:</strong> {{ team.profile.members }}

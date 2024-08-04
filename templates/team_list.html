@@ -23,10 +23,9 @@
       {% for entry in leaderboard_data %}
         <tr>
           <td align="right">{{ entry.rank }}</td>
-          <td class="sticky">
-            <span {% if entry.team.profile.members %}data-tts aria-label="{{ entry.team.profile.members }}"{% endif %}>
-              <a href="{% url 'team_detail' entry.team.id %}">{{ entry.team.team_name }}</a>
-            </span>
+          <td class="team-name"
+              {% if entry.team.profile.members %}data-tts aria-label="{{ entry.team.profile.members|truncatechars:128 }}"{% endif %}>
+            <a href="{% url 'team_detail' entry.team.id %}">{{ entry.team.team_name|truncatechars:128 }}</a>
           </td>
           <td class="sticky" align="right">{{ entry.solved_days|length }}</td>
           {% for day in day_spine %}

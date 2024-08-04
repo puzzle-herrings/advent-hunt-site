@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.utils import timezone
+import pytest
+
+pytestmark = pytest.mark.django_db
 
 
 def test_home_page(client):

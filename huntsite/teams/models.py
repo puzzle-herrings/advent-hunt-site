@@ -32,7 +32,7 @@ class NonprivilegedUserManager(models.Manager):
 
 class User(AbstractUser):
     team_name = models.CharField(
-        max_length=255,
+        max_length=127,
         unique=True,
         blank=False,
         help_text="How the team will be publicly displayed.",
@@ -55,7 +55,11 @@ class TeamProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="profile"
     )
-    members = models.CharField(max_length=255, blank=True, help_text="List of team members.")
+    members = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Who is on your team? Will be publicly shown on your team profile.",
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
