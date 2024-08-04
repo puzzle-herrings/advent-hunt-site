@@ -1,10 +1,32 @@
 from collections import defaultdict
 from typing import NamedTuple
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from django.template.response import TemplateResponse
 
 from huntsite.puzzles import models as puzzle_models
-from huntsite.teams import models
+from huntsite.teams import forms, models
+
+
+@login_required
+def account_manage(request):
+    """View to manage the account of the user."""
+    user = request.user
+    context = {}
+
+    if request.method == "GET":
+        context["form"] = forms.AccountUpdateForm(instance=user)
+        return TemplateResponse(request, "account.html", context)
+
+    elif request.method == "POST":
+        form = forms.AccountUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            form.add_success_message()
+        context["form"] = form
+
+        return render(request, "partials/account_update_form.html", context)
 
 
 def team_detail(request, pk: int):

@@ -1,5 +1,8 @@
 from allauth.account.forms import SignupForm as AllAuthSignupForm
 from allauth.utils import set_form_field_order
+from crispy_bulma.layout import FormGroup, Submit
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML
 from django import forms
 from django.forms import ModelForm
 
@@ -33,7 +36,29 @@ class SignupForm(AllAuthSignupForm):
         return user
 
 
-class AccountManagementForm(ModelForm):
+class AccountUpdateForm(ModelForm):
     class Meta:
         model = models.User
         fields = ["username", "team_name"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = "account-update-form"
+        self.helper.form_method = "post"
+        self.helper.form_action = "."
+        self.helper.layout.append(
+            FormGroup(
+                Submit("save", "Save", css_class="is-primary"), css_class="is-align-items-center"
+            ),
+        )
+        self.helper.attrs = {
+            "hx-post": ".",
+            "hx-target": "#account-update-form",
+            "hx-swap": "outerHTML",
+        }
+
+    _SUCCESS_MESSAGE = '&nbsp;<i class="bi bi-check-circle"></i> Account updated successfully.'
+
+    def add_success_message(self):
+        self.helper.layout[-1].fields.append(HTML(self._SUCCESS_MESSAGE))
