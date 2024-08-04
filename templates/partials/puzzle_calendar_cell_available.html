@@ -1,19 +1,14 @@
 <div class="cell has-text-centered puzzle-calendar-cell">
-  <div class="box available">
-    <div class="block">
-      <span class="available-day">{{ puzzle.calendar_entry.day }}</span>
-    </div>
-    <div class="block">
-      <span class="available-puzzle-name">
-        <a href="{{ puzzle.get_url }}">{{ puzzle.name }}
-          {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
-        </a>
-      </span>
-    </div>
-    <div class="block">
-      {% if puzzle.is_solved %}
-        <strong><span class="available-puzzle-answer mono">{{ puzzle.answer }}</span></strong>
-      {% endif %}
-    </div>
+  <div class="box {% if puzzle.is_solved %}solved{% else %}available{% endif %} {% if puzzle.meta_info %}meta{% endif %}">
+    <p class="day block">{{ puzzle.calendar_entry.day }}</p>
+    <p class="puzzle-name block">
+      <a href="{{ puzzle.get_url }}">{{ puzzle.name }}
+        {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
+      </a>
+    </p>
+    <p class="puzzle-answer block">
+      {% if puzzle.is_solved %}<strong><span class="mono">{{ puzzle.answer }}</span></strong>{% endif %}
+    </p>
+    {% if puzzle.meta_info %}<div class="meta-icon">{{ puzzle.meta_info.icon }}</div>{% endif %}
   </div>
 </div>
