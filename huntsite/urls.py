@@ -3,7 +3,6 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path, re_path
 
 from huntsite.sitemaps import StaticViewSitemap
-from huntsite.teams import views as team_views
 import huntsite.views as views
 
 sitemaps = {
@@ -14,9 +13,8 @@ sitemaps = {
 urlpatterns = [
     path("", views.home_page, name="home"),
     path("", include("huntsite.content.urls")),
+    path("", include("huntsite.teams.urls")),
     path("puzzles/", include("huntsite.puzzles.urls")),
-    path("teams/", include("huntsite.teams.urls")),
-    path("accounts/", team_views.account_manage, name="account_manage"),
     path("testing/", include("huntsite.tester_utils.urls")),
     path("500/", views.server_error, name="server_error"),
     (

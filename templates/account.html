@@ -1,11 +1,12 @@
 {% extends "allauth/layouts/manage.html" %}
 {% block content %}
   <h1 class="title is-1 block">Manage your account</h1>
-  <h2 class="title is-3 block">Update your information</h2>
-  {% include "partials/account_update_form.html" %}
+  <h2 class="title is-3 block">Update your team profile</h2>
+  {% include "partials/form.html" %}
   <hr />
   <h2 class="title is-3 block">More Options</h2>
   <p class="block">
+    <a class="button is-primary" href="{% url 'account_username' %}">Change Username</a>
     {% url 'account_email' as email_url %}
     {% if email_url %}
       <a class="{% block nav_class_email %}button is-primary{% endblock nav_class_email %}"

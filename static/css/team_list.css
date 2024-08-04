@@ -16,3 +16,8 @@ th.sticky,
 td.sticky {
     position: sticky;
 }
+
+td.team-name {
+    max-width: 20rem;
+    overflow-wrap: break-word;
+}

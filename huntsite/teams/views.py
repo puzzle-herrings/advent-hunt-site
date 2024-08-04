@@ -13,20 +13,54 @@ from huntsite.teams import forms, models
 def account_manage(request):
     """View to manage the account of the user."""
     user = request.user
+    initial_data = {"team_name": user.team_name, "members": user.profile.members}
     context = {}
 
     if request.method == "GET":
-        context["form"] = forms.AccountUpdateForm(instance=user)
+        context["form"] = forms.TeamProfileUpdateForm(initial=initial_data)
         return TemplateResponse(request, "account.html", context)
 
     elif request.method == "POST":
-        form = forms.AccountUpdateForm(request.POST, instance=user)
+        # Updating team profile
+        form = forms.TeamProfileUpdateForm(request.POST, initial=initial_data)
         if form.is_valid():
-            form.save()
-            form.add_success_message()
+            if form.has_changed():
+                if "team_name" in form.changed_data:
+                    user.team_name = form.cleaned_data["team_name"]
+                    user.full_clean()
+                    user.save()
+                if "members" in form.changed_data:
+                    user.profile.members = form.cleaned_data["members"]
+                    user.profile.full_clean()
+                    user.profile.save()
+                form.add_success_message()
+            else:
+                form.add_no_changes_message()
         context["form"] = form
 
-        return render(request, "partials/account_update_form.html", context)
+        return render(request, "partials/form.html", context)
+
+
+def account_username_update(request):
+    """View to update the username of the user."""
+    user = request.user
+    context = {}
+
+    if request.method == "GET":
+        context["form"] = forms.UsernameUpdateForm(instance=user)
+        return TemplateResponse(request, "account_username.html", context)
+
+    elif request.method == "POST":
+        form = forms.UsernameUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            if form.has_changed():
+                form.save()
+                form.add_success_message()
+            else:
+                form.add_no_changes_message()
+        context["form"] = form
+
+        return render(request, "partials/form.html", context)
 
 
 def team_detail(request, pk: int):
