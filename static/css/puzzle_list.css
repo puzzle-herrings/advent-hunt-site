@@ -1,42 +1,79 @@
+.calendar-grid {
+    grid-auto-rows: 1fr
+}
+
 .puzzle-calendar-cell>.box {
     height: 100%;
     width: 100%;
+    position: relative;
 }
 
-.puzzle-calendar-cell>.available {
-    background-color: var(--bulma-primary);
-}
-
-.puzzle-calendar-cell>.available a {
-    color: var(--bulma-primary-invert);
-}
-
-span.available-day {
-    color: var(--bulma-primary-invert);
+.puzzle-calendar-cell .day {
     font-size: 1.1em;
 }
 
-span.available-puzzle-name a {
-    color: var(--bulma-primary-invert);
+.puzzle-calendar-cell .puzzle-name>a {
     font-size: 1.15em;
     font-weight: bold;
 }
 
-span.available-puzzle-answer {
-    color: var(--bulma-primary-invert);
+.puzzle-calendar-cell .block:not(:last-child) {
+    margin-bottom: 0.25em;
 }
 
-span.unavailable-day {
+/* Available Puzzle */
+
+.puzzle-calendar-cell>.available {
+    background-color: var(--hunter-green);
+}
+
+.puzzle-calendar-cell>.available>.day {
+    color: var(--white);
+}
+
+.puzzle-calendar-cell>.available>.puzzle-name>a {
+    color: var(--gold);
+}
+
+/* Solved Puzzle */
+
+.puzzle-calendar-cell>.solved {
+    background-color: var(--yellow-green);
+}
+
+.puzzle-calendar-cell>.solved>.day {
+    color: var(--dark-green);
+}
+
+.puzzle-calendar-cell>.solved>.puzzle-name>a {
+    color: var(--hunter-green);
+}
+
+.puzzle-calendar-cell>.solved>puzzle-answer {
+    color: var(--dark-green);
+}
+
+/* Meta */
+.puzzle-calendar-cell>.meta {
+    border: 4px solid var(--green);
+}
+
+.meta-icon {
+    font-size: 2em;
+    position: absolute;
+    top: 0em;
+    right: .25em;
+}
+
+
+/* Unavailable puzzle */
+
+.puzzle-calendar-cell>.unavailable {
+    background-color: var(--red);
+}
+
+.puzzle-calendar-cell .unavailable-day {
+    color: var(--white);
     font-size: 2em;
     font-weight: bold;
-}
-
-.puzzle-calendar-cell>.unavailable {
-    background-color: var(--bulma-link);
-    color: var(--bulma-link-invert);
-}
-
-.puzzle-calendar-cell>.unavailable {
-    background-color: var(--bulma-link);
-    color: var(--bulma-link-invert);
 }
