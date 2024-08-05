@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from django.template.response import TemplateResponse
-from django.views.decorators.http import require_POST, require_safe
+from django.views.decorators.http import require_http_methods, require_safe
 
 from huntsite.puzzles.forms import GuessForm
 from huntsite.puzzles.models import GuessEvaluation, Puzzle
@@ -39,19 +39,6 @@ def puzzle_list(request):
     return TemplateResponse(request, "puzzle_list.html", context)
 
 
-@login_required
-def puzzle_detail(request, slug: str):
-    """View to display the content page of a single puzzle."""
-    puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
-    puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
-    context = {
-        "puzzle": puzzle,
-        "guesses": puzzle_selectors.puzzle_guess_list(puzzle, request.user),
-        "form": GuessForm(slug=slug),
-    }
-    return TemplateResponse(request, "puzzle_detail.html", context)
-
-
 GUESS_EVALUATION_MESSAGES = {
     GuessEvaluation.CORRECT: "Correct! 🎉",
     GuessEvaluation.INCORRECT: "Incorrect.",
@@ -61,19 +48,29 @@ GUESS_EVALUATION_MESSAGES = {
 
 
 @login_required
-@require_POST
-def guess_submit(request, slug: str):
-    """View to handle a guess submission to a puzzle."""
+@require_http_methods(["GET", "POST"])
+def puzzle_detail(request, slug: str):
+    """View to display the content page of a single puzzle and take guesses."""
     puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
     puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
 
-    form = GuessForm(request.POST, slug=slug)
-    if form.is_valid():
-        guess_text = form.cleaned_data["guess"]
-        evaluation = puzzle_services.guess_submit(puzzle, request.user, guess_text)
-        all_puzzle_guesses = puzzle_selectors.puzzle_guess_list(puzzle, request.user)
+    if request.method == "GET":
         context = {
-            "evaluation_message": GUESS_EVALUATION_MESSAGES[evaluation],
-            "guesses": all_puzzle_guesses,
+            "puzzle": puzzle,
+            "guesses": puzzle_selectors.puzzle_guess_list(puzzle, request.user),
+            "form": GuessForm(slug=slug),
         }
-        return render(request, "partials/puzzle_guess_list.html", context)
+        return TemplateResponse(request, "puzzle_detail.html", context)
+
+    elif request.method == "POST":
+        # Submission to answer checker
+        form = GuessForm(request.POST, slug=slug)
+        if form.is_valid():
+            guess_text = form.cleaned_data["guess"]
+            evaluation = puzzle_services.guess_submit(puzzle, request.user, guess_text)
+            all_puzzle_guesses = puzzle_selectors.puzzle_guess_list(puzzle, request.user)
+            context = {
+                "evaluation_message": GUESS_EVALUATION_MESSAGES[evaluation],
+                "guesses": all_puzzle_guesses,
+            }
+            return render(request, "partials/puzzle_guess_list.html", context)

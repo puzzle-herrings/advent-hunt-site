@@ -17,12 +17,10 @@ class GuessForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = "guess-form"
-        self.helper.form_method = "post"
-        self.helper.form_action = reverse("guess_submit", kwargs={"slug": slug})
         self.helper.attrs = {
-            "hx-post": reverse("guess_submit", kwargs={"slug": slug}),
+            "hx-post": ".",
             "hx-target": "#guesses-table",
-            "hx-on::after-request": " if(event.detail.successful) this.reset()",
+            "hx-on::after-request": "if(event.detail.successful) this.reset()",
         }
         self.helper.layout = Layout(
             FormGroup(
