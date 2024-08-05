@@ -17,7 +17,6 @@ class TimeTravelForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = "time-travel-form"
-        self.helper.form_method = "post"
         self.helper.attrs = {"hx-post": reverse("time_travel")}
         self.helper.layout = Layout(
             FormGroup(

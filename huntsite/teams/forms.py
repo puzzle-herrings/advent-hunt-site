@@ -43,8 +43,6 @@ class TeamProfileUpdateForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_id = "team-profile-update-form"
-        self.helper.form_method = "post"
-        self.helper.form_action = "."
         self.helper.attrs = {
             "hx-post": ".",
             "hx-target": "#team-profile-update-form",
@@ -80,8 +78,6 @@ class UsernameUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_id = "username-update-form"
-        self.helper.form_method = "post"
-        self.helper.form_action = "."
         self.helper.layout.append(
             FormGroup(
                 Submit("save", "Save", css_class="is-primary"), css_class="is-align-items-center"
