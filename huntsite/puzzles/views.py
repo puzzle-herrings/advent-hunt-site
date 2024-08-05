@@ -68,9 +68,13 @@ def puzzle_detail(request, slug: str):
         if form.is_valid():
             guess_text = form.cleaned_data["guess"]
             evaluation = puzzle_services.guess_submit(puzzle, request.user, guess_text)
-            all_puzzle_guesses = puzzle_selectors.puzzle_guess_list(puzzle, request.user)
             context = {
                 "evaluation_message": GUESS_EVALUATION_MESSAGES[evaluation],
-                "guesses": all_puzzle_guesses,
             }
-            return render(request, "partials/puzzle_guess_list.html", context)
+        else:
+            context = {
+                "evaluation_message": "Sorry, something went wrong!",
+            }
+        all_puzzle_guesses = puzzle_selectors.puzzle_guess_list(puzzle, request.user)
+        context["guesses"] = all_puzzle_guesses
+        return render(request, "partials/puzzle_guess_list.html", context)
