@@ -53,6 +53,7 @@ class TeamProfileUpdateForm(forms.Form):
             Field("members"),
             FormGroup(
                 Submit("save", "Save", css_class="is-primary"),
+                HTML('<p class="htmx-indicator is-size-4 rotate">❄</p>'),
                 css_class="is-align-items-center",
             ),
         )
@@ -80,7 +81,9 @@ class UsernameUpdateForm(forms.ModelForm):
         self.helper.form_id = "username-update-form"
         self.helper.layout.append(
             FormGroup(
-                Submit("save", "Save", css_class="is-primary"), css_class="is-align-items-center"
+                Submit("save", "Save", css_class="is-primary"),
+                HTML('<p class="htmx-indicator is-size-4 rotate">❄</p>'),
+                css_class="is-align-items-center",
             ),
         )
         self.helper.attrs = {

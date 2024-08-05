@@ -168,3 +168,14 @@ samp {
     --bulma-table-cell-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
     --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
+
+.rotate {
+    display: inline-block;
+    animation: spinner 3s linear infinite;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
