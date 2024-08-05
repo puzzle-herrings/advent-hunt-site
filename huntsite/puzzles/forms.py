@@ -2,7 +2,6 @@ from crispy_bulma.layout import FormGroup, Submit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Field, Layout
 from django import forms
-from django.urls import reverse
 
 
 class GuessForm(forms.Form):
