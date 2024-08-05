@@ -168,16 +168,3 @@ samp {
     --bulma-table-cell-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
     --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
-
-.center {
-    text-align: center;
-}
-
-/*
-.gold-text {
-    color: var(--gold);
-}
-
-.white-text {
-    color: var(--white);
-} */

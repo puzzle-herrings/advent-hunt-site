@@ -10,12 +10,13 @@
     <i class="bi bi-info-circle"></i>
     Teams are ranked by (solving the final puzzle, number of metapuzzle solves, number of puzzle solves).
   </p>
-  <table id="leaderboard" class="table is-striped is-narrow xscroll block">
+  <table id="leaderboard"
+         class="table is-striped is-narrow has-sticky-header block">
     <thead>
-      <tr class="sticky">
-        <th class="sticky" align="right">Rank</th>
-        <th class="sticky">Team Name</th>
-        <th class="sticky" align="right">Solves</th>
+      <tr>
+        <th align="right">Rank</th>
+        <th>Team Name</th>
+        <th align="right">Solves</th>
         {% for day in day_spine %}<th align="center">{{ day }}</th>{% endfor %}
       </tr>
     </thead>
@@ -27,7 +28,7 @@
               {% if entry.team.profile.members %}data-tts aria-label="{{ entry.team.profile.members|truncatechars:128 }}"{% endif %}>
             <a href="{% url 'team_detail' entry.team.id %}">{{ entry.team.team_name|truncatechars:128 }}</a>
           </td>
-          <td class="sticky" align="right">{{ entry.solved_days|length }}</td>
+          <td align="right">{{ entry.solved_days|length }}</td>
           {% for day in day_spine %}
             <td align="center">
               {% if day in metas_by_day %}

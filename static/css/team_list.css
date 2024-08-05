@@ -1,23 +1,14 @@
-th.center,
-td.center {
-    text-align: center;
-}
-
-th.right,
-td.right {
-    text-align: right;
-}
-
-table.xscroll {
-    overflow-x: scroll;
-}
-
-th.sticky,
-td.sticky {
-    position: sticky;
-}
-
 td.team-name {
     max-width: 20rem;
     overflow-wrap: break-word;
+}
+
+/* Adapted from https://github.com/cityssm/bulma-sticky-table/blob/main/_sticky-table.scss */
+.table.has-sticky-header {
+    thead th {
+        background-color: var(--parchment);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
 }
