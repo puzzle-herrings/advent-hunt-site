@@ -38,7 +38,7 @@
       {% for puzzle in puzzles_by_day.values %}
         <tr>
           <td scope="row" class="has-text-right">{{ puzzle.calendar_entry.day }}</td>
-          <td>
+          <td class="puzzle-name">
             <a href="{{ puzzle.get_url }}">
               {% if puzzle.meta_info %}<strong>{% endif %}
                 {{ puzzle.name }}
