@@ -3,12 +3,21 @@ import logging
 import time
 import uuid
 
+import django.utils.log
 from loguru import logger
 import sentry_sdk.integrations.logging
 
-
-# https://github.com/Delgan/loguru?tab=readme-ov-file#entirely-compatible-with-standard-logging
+# Skip these logging module files when finding the caller of a log message
 # https://github.com/getsentry/sentry-python/issues/2982#issuecomment-2270465880
+LOGGING_LIBRARY_MODULE_FILES = {
+    logging.__file__,
+    django.utils.log.__file__,
+    sentry_sdk.integrations.logging.__file__,
+}
+
+
+# InterceptHandler
+# https://github.com/Delgan/loguru?tab=readme-ov-file#entirely-compatible-with-standard-logging
 class InterceptHandler(logging.Handler):
     def emit(self, record: logging.LogRecord) -> None:
         # Get corresponding Loguru level if it exists.
@@ -20,11 +29,7 @@ class InterceptHandler(logging.Handler):
 
         # Find caller from where originated the logged message.
         frame, depth = inspect.currentframe(), 0
-        while frame and (
-            depth == 0
-            or frame.f_code.co_filename == logging.__file__
-            or frame.f_code.co_filename == sentry_sdk.integrations.logging.__file__
-        ):
+        while frame and (depth == 0 or frame.f_code.co_filename in LOGGING_LIBRARY_MODULE_FILES):
             frame = frame.f_back
             depth += 1
 
