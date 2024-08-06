@@ -115,6 +115,8 @@ MIDDLEWARE = [
     # Third-party middleware
     "allauth.account.middleware.AccountMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # Custom middleware
+    "huntsite.logging.logging_middleware",
 ]
 
 ROOT_URLCONF = "project.urls"
@@ -245,6 +247,7 @@ CRISPY_TEMPLATE_PACK = "bulma"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+
 ## Logging
 
 LOGGING = {
@@ -252,13 +255,23 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {
         "console": {
-            "class": "logging.StreamHandler",
+            "class": "huntsite.logging.InterceptHandler",
         },
     },
     "loggers": {
         "django": {
             "handlers": ["console"],
             "level": env("DJANGO_LOG_LEVEL", "INFO"),
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": env("DJANGO_REQUEST_LOG_LEVEL", "WARNING"),
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["console"],
+            "level": env("DJANGO_SERVER_LOG_LEVEL", "WARNING"),
+            "propagate": False,
         },
     },
 }
