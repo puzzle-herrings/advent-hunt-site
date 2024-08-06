@@ -56,3 +56,11 @@ createsuperuser:
 
 demo-data:
     python manage.py create_demo_data
+
+# Locust load testing - browsing
+locust-browsing:
+    locust -f scripts/locustfile.py --tags browsing
+
+# Locust load testing - solving
+locust-solving:
+    locust -f scripts/locustfile.py --tags solving

@@ -4,6 +4,7 @@ from time import sleep
 from bs4 import BeautifulSoup
 from faker import Faker
 from locust import HttpUser, between, tag, task
+from locust.exception import RescheduleTask
 
 LOGIN_URL = "/accounts/login/"
 LOGOUT_URL = "/accounts/logout/"
@@ -38,17 +39,28 @@ class WebsiteUser(HttpUser):
         sleep(3)
         self.client.get(TEAMS_LIST_URL)
 
+    def _post(self, url: str, data: dict, csrf_token: str):
+        """Wrapper around self.client.post to include CSRF token and Referer header."""
+        data = data | {"csrfmiddlewaretoken": csrf_token}
+        return self.client.post(
+            url,
+            data=data,
+            headers={
+                "X-CSRFToken": csrf_token,
+                "Referer": self.host + url,
+            },
+        )
+
     def _login(self, username: str):
         response = self.client.get("/accounts/login/")
         csrf_token = response.cookies["csrftoken"]
-        self.client.post(
-            LOGIN_URL,
-            data={
-                "login": username,
-                "password": "hohohomerrychristmas!",
-                "csrfmiddlewaretoken": csrf_token,
-            },
-        )
+        data = {
+            "login": username,
+            "password": "hohohomerrychristmas!",
+        }
+        response = self._post(LOGIN_URL, data, csrf_token)
+        if not response.ok:
+            raise RescheduleTask()
 
     def _get_puzzle_urls(self, response):
         soup = BeautifulSoup(response.content, "html.parser")
@@ -75,15 +87,8 @@ class WebsiteUser(HttpUser):
             for _ in range(10):
                 # Submit 10 guesses
                 response = self.client.get(puzzle_url)
-                csrf_token = response.cookies["csrftoken"]
                 guess_text = self._guess_text_factory()
-                self.client.post(
-                    puzzle_url,
-                    data={
-                        "guess": guess_text,
-                        "csrfmiddlewaretoken": csrf_token,
-                    },
-                )
+                self._post(puzzle_url, {"guess": guess_text}, response.cookies["csrftoken"])
                 sleep(3)
             # Look at leaderboard
             self.client.get(TEAMS_LIST_URL)
@@ -95,8 +100,4 @@ class WebsiteUser(HttpUser):
             response = self.client.get(STORY_URL)
             sleep(3)
             # Logout
-            csrf_token = response.cookies["csrftoken"]
-            self.client.post(
-                LOGOUT_URL,
-                data={"csrfmiddlewaretoken": csrf_token},
-            )
+            self._post(LOGOUT_URL, {}, response.cookies["csrftoken"])
