@@ -10,4 +10,5 @@ loguru
 markdown
 psycopg2-binary
 uvicorn
+sentry-sdk[django]
 whitenoise[brotli]

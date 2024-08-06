@@ -6,6 +6,10 @@ asgiref==3.8.1
     #   django
 brotli==1.1.0
     # via -r requirements/deploy.txt
+certifi==2024.7.4
+    # via
+    #   -r requirements/deploy.txt
+    #   sentry-sdk
 click==8.1.7
     # via
     #   -r requirements/deploy.txt
@@ -71,6 +75,8 @@ python-dotenv==1.0.1
     # via
     #   -r requirements/deploy.txt
     #   environs
+sentry-sdk==2.12.0
+    # via -r requirements/deploy.txt
 six==1.16.0
     # via python-dateutil
 sqlparse==0.5.0
@@ -84,6 +90,10 @@ typing-extensions==4.12.2
     # via
     #   -r requirements/deploy.txt
     #   dj-database-url
+urllib3==2.2.2
+    # via
+    #   -r requirements/deploy.txt
+    #   sentry-sdk
 uvicorn==0.30.1
     # via -r requirements/deploy.txt
 whitenoise==6.7.0

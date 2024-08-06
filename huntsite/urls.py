@@ -28,4 +28,5 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
+    path("trigger-server-error/", views.trigger_server_error, name="trigger_server_error"),
 ]

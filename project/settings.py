@@ -11,11 +11,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import datetime
+from enum import StrEnum
 from pathlib import Path
 from warnings import filterwarnings
 
 from django.utils import timezone
 from environs import Env
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = Env()
 env.read_env()
@@ -23,7 +26,18 @@ env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
+
+## Environment
+
+
+class Environment(StrEnum):
+    PRODUCTION = "production"
+    LOCAL = "local"
+    TEST = "test"
+
+
+DEPLOY_ENVIRONMENT = env("DEPLOY_ENVIRONMENT", Environment.LOCAL)
+
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 ## Security
@@ -32,15 +46,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=False)
+if DEPLOY_ENVIRONMENT != Environment.TEST:
+    DEBUG = env.bool("DEBUG", default=False)
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", [])
 
-RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", "")
-if RENDER_EXTERNAL_HOSTNAME:
+if RENDER_EXTERNAL_HOSTNAME := env("RENDER_EXTERNAL_HOSTNAME", ""):
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 INTERNAL_IPS = env.list("INTERNAL_IPS", [])
+
+# TODO MAKE SURE THIS IS FINE
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 ## Site
 
@@ -50,7 +69,7 @@ SITE_DOMAIN = env("SITE_DOMAIN", "www.adventhunt.com")
 
 ROBOTS_DISALLOW_ALL = env.bool("ROBOTS_DISALLOW_ALL", default=False)
 
-## Applications
+## Django App Settings
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -132,6 +151,11 @@ DATABASES = {
     "default": env.dj_db_url("DATABASE_URL"),
 }
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 ## Auth
 
 AUTH_USER_MODEL = "teams.User"
@@ -162,7 +186,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-## allauth
+LOGIN_REDIRECT_URL = "puzzle_list"
+
+# allauth
 
 ACCOUNT_ADAPTER = "huntsite.teams.adapter.AccountAdapter"
 ACCOUNT_EMAIL_REQUIRED = True
@@ -203,28 +229,17 @@ STORAGES = {
     },
 }
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 ## Django 5 transition setting
 # https://adamj.eu/tech/2023/12/07/django-fix-urlfield-assume-scheme-warnings/
 filterwarnings("ignore", "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated.")
 FORMS_URLFIELD_ASSUME_HTTPS = True
 
-## Custom stuff
+## Crispy Forms
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ("bulma",)
 CRISPY_TEMPLATE_PACK = "bulma"
 
-## TODO MAKE SURE THIS IS FINE
-X_FRAME_OPTIONS = "SAMEORIGIN"
-
-
-LOGIN_REDIRECT_URL = "puzzle_list"
-# LOGOUT_REDIRECT_URL = "home"
-
+## Email
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -246,6 +261,19 @@ LOGGING = {
     },
 }
 
+## Error Monitoring / Sentry
+
+SENTRY_DSN = env("SENTRY_DSN", None)
+if SENTRY_DSN and DEPLOY_ENVIRONMENT != Environment.TEST:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        auto_session_tracking=False,
+        traces_sample_rate=0.01,
+        release="1.0.0",
+        environment=DEPLOY_ENVIRONMENT,
+    )
+
 ## HTML Meta Tag Data
 
 META_TITLE = env("META_TITLE")
@@ -253,6 +281,8 @@ META_DESCRIPTION = env("META_DESCRIPTION")
 META_AUTHOR = env("META_AUTHOR")
 META_KEYWORDS = env("META_KEYWORDS")
 META_OG_IMAGE = env("META_OG_IMAGE")
+
+## Hunt state
 
 HUNT_IS_LIVE_DATETIME = env.datetime("HUNT_IS_LIVE_DATETIME", default=timezone.now().isoformat())
 if HUNT_IS_LIVE_DATETIME.tzinfo is None:

@@ -16,8 +16,10 @@ brotli==1.1.0
     #   geventhttpclient
 certifi==2024.7.4
     # via
+    #   -r requirements/demo.txt
     #   geventhttpclient
     #   requests
+    #   sentry-sdk
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
@@ -192,6 +194,8 @@ requests==2.32.3
     # via locust
 ruff==0.5.3
     # via -r requirements/dev.in
+sentry-sdk==2.12.0
+    # via -r requirements/demo.txt
 setuptools==71.1.0
     # via
     #   zope-event
@@ -228,8 +232,10 @@ typing-extensions==4.12.2
     #   ipython
 urllib3==2.2.2
     # via
+    #   -r requirements/demo.txt
     #   geventhttpclient
     #   requests
+    #   sentry-sdk
 uvicorn==0.30.1
     # via -r requirements/demo.txt
 wcwidth==0.2.13
