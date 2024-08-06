@@ -4,6 +4,8 @@ asgiref==3.8.1
     # via django
 brotli==1.1.0
     # via whitenoise
+certifi==2024.7.4
+    # via sentry-sdk
 click==8.1.7
     # via uvicorn
 crispy-bulma==0.11.0
@@ -20,6 +22,7 @@ django==5.0.4
     #   django-allauth
     #   django-crispy-forms
     #   django-debug-toolbar
+    #   sentry-sdk
 django-allauth==0.63.6
     # via -r requirements/deploy.in
 django-cache-url==3.4.5
@@ -52,12 +55,16 @@ psycopg2-binary==2.9.9
     # via -r requirements/deploy.in
 python-dotenv==1.0.1
     # via environs
+sentry-sdk==2.12.0
+    # via -r requirements/deploy.in
 sqlparse==0.5.0
     # via
     #   django
     #   django-debug-toolbar
 typing-extensions==4.12.2
     # via dj-database-url
+urllib3==2.2.2
+    # via sentry-sdk
 uvicorn==0.30.1
     # via -r requirements/deploy.in
 whitenoise==6.7.0
