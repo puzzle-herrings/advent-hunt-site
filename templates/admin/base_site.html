@@ -1,0 +1,12 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrahead %}
+  <link rel="icon" href="{% static 'santa/favicon.ico' %}" sizes="32x32">
+  <link rel="icon"
+        href="{% static 'santa/icon.svg' %}"
+        sizes="any"
+        type="image/svg+xml">
+  <link rel="apple-touch-icon"
+        href="{% static 'santa/apple-touch-icon.png' %}">
+  <link rel="manifest" href="{% static 'santa/site.webmanifest' %}">
+{% endblock extrahead %}
