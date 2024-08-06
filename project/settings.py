@@ -36,7 +36,9 @@ class Environment(StrEnum):
     TEST = "test"
 
 
-DEPLOY_ENVIRONMENT = env("DEPLOY_ENVIRONMENT", Environment.LOCAL)
+DEPLOY_ENVIRONMENT = env.enum(
+    "DEPLOY_ENVIRONMENT", Environment.LOCAL, type=Environment, ignore_case=True
+)
 
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
