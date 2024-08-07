@@ -30,14 +30,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ## Environment
 
 
-class Environment(StrEnum):
+class ENVIRONMENT_ENUM(StrEnum):
     PRODUCTION = "production"
     LOCAL = "local"
     TEST = "test"
 
 
 DEPLOY_ENVIRONMENT = env.enum(
-    "DEPLOY_ENVIRONMENT", Environment.LOCAL, type=Environment, ignore_case=True
+    "DEPLOY_ENVIRONMENT", ENVIRONMENT_ENUM.LOCAL, type=ENVIRONMENT_ENUM, ignore_case=True
 )
 
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -48,7 +48,7 @@ DEPLOY_ENVIRONMENT = env.enum(
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if DEPLOY_ENVIRONMENT != Environment.TEST:
+if DEPLOY_ENVIRONMENT != ENVIRONMENT_ENUM.TEST:
     DEBUG = env.bool("DEBUG", default=False)
 else:
     DEBUG = False
@@ -276,10 +276,12 @@ LOGGING = {
     },
 }
 
+LOGTAIL_SOURCE_TOKEN = env("LOGTAIL_SOURCE_TOKEN", None)
+
 ## Error Monitoring / Sentry
 
 SENTRY_DSN = env("SENTRY_DSN", None)
-if SENTRY_DSN and DEPLOY_ENVIRONMENT != Environment.TEST:
+if SENTRY_DSN and DEPLOY_ENVIRONMENT != ENVIRONMENT_ENUM.TEST:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],

@@ -23,6 +23,10 @@ delete-migrations: drop-db
     rm huntsite/puzzles/migrations/0*.py || true
     rm huntsite/teams/migrations/0*.py || true
 
+# Collect static files
+collectstatic:
+    python manage.py collectstatic --noinput
+
 # Sync requirements in current virtual environment
 requirements:
     uv pip sync requirements/dev.txt
