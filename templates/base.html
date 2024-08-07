@@ -52,6 +52,15 @@
             integrity="sha512-JvpjarJlOl4sW26MnEb3IdSAcGdeTeOaAlu2gUZtfFrRgnChdzELOZKl0mN6ZvI0X+xiX5UMvxjK2Rx2z/fliw=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"></script>
+    <script>
+      // Only load goatcounter for production domain
+      if (window.location.host !== 'www.adventhunt.com' && window.location.host !== 'adventhunt.com') {
+          window.goatcounter = {no_onload: true}
+      }
+    </script>
+    <script data-goatcounter="https://adventhunt.goatcounter.com/count"
+            async
+            src="//gc.zgo.at/count.js"></script>
   </head>
   <body>
     {% include "partials/navbar.html" %}
