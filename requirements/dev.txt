@@ -21,7 +21,9 @@ certifi==2024.7.4
     #   requests
     #   sentry-sdk
 charset-normalizer==3.3.2
-    # via requests
+    # via
+    #   -r requirements/demo.txt
+    #   requests
 click==8.1.7
     # via
     #   -r requirements/demo.txt
@@ -111,7 +113,9 @@ html-tag-names==0.1.2
 html-void-elements==0.1.0
     # via djlint
 idna==3.7
-    # via requests
+    # via
+    #   -r requirements/demo.txt
+    #   requests
 iniconfig==2.0.0
     # via pytest
 ipython==8.26.0
@@ -130,6 +134,8 @@ json5==0.9.25
     # via djlint
 locust==2.29.1
     # via -r requirements/dev.in
+logtail-python==0.3.0
+    # via -r requirements/demo.txt
 loguru==0.7.2
     # via -r requirements/demo.txt
 markdown==3.6
@@ -145,7 +151,10 @@ marshmallow==3.21.3
 matplotlib-inline==0.1.7
     # via ipython
 msgpack==1.0.8
-    # via locust
+    # via
+    #   -r requirements/demo.txt
+    #   locust
+    #   logtail-python
 packaging==24.1
     # via
     #   -r requirements/demo.txt
@@ -191,7 +200,10 @@ pyzmq==26.0.3
 regex==2023.12.25
     # via djlint
 requests==2.32.3
-    # via locust
+    # via
+    #   -r requirements/demo.txt
+    #   locust
+    #   logtail-python
 ruff==0.5.3
     # via -r requirements/dev.in
 sentry-sdk==2.12.0

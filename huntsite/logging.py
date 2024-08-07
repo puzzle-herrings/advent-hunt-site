@@ -1,11 +1,38 @@
 import inspect
 import logging
+import sys
 import time
 import uuid
 
+from django.conf import settings
 import django.utils.log
+from logtail import LogtailHandler
 from loguru import logger
 import sentry_sdk.integrations.logging
+
+LOCAL_FORMAT = (
+    "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> "
+    "| <level>{level: <8}</level> "
+    "| <yellow>{extra[request_id]}</yellow> "
+    "| <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> "
+    "- <level>{message}</level>"
+)
+PRODUCTION_FORMAT = "{extra[request_id]} | {name}:{function}:{line} - {message}"
+
+logger.remove(0)
+if settings.DEPLOY_ENVIRONMENT == settings.ENVIRONMENT_ENUM.LOCAL:
+    # Console logger
+    logger.add(sys.stderr, format=LOCAL_FORMAT, backtrace=True, diagnose=True)
+elif settings.DEPLOY_ENVIRONMENT == settings.ENVIRONMENT_ENUM.PRODUCTION:
+    # Console logger
+    logger.add(sys.stderr, format=PRODUCTION_FORMAT, backtrace=True, diagnose=True)
+    # Logtail logger
+    if settings.LOGTAIL_SOURCE_TOKEN:
+        logtail_handler = LogtailHandler(source_token=settings.LOGTAIL_SOURCE_TOKEN)
+        logger.add(logtail_handler, format=PRODUCTION_FORMAT, backtrace=False, diagnose=False)
+elif settings.DEPLOY_ENVIRONMENT == settings.ENVIRONMENT_ENUM.TEST:
+    # No logging
+    pass
 
 # Skip these logging module files when finding the caller of a log message
 # https://github.com/getsentry/sentry-python/issues/2982#issuecomment-2270465880
@@ -13,6 +40,7 @@ LOGGING_LIBRARY_MODULE_FILES = {
     logging.__file__,
     django.utils.log.__file__,
     sentry_sdk.integrations.logging.__file__,
+    __file__,
 }
 
 
@@ -33,7 +61,9 @@ class InterceptHandler(logging.Handler):
             frame = frame.f_back
             depth += 1
 
-        logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
+        logger.opt(depth=depth, exception=record.exc_info).bind(request_id="N/A").log(
+            level, record.getMessage()
+        )
 
 
 # https://betterstack.com/community/guides/logging/loguru/#creating-a-request-logging-middleware
