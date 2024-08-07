@@ -79,17 +79,12 @@ def logging_middleware(get_response):
             elapsed_ms = (time.perf_counter() - start_time) * 1000
 
             # After the response is received
-            logger.bind(
-                path=request.path,
+            logger.info(
+                "{method} '{path}' {status_code} ({elapsed_ms:.0f} ms)",
                 method=request.method,
+                path=request.path,
                 status_code=response.status_code,
                 elapsed_ms=elapsed_ms,
-            ).info(
-                "{method} '{path}' {status_code} ({elapsed_ms} ms)",
-                method=request.method,
-                path=request.path,
-                status_code=response.status_code,
-                elapsed_ms=f"{elapsed_ms:.0f}",
             )
 
             response["X-Request-ID"] = request_id
