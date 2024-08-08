@@ -7,6 +7,11 @@ services:
         fromDatabase:
           name: advent-hunt-db
           property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: advent-hunt-redis
+          property: connectionString
       - key: SECRET_KEY
         generateValue: true
     plan: free
