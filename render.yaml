@@ -14,6 +14,12 @@ services:
     startCommand: "./scripts/deploy.sh"
     type: web
 
+  - type: redis
+    name: advent-hunt-redis
+    plan: free
+    region: ohio
+    ipAllowList: []
+
 databases:
   - name: advent-hunt-db
     databaseName: project_db
