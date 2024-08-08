@@ -10,6 +10,7 @@ logtail-python
 loguru
 markdown
 psycopg2-binary
+redis[hiredis]
 uvicorn
 sentry-sdk[django]
 whitenoise[brotli]

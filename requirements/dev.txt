@@ -108,6 +108,8 @@ h11==0.14.0
     # via
     #   -r requirements/demo.txt
     #   uvicorn
+hiredis==3.0.0
+    # via -r requirements/demo.txt
 html-tag-names==0.1.2
     # via djlint
 html-void-elements==0.1.0
@@ -197,6 +199,8 @@ pyyaml==6.0.1
     # via djlint
 pyzmq==26.0.3
     # via locust
+redis==5.0.8
+    # via -r requirements/demo.txt
 regex==2023.12.25
     # via djlint
 requests==2.32.3

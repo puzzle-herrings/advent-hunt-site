@@ -59,6 +59,8 @@ h11==0.14.0
     # via
     #   -r requirements/deploy.txt
     #   uvicorn
+hiredis==3.0.0
+    # via -r requirements/deploy.txt
 idna==3.7
     # via
     #   -r requirements/deploy.txt
@@ -90,6 +92,8 @@ python-dotenv==1.0.1
     # via
     #   -r requirements/deploy.txt
     #   environs
+redis==5.0.8
+    # via -r requirements/deploy.txt
 requests==2.32.3
     # via
     #   -r requirements/deploy.txt
