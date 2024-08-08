@@ -13,10 +13,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import datetime
 from enum import StrEnum
 from pathlib import Path
+import sys
 from warnings import filterwarnings
 
 from django.utils import timezone
 from environs import Env
+from loguru import logger
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -30,14 +32,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ## Environment
 
 
-class ENVIRONMENT_ENUM(StrEnum):
+class DeployEnvironment(StrEnum):
     PRODUCTION = "production"
     LOCAL = "local"
     TEST = "test"
 
 
 DEPLOY_ENVIRONMENT = env.enum(
-    "DEPLOY_ENVIRONMENT", ENVIRONMENT_ENUM.LOCAL, type=ENVIRONMENT_ENUM, ignore_case=True
+    "DEPLOY_ENVIRONMENT", DeployEnvironment.LOCAL, type=DeployEnvironment, ignore_case=True
 )
 
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -48,7 +50,7 @@ DEPLOY_ENVIRONMENT = env.enum(
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if DEPLOY_ENVIRONMENT != ENVIRONMENT_ENUM.TEST:
+if DEPLOY_ENVIRONMENT != DeployEnvironment.TEST:
     DEBUG = env.bool("DEBUG", default=False)
 else:
     DEBUG = False
@@ -148,6 +150,67 @@ TEMPLATES = [
 WSGI_APPLICATION = "project.wsgi.application"
 
 
+## Logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "huntsite.logging.InterceptHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": env("DJANGO_LOG_LEVEL", "INFO"),
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": env("DJANGO_REQUEST_LOG_LEVEL", "WARNING"),
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["console"],
+            "level": env("DJANGO_SERVER_LOG_LEVEL", "WARNING"),
+            "propagate": False,
+        },
+    },
+}
+
+# Loguru settings
+
+LOCAL_FORMAT = (
+    "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> "
+    "| <level>{level: <8}</level> "
+    "| <yellow>{extra[request_id]}</yellow> "
+    "| <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> "
+    "- <level>{message}</level>"
+)
+PRODUCTION_FORMAT = "{extra[request_id]} | {name}:{function}:{line} - {message}"
+
+logger.configure(extra={"request_id": "N/A"})
+
+logger.remove(0)
+if DEPLOY_ENVIRONMENT == DeployEnvironment.LOCAL:
+    # Console logger
+    logger.add(sys.stderr, format=LOCAL_FORMAT, backtrace=True, diagnose=True)
+elif DEPLOY_ENVIRONMENT == DeployEnvironment.PRODUCTION:
+    # Console logger
+    logger.add(sys.stderr, format=PRODUCTION_FORMAT, backtrace=True, diagnose=True)
+elif DEPLOY_ENVIRONMENT == DeployEnvironment.TEST:
+    # No logging
+    pass
+
+# Logtail
+LOGTAIL_SOURCE_TOKEN = env("LOGTAIL_SOURCE_TOKEN", None)
+if LOGTAIL_SOURCE_TOKEN:
+    from logtail import LogtailHandler
+
+    logtail_handler = LogtailHandler(source_token=LOGTAIL_SOURCE_TOKEN)
+    logger.add(logtail_handler, format=PRODUCTION_FORMAT, backtrace=False, diagnose=False)
+
+
 ## Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -159,6 +222,41 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+## Cache
+
+REDIS_URL = env("REDIS_URL", None)
+if DEPLOY_ENVIRONMENT == DeployEnvironment.PRODUCTION:
+    if REDIS_URL:
+        CACHES = {
+            "default": {
+                "BACKEND": "django.core.cache.backends.redis.RedisCache",
+                "LOCATION": "redis://127.0.0.1:6379",
+            }
+        }
+    else:
+        CACHES = {
+            "default": {
+                "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            }
+        }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        }
+    }
+logger.info("Using cache backend: " + CACHES["default"]["BACKEND"])
+
+## Sessions
+
+if REDIS_URL:
+    SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+else:
+    SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+logger.info("Using session engine: " + SESSION_ENGINE)
+
 
 ## Auth
 
@@ -248,40 +346,10 @@ CRISPY_TEMPLATE_PACK = "bulma"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
-## Logging
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "huntsite.logging.InterceptHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": env("DJANGO_LOG_LEVEL", "INFO"),
-        },
-        "django.request": {
-            "handlers": ["console"],
-            "level": env("DJANGO_REQUEST_LOG_LEVEL", "WARNING"),
-            "propagate": False,
-        },
-        "django.server": {
-            "handlers": ["console"],
-            "level": env("DJANGO_SERVER_LOG_LEVEL", "WARNING"),
-            "propagate": False,
-        },
-    },
-}
-
-LOGTAIL_SOURCE_TOKEN = env("LOGTAIL_SOURCE_TOKEN", None)
-
 ## Error Monitoring / Sentry
 
 SENTRY_DSN = env("SENTRY_DSN", None)
-if SENTRY_DSN and DEPLOY_ENVIRONMENT != ENVIRONMENT_ENUM.TEST:
+if SENTRY_DSN and DEPLOY_ENVIRONMENT != DeployEnvironment.TEST:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
