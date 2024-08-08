@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods, require_safe
+from loguru import logger
 
 from huntsite.puzzles.forms import GuessForm
 from huntsite.puzzles.models import GuessEvaluation, Puzzle
@@ -19,9 +20,18 @@ def puzzle_list(request):
         and (time_traveling_at := read_time_travel_session_var(request))
     ):
         # Get puzzles based on time travel
+        logger.trace(
+            "User {user} is viewing puzzle list while time traveling at {time_traveling_at}",
+            user=request.user,
+            time_traveling_at=time_traveling_at,
+        )
         puzzle_manager = Puzzle.objects.filter_available_at(time_traveling_at)
     else:
         # Only get available puzzles
+        if request.user.is_anonymous:
+            logger.trace("Anonymous user is viewing the puzzle list")
+        else:
+            logger.trace("Team '{user.team_name}' is viewing puzzle list", user=request.user)
         puzzle_manager = Puzzle.available
 
     puzzles = (
@@ -55,6 +65,11 @@ def puzzle_detail(request, slug: str):
     puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
 
     if request.method == "GET":
+        logger.trace(
+            "Team '{user.team_name}' is viewing puzzle {puzzle}.",
+            user=request.user,
+            puzzle=puzzle,
+        )
         context = {
             "puzzle": puzzle,
             "guesses": puzzle_selectors.puzzle_guess_list(puzzle, request.user),
@@ -72,6 +87,12 @@ def puzzle_detail(request, slug: str):
                 "evaluation_message": GUESS_EVALUATION_MESSAGES[evaluation],
             }
         else:
+            logger.error(
+                "Team '{user.team_name}' submitted invalid guess for puzzle {puzzle}: {payload}",
+                user=request.user,
+                puzzle=puzzle,
+                payload=request.POST,
+            )
             context = {
                 "evaluation_message": "Sorry, something went wrong!",
             }
