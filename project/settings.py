@@ -204,11 +204,12 @@ elif DEPLOY_ENVIRONMENT == DeployEnvironment.TEST:
 
 # Logtail
 LOGTAIL_SOURCE_TOKEN = env("LOGTAIL_SOURCE_TOKEN", None)
-if LOGTAIL_SOURCE_TOKEN:
-    from logtail import LogtailHandler
+# if LOGTAIL_SOURCE_TOKEN:
+#     from logtail import LogtailHandler
 
-    logtail_handler = LogtailHandler(source_token=LOGTAIL_SOURCE_TOKEN)
-    logger.add(logtail_handler, format=PRODUCTION_FORMAT, backtrace=False, diagnose=False)
+#     logger.info("Adding logtail handler...")
+#     logtail_handler = LogtailHandler(source_token=LOGTAIL_SOURCE_TOKEN)
+#     logger.add(logtail_handler, format=PRODUCTION_FORMAT, backtrace=False, diagnose=False)
 
 
 ## Database
