@@ -3,7 +3,7 @@ from time import sleep
 
 from bs4 import BeautifulSoup
 from faker import Faker
-from locust import HttpUser, between, tag, task
+from locust import HttpUser, between, run_single_user, tag, task
 from locust.exception import RescheduleTask
 
 LOGIN_URL = "/accounts/login/"
@@ -99,5 +99,14 @@ class WebsiteUser(HttpUser):
             # Look at story
             response = self.client.get(STORY_URL)
             sleep(3)
-            # Logout
-            self._post(LOGOUT_URL, {}, response.cookies["csrftoken"])
+        # Logout
+        self._post(LOGOUT_URL, {}, response.cookies["csrftoken"])
+        return
+
+
+if __name__ == "__main__":
+    run_single_user(
+        WebsiteUser,
+        include_time=True,
+        include_context=True,
+    )
