@@ -140,7 +140,6 @@ TEMPLATES = [
                 "huntsite.context_processors.meta",
                 "huntsite.context_processors.canonical",
                 "huntsite.context_processors.santa_missing",
-                "huntsite.context_processors.user",
                 "huntsite.tester_utils.context_processors.time_travel",
             ],
         },

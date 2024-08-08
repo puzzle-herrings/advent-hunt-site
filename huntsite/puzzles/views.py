@@ -14,11 +14,7 @@ from huntsite.tester_utils.session_handlers import read_time_travel_session_var
 @require_safe
 def puzzle_list(request):
     """View to display a list of all puzzles."""
-    if (
-        not request.user.is_anonymous
-        and request.user.is_tester
-        and (time_traveling_at := read_time_travel_session_var(request))
-    ):
+    if request.user.is_tester and (time_traveling_at := read_time_travel_session_var(request)):
         # Get puzzles based on time travel
         logger.trace(
             "User {user} is viewing puzzle list while time traveling at {time_traveling_at}",
@@ -28,10 +24,7 @@ def puzzle_list(request):
         puzzle_manager = Puzzle.objects.filter_available_at(time_traveling_at)
     else:
         # Only get available puzzles
-        if request.user.is_anonymous:
-            logger.trace("Anonymous user is viewing the puzzle list")
-        else:
-            logger.trace("Team '{user.team_name}' is viewing puzzle list", user=request.user)
+        logger.trace("Team '{user.team_name}' is viewing puzzle list", user=request.user)
         puzzle_manager = Puzzle.available
 
     puzzles = (
