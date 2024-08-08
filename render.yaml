@@ -18,6 +18,7 @@ services:
     region: ohio
     startCommand: "./scripts/deploy.sh"
     type: web
+    healthCheckPath: "/health/"
 
   - type: redis
     name: advent-hunt-redis
