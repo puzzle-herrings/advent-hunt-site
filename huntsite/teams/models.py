@@ -1,6 +1,6 @@
 from django.conf import settings
 import django.contrib.auth
-from django.contrib.auth import get_user
+from django.contrib.auth import get_user, logout
 import django.contrib.auth.context_processors
 from django.contrib.auth.context_processors import auth
 from django.contrib.auth.models import AbstractUser
@@ -73,6 +73,16 @@ def get_user_patched(request):
 
 
 django.contrib.auth.get_user = get_user_patched
+
+
+def logout_patched(request):
+    """Patch the logout function to return our custom AnonymousUser."""
+    logout(request)
+    if isinstance(request.user, DefaultAnonymousUser):
+        request.user = AnonymousUser()
+
+
+django.contrib.auth.logout = logout_patched
 
 
 def auth_patched(request):
