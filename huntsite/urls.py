@@ -16,6 +16,7 @@ urlpatterns = [
     path("", include("huntsite.teams.urls")),
     path("puzzles/", include("huntsite.puzzles.urls")),
     path("testing/", include("huntsite.tester_utils.urls")),
+    path("health/", views.health, name="health"),
     path("500/", views.server_error, name="server_error"),
     (
         path("robots.txt", views.robots_disallow_all, name="robots_disallow_all")

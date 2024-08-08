@@ -20,6 +20,11 @@ _ROBOTS_TXT_DISALLOW_ALL = dedent(
 
 
 @require_safe
+def health(request):
+    return HttpResponse()
+
+
+@require_safe
 def robots_disallow_all(request):
     return HttpResponse(_ROBOTS_TXT_DISALLOW_ALL, content_type="text/plain")
 
