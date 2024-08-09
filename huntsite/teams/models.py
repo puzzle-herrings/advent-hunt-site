@@ -1,5 +1,10 @@
 from django.conf import settings
+import django.contrib.auth
+from django.contrib.auth import get_user, logout
+import django.contrib.auth.context_processors
+from django.contrib.auth.context_processors import auth
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AnonymousUser as DefaultAnonymousUser
 from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
 from django.db.models.signals import post_save
@@ -49,6 +54,47 @@ class User(AbstractUser):
         if self.is_staff:
             self.is_tester = True
         super().save(*args, **kwargs)
+
+
+class AnonymousUser(DefaultAnonymousUser):
+    """Custom AnonymousUser with additional fields from our custom User model."""
+
+    team_name = "AnonymousUser"
+    is_tester = False
+    is_finished = False
+
+
+def get_user_patched(request):
+    """Patch the get_user function to return our custom AnonymousUser."""
+    user = get_user(request)
+    if isinstance(user, DefaultAnonymousUser):
+        return AnonymousUser()
+    return user
+
+
+django.contrib.auth.get_user = get_user_patched
+
+
+def logout_patched(request):
+    """Patch the logout function to return our custom AnonymousUser."""
+    logout(request)
+    if isinstance(request.user, DefaultAnonymousUser):
+        request.user = AnonymousUser()
+
+
+django.contrib.auth.logout = logout_patched
+
+
+def auth_patched(request):
+    """Patch the auth context processor to return our custom AnonymousUser."""
+    context = auth(request)
+    if isinstance(context["user"], DefaultAnonymousUser):
+        context["user"] = AnonymousUser()
+        context["perms"].user = context["user"]
+    return context
+
+
+django.contrib.auth.context_processors.auth = auth_patched
 
 
 class TeamProfile(models.Model):
