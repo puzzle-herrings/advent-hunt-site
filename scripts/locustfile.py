@@ -84,7 +84,7 @@ class WebsiteUser(HttpUser):
         sleep(3)
         for puzzle_url in puzzle_urls:
             # Work on a random puzzle
-            for _ in range(10):
+            for _ in range(30):
                 # Submit 10 guesses
                 response = self.client.get(puzzle_url)
                 guess_text = self._guess_text_factory()
