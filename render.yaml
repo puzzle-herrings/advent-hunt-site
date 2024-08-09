@@ -18,6 +18,7 @@ services:
     region: ohio
     startCommand: "./scripts/deploy.sh"
     type: web
+    autoDeploy: false
     healthCheckPath: "/health/"
 
   - type: redis
