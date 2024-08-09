@@ -1,0 +1,6 @@
+{% autoescape off %}Ho ho ho!
+
+{% block content %}{% endblock content %}
+
+Merry Christmas!
+{% endautoescape %}

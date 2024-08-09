@@ -31,9 +31,12 @@ django==5.0.4
     #   crispy-bulma
     #   dj-database-url
     #   django-allauth
+    #   django-anymail
     #   django-crispy-forms
     #   django-debug-toolbar
 django-allauth==0.63.6
+    # via -r requirements/deploy.txt
+django-anymail==11.1
     # via -r requirements/deploy.txt
 django-cache-url==3.4.5
     # via -r requirements/deploy.txt
@@ -97,6 +100,7 @@ redis==5.0.8
 requests==2.32.3
     # via
     #   -r requirements/deploy.txt
+    #   django-anymail
     #   logtail-python
 sentry-sdk==2.12.0
     # via -r requirements/deploy.txt
@@ -116,6 +120,7 @@ typing-extensions==4.12.2
 urllib3==2.2.2
     # via
     #   -r requirements/deploy.txt
+    #   django-anymail
     #   requests
     #   sentry-sdk
 uvicorn==0.30.1

@@ -343,8 +343,18 @@ CRISPY_TEMPLATE_PACK = "bulma"
 
 ## Email
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if EMAIL_USE_MAILGUN := env.bool("EMAIL_USE_MAILGUN", default=False):
+    ANYMAIL = {
+        "MAILGUN_API_KEY": env("EMAIL_MAILGUN_API_KEY"),
+        "MAILGUN_SENDER_DOMAIN": env("EMAIL_MAILGUN_SENDER_DOMAIN"),
+    }
+    EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+    DEFAULT_FROM_EMAIL = env("EMAIL_FROM_ADDRESS")
+    SERVER_EMAIL = env("EMAIL_FROM_ADDRESS")
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+logger.info("Using email backend: " + EMAIL_BACKEND)
 
 ## Error Monitoring / Sentry
 

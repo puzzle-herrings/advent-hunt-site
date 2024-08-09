@@ -1,6 +1,7 @@
 crispy-bulma
 django
 django-allauth
+django-anymail[mailgun]
 django-crispy-forms
 django-debug-toolbar
 django-robots>=4.0.0

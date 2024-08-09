@@ -52,9 +52,12 @@ django==5.0.4
     #   crispy-bulma
     #   dj-database-url
     #   django-allauth
+    #   django-anymail
     #   django-crispy-forms
     #   django-debug-toolbar
 django-allauth==0.63.6
+    # via -r requirements/demo.txt
+django-anymail==11.1
     # via -r requirements/demo.txt
 django-cache-url==3.4.5
     # via -r requirements/demo.txt
@@ -206,6 +209,7 @@ regex==2023.12.25
 requests==2.32.3
     # via
     #   -r requirements/demo.txt
+    #   django-anymail
     #   locust
     #   logtail-python
 ruff==0.5.3
@@ -249,6 +253,7 @@ typing-extensions==4.12.2
 urllib3==2.2.2
     # via
     #   -r requirements/demo.txt
+    #   django-anymail
     #   geventhttpclient
     #   requests
     #   sentry-sdk
