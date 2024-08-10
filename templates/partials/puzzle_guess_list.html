@@ -1,4 +1,7 @@
-{% if evaluation_message %}<p class="block">{{ evaluation_message }}</p>{% endif %}
+{% if evaluation_message %}
+  <p class="block">{{ evaluation_message }}</p>
+  {% if story_unlock_message %}<p class="block">{{ story_unlock_message }}</p>{% endif %}
+{% endif %}
 {% load static %}
 <link href="{% static 'css/liberationmono.css' %}" rel="stylesheet" />
 <table class="table">

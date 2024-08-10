@@ -1,6 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from django.template.response import TemplateResponse
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_http_methods, require_safe
 from loguru import logger
 
@@ -72,13 +75,27 @@ def puzzle_detail(request, slug: str):
 
     elif request.method == "POST":
         # Submission to answer checker
+        context = {}
         form = GuessForm(request.POST, slug=slug)
         if form.is_valid():
             guess_text = form.cleaned_data["guess"]
             evaluation = puzzle_services.guess_submit(puzzle, request.user, guess_text)
-            context = {
-                "evaluation_message": GUESS_EVALUATION_MESSAGES[evaluation],
-            }
+            context["evaluation_message"] = GUESS_EVALUATION_MESSAGES[evaluation]
+            # Check for story unlock
+            if evaluation == GuessEvaluation.CORRECT and hasattr(puzzle, "storyentry"):
+                story_unlock_message = mark_safe(
+                    """You've unlocked a new story entry: <a href="{url}">"{title}"</a>""".format(
+                        url=reverse("story"),
+                        title=puzzle.storyentry.title,
+                    )
+                )
+                context["story_unlock_message"] = story_unlock_message
+                messages.add_message(
+                    request,
+                    level=messages.INFO,
+                    message=story_unlock_message,
+                    extra_tags="story-unlock",
+                )
         else:
             logger.error(
                 "Team '{user.team_name}' submitted invalid guess for puzzle {puzzle}: {payload}",
@@ -86,9 +103,8 @@ def puzzle_detail(request, slug: str):
                 puzzle=puzzle,
                 payload=request.POST,
             )
-            context = {
-                "evaluation_message": "Sorry, something went wrong!",
-            }
+            context["evaluation_message"] = "Sorry, something went wrong!"
+
         all_puzzle_guesses = puzzle_selectors.puzzle_guess_list(puzzle, request.user)
         context["guesses"] = all_puzzle_guesses
         return render(request, "partials/puzzle_guess_list.html", context)
