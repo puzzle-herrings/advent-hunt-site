@@ -90,6 +90,9 @@ class MetapuzzleInfo(models.Model):
     icon = models.CharField(max_length=255, blank=False)
     is_final = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name_plural = "Metapuzzle Info"
+
     def clean(self):
         if self.is_final:
             if MetapuzzleInfo.objects.filter(is_final=True).exists():
