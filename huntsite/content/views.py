@@ -36,9 +36,8 @@ def story_page(request):
 
 
 @require_safe
-@login_required
 def victory_page(request):
-    if not request.user.is_finished or not request.user.is_tester:
+    if not request.user.is_finished and not request.user.is_tester:
         raise Http404
 
     entry = models.StoryEntry.objects.get(is_final=True)

@@ -3,7 +3,7 @@
 {% block content %}
   <h1 class="title is-1 block">The story so far...</h1>
   {% comment %} Pre-hunt story {% endcomment %}
-  <div class="card block is-toggleable">
+  <div class="card block story-card is-toggleable">
     <header class="card-header">
       <h3 class="card-header-title is-size-4">You find an extravagant holiday card in your mailbox...</h3>
       {% if santa_missing %}
@@ -18,7 +18,7 @@
   </div>
   {% comment %} Hunt live story {% endcomment %}
   {% if santa_missing %}
-    <div class="card block is-toggleable">
+    <div class="card block story-card is-toggleable">
       <header class="card-header">
         <h3 class="card-header-title is-size-4">You arrive at the North Pole…</h3>
         {% if entries %}
@@ -34,7 +34,7 @@
   {% endif %}
   {% comment %} --- {% endcomment %}
   {% for entry in entries %}
-    <div class="card block is-toggleable">
+    <div class="card story-card block is-toggleable">
       <header class="card-header">
         <h3 class="card-header-title is-size-4">{{ entry.title }}</h3>
         {% if forloop.counter < entries|length %}
