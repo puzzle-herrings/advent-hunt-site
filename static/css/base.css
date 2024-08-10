@@ -169,13 +169,19 @@ samp {
     --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
 
-.rotate {
+.loading-indicator {
     display: inline-block;
     animation: spinner 3s linear infinite;
+    user-select: none;
 }
 
 @keyframes spinner {
     to {
         transform: rotate(360deg);
     }
+}
+
+.htmx-indicator {
+    opacity: 0;
+    transition: opacity 200ms ease-in-out;
 }

@@ -25,7 +25,13 @@ class GuessForm(forms.Form):
             FormGroup(
                 Field("guess"),
                 Submit("submit", "Submit", css_class="is-primary"),
-                HTML('<p class="htmx-indicator is-size-4 rotate">❄</p>'),
+                HTML(
+                    '<div class="pseudorelative-outer">'
+                    '<p class="htmx-indicator pseudorelative-inner loading-indicator is-size-4">'
+                    "❄"
+                    "</p>"
+                    "</div>"
+                ),
                 css_class="is-align-items-center",
             )
         )
