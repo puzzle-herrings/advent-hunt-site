@@ -1,4 +1,4 @@
-from crispy_bulma.layout import FormGroup, Submit
+from crispy_bulma.layout import HTML, FormGroup, Submit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Field, Layout
 from django import forms
@@ -25,5 +25,13 @@ class GuessForm(forms.Form):
             FormGroup(
                 Field("guess"),
                 Submit("submit", "Submit", css_class="is-primary"),
+                HTML(
+                    '<div class="pseudorelative-outer">'
+                    '<p class="htmx-indicator pseudorelative-inner loading-indicator is-size-4">'
+                    "❄"
+                    "</p>"
+                    "</div>"
+                ),
+                css_class="is-align-items-center",
             )
         )
