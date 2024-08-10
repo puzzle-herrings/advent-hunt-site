@@ -4,7 +4,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Guess</th>
+      <th scope="col" align="left">Guess</th>
       <th scope="col" align="center">Evaluation</th>
       <th scope="col" align="center">Time</th>
     </tr>
@@ -12,7 +12,7 @@
   <tbody>
     {% for guess in guesses %}
       <tr>
-        <td>
+        <td align="left">
           <span class="mono">{{ guess.text }}</span>
         </td>
         <td align="center">{{ guess.display_evaluation }}</td>
