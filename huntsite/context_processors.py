@@ -19,6 +19,7 @@ def meta(request):
         "META_AUTHOR": settings.META_AUTHOR,
         "META_KEYWORDS": settings.META_KEYWORDS,
         "META_OG_IMAGE": settings.META_OG_IMAGE,
+        "META_OG_IMAGE_PREHUNT": settings.META_OG_IMAGE_PREHUNT,
     }
 
 

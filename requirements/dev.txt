@@ -7,7 +7,9 @@ asgiref==3.8.1
 asttokens==2.4.1
     # via stack-data
 beautifulsoup4==4.12.3
-    # via -r requirements/dev.in
+    # via
+    #   -r requirements/dev.in
+    #   metadata-parser
 blinker==1.8.2
     # via flask
 brotli==1.1.0
@@ -155,6 +157,8 @@ marshmallow==3.21.3
     #   environs
 matplotlib-inline==0.1.7
     # via ipython
+metadata-parser==0.12.1
+    # via -r requirements/dev.in
 msgpack==1.0.8
     # via
     #   -r requirements/demo.txt
@@ -212,6 +216,10 @@ requests==2.32.3
     #   django-anymail
     #   locust
     #   logtail-python
+    #   metadata-parser
+    #   requests-toolbelt
+requests-toolbelt==1.0.0
+    # via metadata-parser
 ruff==0.5.3
     # via -r requirements/dev.in
 sentry-sdk==2.12.0

@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.test import Client
 from django.utils import timezone
+from metadata_parser import MetadataParser
 import pytest
 
 from huntsite.puzzles.factories import MetapuzzleInfoFactory, PuzzleFactory
@@ -108,3 +109,30 @@ def test_santa_missing(monkeypatch):
     navbar = soup.find("div", class_="navbar-brand")
     assert "static/santa/" in navbar.img["src"]
     assert "static/santa-missing" not in navbar.img["src"]
+
+
+def test_santa_missing_og_image(client, monkeypatch):
+    """The og:image meta tag should change based on the HUNT_IS_LIVE_DATETIME setting."""
+
+    monkeypatch.setattr(
+        settings, "META_OG_IMAGE_PREHUNT", "https://example.com/og_image_prehunt.png"
+    )
+    monkeypatch.setattr(settings, "META_OG_IMAGE", "https://example.com/og_image.png")
+    ## Before changeover date, normal santa
+    monkeypatch.setattr(
+        settings, "HUNT_IS_LIVE_DATETIME", timezone.now() + timezone.timedelta(days=1)
+    )
+
+    response = client.get("/")
+    assert response.status_code == 200
+    meta_parser = MetadataParser(html=response.content.decode())
+    assert meta_parser.get_metadata_link("image") == "https://example.com/og_image_prehunt.png"
+
+    ## After changeover date, santa missing
+    monkeypatch.setattr(
+        settings, "HUNT_IS_LIVE_DATETIME", timezone.now() - timezone.timedelta(days=1)
+    )
+    response = client.get("/")
+    assert response.status_code == 200
+    meta_parser = MetadataParser(html=response.content.decode())
+    assert meta_parser.get_metadata_link("image") == "https://example.com/og_image.png"
