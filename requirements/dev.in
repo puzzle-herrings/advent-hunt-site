@@ -11,3 +11,4 @@ metadata_parser
 pytest-django
 ruff
 tqdm
+xxhash
