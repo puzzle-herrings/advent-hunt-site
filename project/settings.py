@@ -142,7 +142,7 @@ TEMPLATES = [
                 # Local custom context processors
                 "huntsite.context_processors.meta",
                 "huntsite.context_processors.canonical",
-                "huntsite.context_processors.santa_missing",
+                "huntsite.context_processors.hunt_is_live",
                 "huntsite.tester_utils.context_processors.time_travel",
             ],
         },
@@ -378,6 +378,7 @@ META_TITLE = env("META_TITLE")
 META_DESCRIPTION = env("META_DESCRIPTION")
 META_AUTHOR = env("META_AUTHOR")
 META_KEYWORDS = env("META_KEYWORDS")
+META_OG_IMAGE_PREHUNT = env("META_OG_IMAGE_PREHUNT")
 META_OG_IMAGE = env("META_OG_IMAGE")
 
 ## Hunt state

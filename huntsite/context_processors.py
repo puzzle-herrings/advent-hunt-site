@@ -22,17 +22,10 @@ def meta(request):
     }
 
 
-def santa_missing(request):
+def hunt_is_live(request):
     """Context processor to add the Santa missing flag to the context."""
     if request.user.is_tester and (time_traveling_at := read_time_travel_session_var(request)):
         now = time_traveling_at
     else:
         now = timezone.now()
-
-    if now < settings.HUNT_IS_LIVE_DATETIME:
-        return {"santa_missing": False}
-
-    if request.user.is_finished:
-        return {"santa_missing": False}
-
-    return {"santa_missing": True}
+    return {"hunt_is_live": now >= settings.HUNT_IS_LIVE_DATETIME}
