@@ -3,7 +3,8 @@
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item merienda" href="{% url 'home' %}">
-        {% if not santa_missing %}
+        {% if not hunt_is_live or user.is_finished %}
+          {% comment %} Normal Santa Logo {% endcomment %}
           <picture>
             <source srcset="{% static 'santa/icon.svg' %}"
                     width="56"
@@ -15,6 +16,7 @@
                  alt="Santa" />
           </picture>
         {% else %}
+          {% comment %} Santa Missing Logo {% endcomment %}
           <picture>
             <source srcset="{% static 'santa-missing-dark/icon.svg' %}"
                     width="56"

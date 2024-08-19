@@ -53,7 +53,7 @@ format:
 
 # Run tests
 test:
-    DEPLOY_ENVIRONMENT=test pytest
+    DEPLOY_ENVIRONMENT=test pytest -v
 
 createsuperuser:
     python manage.py createsuperuser --noinput

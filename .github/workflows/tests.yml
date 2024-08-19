@@ -25,6 +25,7 @@ jobs:
       META_DESCRIPTION: "Test description"
       META_KEYWORDS: "test, keywords"
       META_OG_IMAGE: "https://example.com/test.png"
+      META_OG_IMAGE_PREHUNT: "https://example.com/test.png"
       SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
     steps:
       - uses: actions/checkout@v4

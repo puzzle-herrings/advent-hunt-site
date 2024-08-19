@@ -6,18 +6,18 @@
   <div class="card block story-card is-toggleable">
     <header class="card-header">
       <h3 class="card-header-title is-size-4">You find an extravagant holiday card in your mailbox...</h3>
-      {% if santa_missing %}
+      {% if hunt_is_live %}
         {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
       {% else %}
         {% include "partials/card_toggle_indicator.html" %}
       {% endif %}
     </header>
-    <div class="card-content content{% if santa_missing %} is-hidden{% endif %}">
+    <div class="card-content content{% if hunt_is_live %} is-hidden{% endif %}">
       {% include "partials/story_prehunt.html" %}
     </div>
   </div>
   {% comment %} Hunt live story {% endcomment %}
-  {% if santa_missing %}
+  {% if hunt_is_live %}
     <div class="card block story-card is-toggleable">
       <header class="card-header">
         <h3 class="card-header-title is-size-4">You arrive at the North Pole…</h3>

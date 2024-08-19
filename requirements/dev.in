@@ -7,6 +7,7 @@ factory-boy
 faker
 ipython
 locust
+metadata_parser
 pytest-django
 ruff
 tqdm
