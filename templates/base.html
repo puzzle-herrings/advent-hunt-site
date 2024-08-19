@@ -3,7 +3,11 @@
 <html lang="en" class="h-100">
   <head>
     <meta charset="UTF-8" />
-    <title>{{ META_TITLE }}</title>
+    <title>
+      {% block title %}
+        {{ META_TITLE }}
+      {% endblock title %}
+    </title>
     <link rel="canonical" href="{{ CANONICAL_URL }}" />
     <meta name="description" content="{{ META_DESCRIPTION }}" />
     <meta name="keywords" content="{{ META_KEYWORDS }}" />
@@ -11,7 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- OpenGraph Metadata-->
     <meta property="og:description" content="{{ META_DESCRIPTION }}" />
-    <meta property="og:title" content="{{ META_TITLE }}" />
+    <meta property="og:title"
+          content="{% block og_title %}{{ META_TITLE }}{% endblock og_title %}" />
     {% if not hunt_is_live %}
       <meta property="og:image" content="{{ META_OG_IMAGE_PREHUNT }}" />
     {% else %}

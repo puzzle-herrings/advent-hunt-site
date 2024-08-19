@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% block title %}
+  {% block og_title %}
+    About | {{ META_TITLE }}
+  {% endblock og_title %}
+{% endblock title %}
 {% block content %}
   <h1 class="title is-1 block">About</h1>
   {% for entry in entries %}

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% block title %}
+  {% block og_title %}
+    {{ team.team_name|truncatechars:36 }} | {{ META_TITLE }}
+  {% endblock og_title %}
+{% endblock title %}
 {% block content %}
   {% include "partials/timestamp_localize_libraries.html" %}
   {% if is_self %}
