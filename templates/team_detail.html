@@ -43,16 +43,18 @@
     <thead>
       <tr>
         <th scope="col">Puzzle</th>
-        <th scope="col">Solve Time</th>
+        {% if is_self %}<th scope="col">Solve Time</th>{% endif %}
       </tr>
     </thead>
     <tbody>
       {% for solve in solves %}
         <tr>
           <td>{{ solve.puzzle.name }}</td>
-          <td>
-            <span class="timestamp">{{ solve.created_at|date:"c" }}</span>
-          </td>
+          {% if is_self %}
+            <td>
+              <span class="timestamp">{{ solve.created_at|date:"c" }}</span>
+            </td>
+          {% endif %}
         </tr>
       {% endfor %}
     </tbody>
