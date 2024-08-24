@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load common_extras %}
 {% load static %}
+{% block title %}
+  Teams | {{ META_TITLE }}
+{% endblock title %}
+{# djlint:off #}
+  {% block og_title %}Teams | {{ META_TITLE }}{% endblock og_title %}
+{# djlint:on #}
 {% block content %}
   <link href="{% static 'css/team_list.css' %}" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"

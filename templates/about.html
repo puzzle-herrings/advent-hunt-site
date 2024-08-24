@@ -1,4 +1,10 @@
 {% extends "base.html" %}
+{% block title %}
+  About | {{ META_TITLE }}
+{% endblock title %}
+{# djlint:off #}
+  {% block og_title %}About | {{ META_TITLE }}{% endblock og_title %}
+{# djlint:on #}
 {% block content %}
   <h1 class="title is-1 block">About</h1>
   {% for entry in entries %}

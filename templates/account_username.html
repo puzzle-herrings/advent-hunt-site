@@ -1,4 +1,7 @@
 {% extends "allauth/layouts/manage.html" %}
+{% block title %}
+  Change username | {{ META_TITLE }}
+{% endblock title %}
 {% block breadcrumbs %}
   <li>
     <a href="{% url 'team_detail' user.id %}">Your Profile</a>

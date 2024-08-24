@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block title %}
+  {{ entry.title }} | {{ META_TITLE }}
+{% endblock title %}
 {% block content %}
   <h1 class="title is-1 block">{{ entry.title }}</h1>
   <div class="content block">{{ entry.render_content | safe }}</div>

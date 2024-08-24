@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% block title %}
+  {{ team.team_name|truncatechars:36 }} | {{ META_TITLE }} | {{ META_TITLE }}
+{% endblock title %}
+{# djlint:off #}
+  {% block og_title %}{{ team.team_name|truncatechars:36 }} | {{ META_TITLE }} | {{ META_TITLE }}{% endblock og_title %}
+{# djlint:on #}
 {% block content %}
   {% include "partials/timestamp_localize_libraries.html" %}
   {% if is_self %}
