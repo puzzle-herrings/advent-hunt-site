@@ -1,4 +1,7 @@
 {% extends "account/email.html" %}
+{% block title %}
+  Change or add emails | {{ META_TITLE }}
+{% endblock title %}
 {% block breadcrumbs %}
   <li>
     <a href="{% url 'team_detail' user.id %}">Your Profile</a>

@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% load common_extras %}
+{% block title %}
+  Puzzles | {{ META_TITLE }}
+{% endblock title %}
+{# djlint:off #}
+  {% block og_title %}Puzzles | {{ META_TITLE }}{% endblock og_title %}
+{# djlint:on #}
 {% block content %}
   <link href="{% static 'css/puzzle_list.css' %}" rel="stylesheet" />
   <h1 class="title is-1 block">Puzzles</h1>
