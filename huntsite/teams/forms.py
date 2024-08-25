@@ -11,6 +11,10 @@ from huntsite.teams import models
 class SignupForm(AllAuthSignupForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["email"].help_text = (
+            "(Private) We will only ever use your email to contact you for "
+            "purposes related directly to the hunt."
+        )
         self.fields["username"].help_text = "(Private) Used only for logging in."
         self.fields["team_name"] = forms.CharField(
             max_length=255,

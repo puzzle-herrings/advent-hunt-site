@@ -13,3 +13,13 @@
     <a href="#" aria-current="page">Change or Add Emails</a>
   </li>
 {% endblock breadcrumbs %}
+{% block content %}
+  {{ block.super }}
+  <p class="has-text-grey block">
+    <i class="bi bi-info-circle"></i>
+    You can change or add emails to your account using the form above.
+    We will only ever use your email addresses to communicate with you about your account or about the hunt.
+    We will never share your email addresses with anyone else.
+    All email addresses added here will receive announcements about the hunt.
+  </p>
+{% endblock content %}
