@@ -4,16 +4,39 @@
 {% block title %}
   {{ puzzle.name }} | {{ META_TITLE }}
 {% endblock title %}
+{% block header_extra %}
+  {% include "partials/timestamp_localize_libraries.html" %}
+{% endblock header_extra %}
 {% block body %}
   <section class="section no-bottom-padding">
     <div class="container has-text-centered">
       {% include "partials/messages.html" %}
-      {% include "partials/timestamp_localize_libraries.html" %}
       <link href="{% static 'css/puzzle_detail.css' %}" rel="stylesheet" />
       <h1 class="title is-1 block">
         {{ puzzle.name }}
         {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
       </h1>
+      {% if puzzle.errata %}
+        <div id="errata" class="card is-toggleable block">
+          <header class="card-header">
+            <p class="card-header-title">
+              Errata ({{ puzzle.errata.all|length }})
+              <span class="has-text-grey-light">&nbsp;—
+                <span class="errata-timestamp">{{ puzzle.errata.first.published_at|date:"c" }}</span>
+              </span>
+            </p>
+            {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
+          </header>
+          <div class="card-content has-text-left is-hidden">
+            {% for erratum in puzzle.errata.all %}
+              <p class="block">
+                <strong><span class="errata-timestamp">{{ erratum.published_at|date:"c" }}</span></strong> — {{ erratum.text }}
+              </p>
+            {% endfor %}
+          </div>
+        </div>
+        {% include "partials/timestamp_localize_script.html" with timestamp_class="errata-timestamp" output_format="MMM D, YYYY hh:mm A z" %}
+      {% endif %}
       <div id="answer-checker" class="card is-toggleable block">
         <header class="card-header">
           <p class="card-header-title">Check&nbsp;answer</p>

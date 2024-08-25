@@ -63,6 +63,8 @@
             integrity="sha512-JvpjarJlOl4sW26MnEb3IdSAcGdeTeOaAlu2gUZtfFrRgnChdzELOZKl0mN6ZvI0X+xiX5UMvxjK2Rx2z/fliw=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"></script>
+    {% block header_extra %}
+    {% endblock header_extra %}
     <script>
       // Only load goatcounter for production domain
       if (window.location.host !== 'www.adventhunt.com' && window.location.host !== 'adventhunt.com') {

@@ -40,19 +40,54 @@ class PuzzleAdminForm(UneditableAsReadOnlyAdminMixin, forms.ModelForm):
         return cleaned_data
 
 
+class AdventCalendarEntryInline(admin.TabularInline):
+    model = models.AdventCalendarEntry
+
+
+class MetaPuzzleInfoInline(admin.TabularInline):
+    model = models.MetapuzzleInfo
+    extra = 0
+
+
+class ErratumInline(admin.TabularInline):
+    model = models.Erratum
+    extra = 0
+
+
 @admin.register(models.Puzzle)
 class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     form = PuzzleAdminForm
-    list_display = ("name", "answer", "calendar_entry_day", "available_at", "is_available")
+    inlines = (
+        AdventCalendarEntryInline,
+        MetaPuzzleInfoInline,
+        ErratumInline,
+    )
+    list_display = (
+        "name",
+        "answer",
+        "calendar_entry_day",
+        "meta_icon",
+        "is_final",
+        "available_at",
+        "is_available",
+    )
     ordering = ("calendar_entry__day",)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.with_calendar_entry()
 
-    @admin.display(description="Calendar Entry Day")
+    @admin.display(description="Day")
     def calendar_entry_day(self, obj):
         return obj.calendar_entry.day
+
+    @admin.display(description="Meta")
+    def meta_icon(self, obj):
+        return obj.meta_info.icon if obj.meta_info else None
+
+    @admin.display(description="Final")
+    def is_final(self, obj):
+        return obj.meta_info.is_final if (obj.meta_info and obj.meta_info.is_final) else None
 
 
 @admin.register(models.MetapuzzleInfo)

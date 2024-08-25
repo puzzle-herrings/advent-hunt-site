@@ -58,7 +58,8 @@ GUESS_EVALUATION_MESSAGES = {
 def puzzle_detail(request, slug: str):
     """View to display the content page of a single puzzle and take guesses."""
     puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
-    puzzle = get_object_or_404(puzzle_manager.all(), slug=slug)
+    queryset = puzzle_manager.with_errata()
+    puzzle = get_object_or_404(queryset, slug=slug)
 
     if request.method == "GET":
         logger.trace(
