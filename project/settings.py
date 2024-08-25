@@ -359,6 +359,12 @@ else:
 
 logger.info("Using email backend: " + EMAIL_BACKEND)
 
+## Turnstile
+if (USE_TURNSTILE := env("USE_TURNSTILE", False)) and DEPLOY_ENVIRONMENT != DeployEnvironment.TEST:
+    INSTALLED_APPS.append("turnstile")
+    TURNSTILE_SITEKEY = env("TURNSTILE_SITEKEY")
+    TURNSTILE_SECRET = env("TURNSTILE_SECRET")
+
 ## Error Monitoring / Sentry
 
 SENTRY_DSN = env("SENTRY_DSN", None)

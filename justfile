@@ -33,9 +33,9 @@ requirements:
 
 # Create requirements lockfile
 compile-requirements:
-    uv pip compile requirements/deploy.in -o requirements/deploy.txt
-    uv pip compile requirements/demo.in -o requirements/demo.txt
-    uv pip compile requirements/dev.in -o requirements/dev.txt
+    uv pip compile requirements/deploy.in -o requirements/deploy.txt --generate-hashes
+    uv pip compile requirements/demo.in -o requirements/demo.txt --generate-hashes
+    uv pip compile requirements/dev.in -o requirements/dev.txt --generate-hashes
 
 # Lint the project
 lint:

@@ -4,6 +4,8 @@ from crispy_bulma.layout import FormGroup, Submit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Field, Layout
 from django import forms
+from django.conf import settings
+from turnstile.fields import TurnstileField
 
 from huntsite.teams import models
 
@@ -17,6 +19,9 @@ class SignupForm(AllAuthSignupForm):
             label="Team Name",
             help_text="(Public) How your team will be displayed.",
         )
+        if settings.USE_TURNSTILE:
+            self.fields["turnstile"] = TurnstileField()
+
         # Add team_name after username
         field_order = list(self.fields.keys())
         field_order.insert(field_order.index("username") + 1, "team_name")
