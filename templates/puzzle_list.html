@@ -16,7 +16,7 @@
         <div class="box {% if puzzle.is_solved %}solved{% else %}available{% endif %}">
           <p class="day block">Teaser</p>
           <p class="puzzle-name block">
-            <a href="{{ puzzle.get_url }}">{{ puzzle.name }}</a>
+            <a href="{{ puzzle.get_absolute_url }}">{{ puzzle.name }}</a>
           </p>
           <p class="block">
             {% if puzzle.is_solved %}
@@ -45,7 +45,7 @@
         <tr>
           <td scope="row" class="has-text-right">{{ puzzle.calendar_entry.day }}</td>
           <td class="puzzle-name">
-            <a href="{{ puzzle.get_url }}">
+            <a href="{{ puzzle.get_absolute_url }}">
               {% if puzzle.meta_info %}<strong>{% endif %}
                 {{ puzzle.name }}
                 {% if puzzle.meta_info %}</strong>{% endif %}

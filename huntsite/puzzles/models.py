@@ -74,7 +74,7 @@ class Puzzle(models.Model):
     def is_available(self):
         return self.available_at <= timezone.now()
 
-    def get_url(self):
+    def get_absolute_url(self):
         """Returns the URL for the detail page of the puzzle."""
         return reverse("puzzle_detail", kwargs={"slug": self.slug})
 
