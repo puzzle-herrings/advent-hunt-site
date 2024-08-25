@@ -20,6 +20,11 @@ class PuzzleQuerySet(models.QuerySet):
     def with_meta_info(self):
         return self.select_related("meta_info")
 
+    def with_errata(self):
+        return self.prefetch_related(
+            models.Prefetch("errata", queryset=Erratum.objects.order_by("-published_at"))
+        )
+
     def with_solves_by_user(self, user):
         if user.is_anonymous:
             return self.annotate(is_solved=models.Value(False, output_field=models.BooleanField()))
@@ -69,7 +74,7 @@ class Puzzle(models.Model):
     def is_available(self):
         return self.available_at <= timezone.now()
 
-    def get_url(self):
+    def get_absolute_url(self):
         """Returns the URL for the detail page of the puzzle."""
         return reverse("puzzle_detail", kwargs={"slug": self.slug})
 
@@ -97,6 +102,21 @@ class MetapuzzleInfo(models.Model):
         if self.is_final:
             if MetapuzzleInfo.objects.filter(is_final=True).exists():
                 raise ValidationError("There can only be one final metapuzzle.")
+
+
+class Erratum(models.Model):
+    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE, related_name="errata")
+    text = models.TextField()
+    published_at = models.DateTimeField(default=timezone.now)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Errata"
+
+    def __str__(self):
+        return f"{self.puzzle.name} - {self.created_at}"
 
 
 class GuessEvaluation(models.TextChoices):

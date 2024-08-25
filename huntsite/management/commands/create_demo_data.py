@@ -66,6 +66,13 @@ class Command(BaseCommand):
             puzzles[0].full_clean()
             puzzles[0].save()
 
+            # Puzzle zero has some errata
+            for i in range(3):
+                puzzle_factories.ErratumFactory(
+                    puzzle=puzzles[0],
+                    published_at=timezone.now() + timezone.timedelta(seconds=i * 10),
+                )
+
             # Puzzles for days 7, 14, and 23 are metas. Puzzle 24 is the final.
             for day, icon in [(7, "🤶"), (14, "🦌"), (23, "🧸")]:
                 puzzle_factories.MetapuzzleInfoFactory(puzzle=puzzles[day], icon=icon)

@@ -52,6 +52,14 @@ class MetapuzzleInfoFactory(factory.django.DjangoModelFactory):
     is_final = False
 
 
+class ErratumFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "puzzles.Erratum"
+
+    puzzle = factory.SubFactory(PuzzleFactory)
+    text = factory.Faker("paragraph")
+
+
 @factory.django.mute_signals(post_save)
 class AdventCalendarEntryFactory(factory.django.DjangoModelFactory):
     puzzle = factory.SubFactory("huntsite.puzzles.factories.PuzzleFactory", calendar_entry=None)

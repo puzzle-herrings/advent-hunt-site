@@ -6,8 +6,10 @@
 {# djlint:off #}
   {% block og_title %}{{ team.team_name|truncatechars:36 }} | {{ META_TITLE }} | {{ META_TITLE }}{% endblock og_title %}
 {# djlint:on #}
-{% block content %}
+{% block header_extra %}
   {% include "partials/timestamp_localize_libraries.html" %}
+{% endblock header_extra %}
+{% block content %}
   {% if is_self %}
     <div class="notification is-info">
       <div class="level">
