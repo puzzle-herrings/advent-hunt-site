@@ -16,7 +16,7 @@
         {{ puzzle.name }}
         {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
       </h1>
-      {% if puzzle.errata %}
+      {% if puzzle.errata.exists %}
         <div id="errata" class="card is-toggleable block">
           <header class="card-header">
             <p class="card-header-title">
