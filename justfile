@@ -52,8 +52,8 @@ format:
     djlint templates --reformat
 
 # Run tests
-test:
-    DEPLOY_ENVIRONMENT=test pytest -v
+test verbosity="-v" file_or_dir="":
+    DEPLOY_ENVIRONMENT=test pytest {{verbosity}} {{file_or_dir}}
 
 createsuperuser:
     python manage.py createsuperuser --noinput
