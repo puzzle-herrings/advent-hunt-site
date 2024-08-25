@@ -20,6 +20,7 @@ drop-db:
 
 # Delete all migrations and regenerate them. Will drop the database.
 delete-migrations: drop-db
+    rm huntsite/content/migrations/0*.py || true
     rm huntsite/puzzles/migrations/0*.py || true
     rm huntsite/teams/migrations/0*.py || true
 
