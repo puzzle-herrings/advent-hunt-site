@@ -185,7 +185,9 @@ class Finish(models.Model):
 
 
 class AdventCalendarEntry(models.Model):
-    puzzle = models.OneToOneField(Puzzle, on_delete=models.CASCADE, related_name="calendar_entry")
+    puzzle = models.OneToOneField(
+        Puzzle, on_delete=models.CASCADE, primary_key=True, related_name="calendar_entry"
+    )
     day = models.IntegerField(default=-1)
 
     class Meta:
