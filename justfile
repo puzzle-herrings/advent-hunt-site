@@ -56,6 +56,10 @@ format:
 test verbosity="-v" file_or_dir="":
     DEPLOY_ENVIRONMENT=test pytest {{verbosity}} {{file_or_dir}}
 
+coverage:
+    DEPLOY_ENVIRONMENT=test coverage run -m pytest
+    coverage report -m
+
 createsuperuser:
     python manage.py createsuperuser --noinput
 

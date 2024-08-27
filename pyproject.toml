@@ -34,3 +34,6 @@ filterwarnings = """
     ignore::DeprecationWarning:metadata_parser.*
     ignore::FutureWarning:metadata_parser.*
 """
+
+[tool.coverage.run]
+source = ["huntsite"]
