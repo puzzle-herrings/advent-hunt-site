@@ -1,6 +1,7 @@
 -r demo.txt
 
 beautifulsoup4
+cloudpathlib[s3]
 coverage
 djlint
 factory-boy
@@ -11,3 +12,5 @@ metadata_parser
 pytest-django
 ruff
 tqdm
+typer
+xxhash
