@@ -4,3 +4,11 @@
     right: 2em;
     z-index: 1000;
 }
+
+.spoiler {
+    background-color: var(--bulma-strong-color);
+}
+
+.spoiler:hover {
+    background-color: var(--bulma-scheme-main);
+}
