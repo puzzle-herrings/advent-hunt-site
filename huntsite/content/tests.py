@@ -72,7 +72,10 @@ def test_story_page(client, monkeypatch):
 
     def _assert_invitation_available(story_cards: list[Tag], is_hidden: bool):
         invitation_story_card = story_cards[0]
-        assert "You find an extravagant holiday card" in invitation_story_card.text
+        assert (
+            "You receive an exciting piece of mail from the North Pole"
+            in invitation_story_card.text
+        )
         assert (
             "is-hidden" in invitation_story_card.find("div", class_="card-content")["class"]
         ) == is_hidden
