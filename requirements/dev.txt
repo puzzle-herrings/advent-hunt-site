@@ -12,6 +12,12 @@ beautifulsoup4==4.12.3
     #   metadata-parser
 blinker==1.8.2
     # via flask
+boto3==1.35.6
+    # via cloudpathlib
+botocore==1.35.6
+    # via
+    #   boto3
+    #   s3transfer
 brotli==1.1.0
     # via
     #   -r requirements/demo.txt
@@ -31,7 +37,10 @@ click==8.1.7
     #   -r requirements/demo.txt
     #   djlint
     #   flask
+    #   typer
     #   uvicorn
+cloudpathlib==0.18.1
+    # via -r requirements/dev.in
 colorama==0.4.6
     # via djlint
 configargparse==1.7
@@ -133,6 +142,10 @@ jedi==0.19.1
     # via ipython
 jinja2==3.1.4
     # via flask
+jmespath==1.0.1
+    # via
+    #   boto3
+    #   botocore
 jsbeautifier==1.15.1
     # via
     #   cssbeautifier
@@ -147,6 +160,8 @@ loguru==0.7.2
     # via -r requirements/demo.txt
 markdown==3.6
     # via -r requirements/demo.txt
+markdown-it-py==3.0.0
+    # via rich
 markupsafe==2.1.5
     # via
     #   jinja2
@@ -157,6 +172,8 @@ marshmallow==3.21.3
     #   environs
 matplotlib-inline==0.1.7
     # via ipython
+mdurl==0.1.2
+    # via markdown-it-py
 metadata-parser==0.12.1
     # via -r requirements/dev.in
 msgpack==1.0.8
@@ -189,7 +206,9 @@ ptyprocess==0.7.0
 pure-eval==0.2.3
     # via stack-data
 pygments==2.18.0
-    # via ipython
+    # via
+    #   ipython
+    #   rich
 pytest==8.2.2
     # via pytest-django
 pytest-django==4.8.0
@@ -197,6 +216,7 @@ pytest-django==4.8.0
 python-dateutil==2.9.0.post0
     # via
     #   -r requirements/demo.txt
+    #   botocore
     #   faker
 python-dotenv==1.0.1
     # via
@@ -220,14 +240,20 @@ requests==2.32.3
     #   requests-toolbelt
 requests-toolbelt==1.0.0
     # via metadata-parser
+rich==13.8.0
+    # via typer
 ruff==0.5.3
     # via -r requirements/dev.in
+s3transfer==0.10.2
+    # via boto3
 sentry-sdk==2.12.0
     # via -r requirements/demo.txt
 setuptools==71.1.0
     # via
     #   zope-event
     #   zope-interface
+shellingham==1.5.4
+    # via typer
 six==1.16.0
     # via
     #   -r requirements/demo.txt
@@ -253,14 +279,18 @@ traitlets==5.14.3
     # via
     #   ipython
     #   matplotlib-inline
+typer==0.12.5
+    # via -r requirements/dev.in
 typing-extensions==4.12.2
     # via
     #   -r requirements/demo.txt
     #   dj-database-url
     #   ipython
+    #   typer
 urllib3==2.2.2
     # via
     #   -r requirements/demo.txt
+    #   botocore
     #   django-anymail
     #   geventhttpclient
     #   requests

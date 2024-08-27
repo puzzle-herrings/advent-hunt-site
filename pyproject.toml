@@ -1,6 +1,6 @@
 [tool.ruff]
 line-length = 99
-src = ["project/**/*.py", "huntsite/**/*.py"]
+src = ["project/**/*.py", "huntsite/**/*.py", "scripts/**/*.py"]
 extend-exclude = [
     "manage.py",
     "project/asgi.py",

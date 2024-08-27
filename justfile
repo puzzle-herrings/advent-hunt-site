@@ -40,16 +40,16 @@ compile-requirements:
 
 # Lint the project
 lint:
-    ruff format --check project huntsite
-    ruff check project huntsite
+    ruff format --check
+    ruff check
     djlint templates --check
     djlint templates --lint
 
 
 # Autoformat the project
 format:
-    ruff format project huntsite
-    ruff check --fix project huntsite
+    ruff format
+    ruff check --fix
     djlint templates --reformat
 
 # Run tests
