@@ -63,7 +63,7 @@ class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
         ErratumInline,
     )
     list_display = (
-        "name",
+        "title",
         "answer",
         "calendar_entry_day",
         "meta_icon",

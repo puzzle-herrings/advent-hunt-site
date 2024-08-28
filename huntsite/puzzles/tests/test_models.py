@@ -12,7 +12,7 @@ pytestmark = pytest.mark.django_db
 def test_puzzle_create():
     """Creating a puzzle automatically create a advent calendar entry"""
     puzzle = Puzzle.objects.create(
-        name="A New Puzzle",
+        title="A New Puzzle",
         slug="a-new-puzzle",
         answer="A NEW ANSWER",
     )

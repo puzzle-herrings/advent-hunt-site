@@ -44,7 +44,7 @@ class AvailablePuzzleManager(models.Manager):
 
 
 class Puzzle(models.Model):
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
 
     answer = models.CharField(max_length=255)
@@ -68,7 +68,7 @@ class Puzzle(models.Model):
         default_manager_name = "objects"
 
     def __str__(self):
-        return self.name
+        return self.title
 
     @property
     def is_available(self):
@@ -116,7 +116,7 @@ class Erratum(models.Model):
         verbose_name_plural = "Errata"
 
     def __str__(self):
-        return f"{self.puzzle.name} - {self.created_at}"
+        return f"{self.puzzle.title} - {self.created_at}"
 
 
 class GuessEvaluation(models.TextChoices):
@@ -152,9 +152,7 @@ class Guess(models.Model):
         self.text = clean_answer(self.text)
 
     def __str__(self):
-        return (
-            f"{self.user.team_name} - {self.puzzle.name} - {self.text} - {self.display_evaluation}"
-        )
+        return f"{self.user.team_name} - {self.puzzle.title} - {self.text} - {self.display_evaluation}"
 
 
 class Solve(models.Model):
@@ -168,7 +166,7 @@ class Solve(models.Model):
         unique_together = ("user", "puzzle")
 
     def __str__(self):
-        return f"{self.user.team_name} - {self.puzzle.name} - {self.created_at}"
+        return f"{self.user.team_name} - {self.puzzle.title} - {self.created_at}"
 
 
 class Finish(models.Model):
@@ -194,7 +192,7 @@ class AdventCalendarEntry(models.Model):
         verbose_name_plural = "Advent Calendar Entries"
 
     def __str__(self):
-        return f"{self.day} | {self.puzzle.name}"
+        return f"{self.day} | {self.puzzle.title}"
 
 
 @receiver(post_save, sender=Puzzle)

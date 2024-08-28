@@ -31,7 +31,7 @@ class PuzzleFactory(factory.django.DjangoModelFactory):
         model = "puzzles.Puzzle"
         skip_postgeneration_save = True
 
-    name = factory.LazyFunction(title_text_factory)
+    title = factory.LazyFunction(title_text_factory)
     slug = factory.Faker("slug")
     answer = factory.LazyFunction(answer_text_factory)
     pdf_url = factory.fuzzy.FuzzyChoice(MOCK_PUZZLES)

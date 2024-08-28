@@ -16,7 +16,7 @@
         <div class="box {% if puzzle.is_solved %}solved{% else %}available{% endif %}">
           <p class="day block">Teaser</p>
           <p class="puzzle-name block">
-            <a href="{{ puzzle.get_absolute_url }}">{{ puzzle.name }}</a>
+            <a href="{{ puzzle.get_absolute_url }}">{{ puzzle.title }}</a>
           </p>
           <p class="block">
             {% if puzzle.is_solved %}
@@ -47,7 +47,7 @@
           <td class="puzzle-name">
             <a href="{{ puzzle.get_absolute_url }}">
               {% if puzzle.meta_info %}<strong>{% endif %}
-                {{ puzzle.name }}
+                {{ puzzle.title }}
                 {% if puzzle.meta_info %}</strong>{% endif %}
               {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
             </a>

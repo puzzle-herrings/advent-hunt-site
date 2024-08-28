@@ -12,7 +12,7 @@ def test_puzzle_admin_form():
     # keep_going_answers_ should be split and saved as keep_going_answers
     form = PuzzleAdminForm(
         data={
-            "name": "A New Puzzle",
+            "title": "A New Puzzle",
             "slug": "a-new-puzzle",
             "answer": "A NEW ANSWER",
             "pdf_url": "https://example.com/example.pdf",

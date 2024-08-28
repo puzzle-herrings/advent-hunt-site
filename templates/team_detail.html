@@ -51,7 +51,7 @@
     <tbody>
       {% for solve in solves %}
         <tr>
-          <td>{{ solve.puzzle.name }}</td>
+          <td>{{ solve.puzzle.title }}</td>
           {% if is_self %}
             <td>
               <span class="timestamp">{{ solve.created_at|date:"c" }}</span>

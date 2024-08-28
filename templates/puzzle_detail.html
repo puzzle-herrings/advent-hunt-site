@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block title %}
-  {{ puzzle.name }} | {{ META_TITLE }}
+  {{ puzzle.title }} | {{ META_TITLE }}
 {% endblock title %}
 {% block header_extra %}
   {% include "partials/timestamp_localize_libraries.html" %}
@@ -13,7 +13,7 @@
       {% include "partials/messages.html" %}
       <link href="{% static 'css/puzzle_detail.css' %}" rel="stylesheet" />
       <h1 class="title is-1 block">
-        {{ puzzle.name }}
+        {{ puzzle.title }}
         {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
       </h1>
       {% if puzzle.errata.exists %}
