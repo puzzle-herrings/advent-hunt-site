@@ -1,4 +1,5 @@
-<div class="cell has-text-centered puzzle-calendar-cell">
+<div id="calendar-cell-{{ day }}"
+     class="cell has-text-centered puzzle-calendar-cell">
   <div class="box {% if puzzle.is_solved %}solved{% else %}available{% endif %} {% if puzzle.meta_info %}meta{% endif %}">
     <p class="day block">{{ puzzle.calendar_entry.day }}</p>
     <p class="puzzle-name block">

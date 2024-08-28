@@ -12,7 +12,8 @@
   <h1 class="title is-1 block">Puzzles</h1>
   {% if 0 in puzzles_by_day %}
     {% with puzzle=puzzles_by_day|dictget:0 %}
-      <div class="puzzle-calendar-cell has-text-centered block">
+      <div id="calendar-cell-0"
+           class="puzzle-calendar-cell has-text-centered block">
         <div class="box {% if puzzle.is_solved %}solved{% else %}available{% endif %}">
           <p class="day block">Teaser</p>
           <p class="puzzle-name block">
@@ -39,7 +40,7 @@
     {% endfor %}
   </div>
   <h2 class="title is-2 block">List of Puzzles</h2>
-  <table class="table block">
+  <table id="puzzle-list" class="table block">
     <tbody>
       {% for puzzle in puzzles_by_day.values %}
         <tr>

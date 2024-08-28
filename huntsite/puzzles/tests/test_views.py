@@ -8,6 +8,36 @@ from huntsite.teams.factories import UserFactory
 pytestmark = pytest.mark.django_db
 
 
+def test_puzzle_list_view(client):
+    """Puzzle list view displays only available puzzles in calendar and in list table."""
+
+    puzzles = [
+        PuzzleFactory(
+            calendar_entry__day=i,
+            available_at=timezone.now() + timezone.timedelta(days=i - 2.5),
+        )
+        for i in range(4)
+    ]
+
+    response = client.get("/puzzles/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    puzzle_list_table = soup.find("table", id="puzzle-list")
+
+    # Only puzzles 0, 1, 2 should be displayed in calendar
+    for i in (0, 1, 2):
+        calendar_cell = soup.find("div", id=f"calendar-cell-{i}")
+        assert "available" in calendar_cell.find("div").attrs.get("class")
+        assert puzzles[i].title in calendar_cell.text
+        assert puzzles[i].title in puzzle_list_table.text
+
+    # Puzzle 3 should not be displayed in calendar
+    calendar_cell = soup.find("div", id="calendar-cell-3")
+    assert "unavailable" in calendar_cell.find("div").attrs.get("class")
+    assert puzzles[3].title not in calendar_cell.text
+    assert puzzles[3].title not in puzzle_list_table.text
+
+
 def test_puzzle_detail_errata(client):
     """Errata display correctly on puzzle detail page."""
     puzzle = PuzzleFactory()
