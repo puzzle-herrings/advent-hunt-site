@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from django.utils import timezone
 import pytest
+from pytest_django.asserts import assertRedirects
 
 from huntsite.puzzles.factories import ErratumFactory, PuzzleFactory
 from huntsite.teams.factories import UserFactory
@@ -36,6 +37,37 @@ def test_puzzle_list_view(client):
     assert "unavailable" in calendar_cell.find("div").attrs.get("class")
     assert puzzles[3].title not in calendar_cell.text
     assert puzzles[3].title not in puzzle_list_table.text
+
+
+def test_puzzle_detail_auth(client):
+    """Puzzle detail page requires logged in user."""
+    puzzle = PuzzleFactory()
+
+    response = client.get(puzzle.get_absolute_url())
+    assertRedirects(response, f"/accounts/login/?next={puzzle.get_absolute_url()}")
+
+    user = UserFactory()
+    client.force_login(user)
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    assert puzzle.title in response.content.decode()
+
+
+def test_puzzle_detail_availability(client):
+    """Puzzle detail page should be found if puzzle is available."""
+    puzzle = PuzzleFactory(available_at=timezone.now() + timezone.timedelta(days=1))
+
+    user = UserFactory()
+    client.force_login(user)
+
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 404
+
+    puzzle.available_at = timezone.now() - timezone.timedelta(days=1)
+    puzzle.save()
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    assert puzzle.title in response.content.decode()
 
 
 def test_puzzle_detail_errata(client):
