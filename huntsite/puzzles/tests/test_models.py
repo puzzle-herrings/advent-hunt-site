@@ -5,6 +5,7 @@ from huntsite.puzzles.factories import PuzzleFactory
 from huntsite.puzzles.models import AdventCalendarEntry, Puzzle
 from huntsite.puzzles.services import guess_submit
 from huntsite.teams.factories import UserFactory
+from huntsite.teams.models import AnonymousUser
 
 pytestmark = pytest.mark.django_db
 
@@ -32,6 +33,19 @@ def test_puzzle_manager_with_calendar_entry():
     assert calendar_entry_field.is_cached(result_with)
 
 
+def test_puzzle_manager_with_meta_info():
+    """Custom model manager method with_calendar_entry selects related calendar_entry."""
+
+    PuzzleFactory()
+
+    result_without = Puzzle.objects.first()
+    meta_info_field = Puzzle._meta.get_field("meta_info")
+    assert not meta_info_field.is_cached(result_without)
+
+    result_with = Puzzle.objects.with_meta_info().first()
+    assert meta_info_field.is_cached(result_with)
+
+
 def test_puzzle_manager_with_solves_by_user():
     """Custom model manager method with_solves_by_user annotates returned queryset with
     is_solved."""
@@ -49,6 +63,12 @@ def test_puzzle_manager_with_solves_by_user():
     result_with_after_solve = Puzzle.objects.with_solves_by_user(user).first()
     assert hasattr(result_with_after_solve, "is_solved")
     assert result_with_after_solve.is_solved
+
+    # Anonmymous user should not have any solves
+    anon_user = AnonymousUser()
+    result_with_anon = Puzzle.objects.with_solves_by_user(anon_user).first()
+    assert hasattr(result_with_anon, "is_solved")
+    assert not result_with_anon.is_solved
 
 
 def test_available_puzzle_manager():
