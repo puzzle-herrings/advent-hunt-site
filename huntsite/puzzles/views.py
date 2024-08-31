@@ -57,10 +57,11 @@ GUESS_EVALUATION_MESSAGES = {
 def puzzle_detail(request, slug: str):
     """View to display the content page of a single puzzle and take guesses."""
     puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
-    queryset = puzzle_manager.with_errata()
-    puzzle = get_object_or_404(queryset, slug=slug)
 
     if request.method == "GET":
+        queryset = puzzle_manager.with_errata().with_clipboard_data().with_external_links()
+        puzzle = get_object_or_404(queryset, slug=slug)
+
         logger.trace(
             "Team '{user.team_name}' is viewing puzzle {puzzle}.",
             user=request.user,
@@ -77,6 +78,8 @@ def puzzle_detail(request, slug: str):
         return TemplateResponse(request, "puzzle_detail.html", context)
 
     elif request.method == "POST":
+        puzzle = get_object_or_404(puzzle_manager, slug=slug)
+
         # Submission to answer checker
         context = {}
         form = GuessForm(request.POST, slug=slug)

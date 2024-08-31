@@ -49,6 +49,16 @@ class MetaPuzzleInfoInline(admin.TabularInline):
     extra = 0
 
 
+class ClipboardDataInline(admin.TabularInline):
+    model = models.ClipboardData
+    extra = 0
+
+
+class ExternalLinksInline(admin.StackedInline):
+    model = models.ExternalLink
+    extra = 0
+
+
 class ErratumInline(admin.TabularInline):
     model = models.Erratum
     extra = 0
@@ -60,6 +70,8 @@ class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     inlines = (
         AdventCalendarEntryInline,
         MetaPuzzleInfoInline,
+        ClipboardDataInline,
+        ExternalLinksInline,
         ErratumInline,
     )
     list_display = (

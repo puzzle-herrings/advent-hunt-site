@@ -20,6 +20,14 @@ class PuzzleQuerySet(models.QuerySet):
     def with_meta_info(self):
         return self.select_related("meta_info")
 
+    def with_clipboard_data(self):
+        return self.select_related("clipboard_data")
+
+    def with_external_links(self):
+        return self.prefetch_related(
+            models.Prefetch("external_links", queryset=ExternalLink.objects.order_by("order_by"))
+        )
+
     def with_errata(self):
         return self.prefetch_related(
             models.Prefetch("errata", queryset=Erratum.objects.order_by("-published_at"))
@@ -102,6 +110,40 @@ class MetapuzzleInfo(models.Model):
         if self.is_final:
             if MetapuzzleInfo.objects.filter(is_final=True).exists():
                 raise ValidationError("There can only be one final metapuzzle.")
+
+
+class ClipboardData(models.Model):
+    """Model for clipboard data related to a puzzle that users can copy when viewing a puzzle
+    detail page."""
+
+    puzzle = models.OneToOneField(
+        Puzzle, on_delete=models.CASCADE, related_name="clipboard_data", primary_key=True
+    )
+    text = models.TextField()
+
+    class Meta:
+        verbose_name_plural = "Clipboard Data"
+
+
+class ExternalLink(models.Model):
+    """Model for external links related to a puzzle that will be displayed on the puzzle detail
+    page."""
+
+    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE, related_name="external_links")
+    html = models.CharField(
+        default='<i class="bi bi-box-arrow-up-right"></i>',
+        max_length=255,
+        help_text="HTML displayed for the link (child of <a> tag).",
+    )
+    description = models.CharField(max_length=255)
+    url = models.URLField()
+    order_by = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = "External Links"
+
+    def __str__(self):
+        return f"{self.puzzle.title} - {self.description}"
 
 
 class Erratum(models.Model):
