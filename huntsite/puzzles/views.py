@@ -9,7 +9,6 @@ from loguru import logger
 
 from huntsite.puzzles.forms import GuessForm
 from huntsite.puzzles.models import GuessEvaluation, Puzzle
-import huntsite.puzzles.selectors as puzzle_selectors
 import huntsite.puzzles.services as puzzle_services
 from huntsite.tester_utils.session_handlers import read_time_travel_session_var
 
@@ -69,7 +68,10 @@ def puzzle_detail(request, slug: str):
         )
         context = {
             "puzzle": puzzle,
-            "guesses": puzzle_selectors.puzzle_guess_list(puzzle, request.user),
+            "guesses": puzzle_services.guess_list_for_puzzle_and_user(
+                puzzle=puzzle,
+                user=request.user,
+            ),
             "form": GuessForm(slug=slug),
         }
         return TemplateResponse(request, "puzzle_detail.html", context)
@@ -106,6 +108,9 @@ def puzzle_detail(request, slug: str):
             )
             context["evaluation_message"] = "Sorry, something went wrong!"
 
-        all_puzzle_guesses = puzzle_selectors.puzzle_guess_list(puzzle, request.user)
+        all_puzzle_guesses = puzzle_services.guess_list_for_puzzle_and_user(
+            puzzle=puzzle,
+            user=request.user,
+        )
         context["guesses"] = all_puzzle_guesses
         return render(request, "partials/puzzle_guess_list.html", context)

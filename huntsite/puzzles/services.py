@@ -1,15 +1,23 @@
+from typing import Iterable
+
 from django.db import transaction
 from loguru import logger
 
 from huntsite.puzzles.models import Finish, Guess, GuessEvaluation, Puzzle, Solve
 from huntsite.puzzles.utils import normalize_answer
+from huntsite.teams.models import User
 
 ALREADY_SUBMITTED = object()
 """Sentinel object to indicate that a guess has already been submitted."""
 
 
+def guess_list_for_puzzle_and_user(puzzle: Puzzle, user: User) -> Iterable[Guess]:
+    """Function to return all guesses for a puzzle by a team."""
+    return Guess.objects.filter(puzzle=puzzle, user=user).order_by("-created_at")
+
+
 @transaction.atomic
-def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
+def guess_submit(puzzle: Puzzle, user: User, guess_text: str) -> GuessEvaluation:
     """Function to handle the submission of a guess to a puzzle."""
     logger.trace(
         "Team '{user.team_name}' submitted guess for puzzle {puzzle}: {guess}",
@@ -62,3 +70,8 @@ def guess_submit(puzzle: Puzzle, user, guess_text: str) -> GuessEvaluation:
             logger.info("Team {user.team_name} finished the hunt!", user=user)
 
     return evaluation
+
+
+def solve_list_for_user(user: User) -> Iterable[Solve]:
+    """Function to return all solves by a team."""
+    return user.solve_set.order_by("-created_at")

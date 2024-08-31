@@ -23,12 +23,13 @@ class UserManager(DefaultUserManager.from_queryset(UserQuerySet)):
 
 
 class NonprivilegedUserManager(models.Manager):
-    """Custom Manager for the Puzzle model that only returns puzzles that are available."""
+    """Custom Manager for the User model that only returns active nonprivileged users."""
 
     def get_queryset(self) -> models.QuerySet:
         return (
             super()
             .get_queryset()
+            .filter(is_active=True)
             .filter(is_tester=False)
             .filter(is_staff=False)
             .filter(is_superuser=False)
