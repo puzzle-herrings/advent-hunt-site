@@ -1,10 +1,10 @@
 {% if evaluation_message %}
-  <p class="block">{{ evaluation_message }}</p>
+  <p id="evaluation-message" class="block">{{ evaluation_message }}</p>
   {% if story_unlock_message %}<p class="block">{{ story_unlock_message }}</p>{% endif %}
 {% endif %}
 {% load static %}
 <link href="{% static 'css/liberationmono.css' %}" rel="stylesheet" />
-<table class="table">
+<table class="guess-list-table table">
   <thead>
     <tr>
       <th scope="col" align="left">Guess</th>
@@ -14,7 +14,7 @@
   </thead>
   <tbody>
     {% for guess in guesses %}
-      <tr>
+      <tr class="guess-list-row">
         <td align="left">
           <span class="mono">{{ guess.text }}</span>
         </td>

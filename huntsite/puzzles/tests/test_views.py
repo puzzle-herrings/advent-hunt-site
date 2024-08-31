@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 from django.utils import timezone
 import pytest
-from pytest_django.asserts import assertRedirects
+from pytest_django.asserts import assertRedirects, assertTemplateNotUsed, assertTemplateUsed
 
 from huntsite.puzzles.factories import ErratumFactory, PuzzleFactory
+from huntsite.puzzles.services import guess_list_for_puzzle_and_user
 from huntsite.teams.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
@@ -68,6 +69,20 @@ def test_puzzle_detail_availability(client):
     response = client.get(puzzle.get_absolute_url())
     assert response.status_code == 200
     assert puzzle.title in response.content.decode()
+
+
+def test_puzzle_detail_no_answer(client):
+    """Puzzle detail should not include answer in HTML source if not solved."""
+    puzzle = PuzzleFactory(
+        answer="SECRET", available_at=timezone.now() - timezone.timedelta(days=1)
+    )
+
+    user = UserFactory()
+    client.force_login(user)
+
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    assert puzzle.answer not in response.content.decode()
 
 
 def test_puzzle_detail_errata(client):
@@ -152,3 +167,152 @@ def test_puzzle_detail_errata(client):
     assert erratum1.text in entries[1].text
     assert erratum3.published_at.isoformat() in entries[2].text
     assert erratum3.text in entries[2].text
+
+
+def test_puzzle_guess_submit_auth(client):
+    """Puzzle guess submission requires logged in user."""
+    puzzle = PuzzleFactory(available_at=timezone.now() - timezone.timedelta(days=1))
+
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "test"})
+    assertRedirects(response, f"/accounts/login/?next={puzzle.get_absolute_url()}")
+
+    user = UserFactory()
+    client.force_login(user)
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "I AM GUESSING"})
+    assert response.status_code == 200
+    assert "I AM GUESSING" in response.content.decode()
+
+
+def test_puzzle_guess_submit(client):
+    puzzle = PuzzleFactory(
+        available_at=timezone.now() - timezone.timedelta(days=1),
+        answer="FELIZ NAVIDAD",
+    )
+
+    user = UserFactory()
+    client.force_login(user)
+
+    # Incorrect guess
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "I AM GUESSING"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 1
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 1
+    assert "I AM GUESSING" in guess_rows[0].text
+    assert "Incorrect" in guess_rows[0].text
+    eval_message = soup.find(id="evaluation-message")
+    assert "Incorrect" in eval_message.text
+
+    # Second incorrect guess
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "ANOTHER GUESS"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 2
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 2
+    assert "ANOTHER GUESS" in guess_rows[0].text
+    assert "Incorrect" in guess_rows[0].text
+    eval_message = soup.find(id="evaluation-message")
+    assert "Incorrect" in eval_message.text
+
+    # Repeated guess
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "ANOTHER GUESS"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 2
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 2
+    eval_message = soup.find(id="evaluation-message")
+    assert "already submitted" in eval_message.text
+
+    # Correct answer
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "FELIZ NAVIDAD"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 3
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 3
+    assert "FELIZ NAVIDAD" in guess_rows[0].text
+    assert "Correct" in guess_rows[0].text
+    eval_message = soup.find(id="evaluation-message")
+    assert "Correct" in eval_message.text
+
+
+def test_puzzle_guess_submit_keep_going(client):
+    puzzle = PuzzleFactory(
+        available_at=timezone.now() - timezone.timedelta(days=1),
+        answer="FELIZ NAVIDAD",
+        keep_going_answers=["SNOWFLAKE", "JINGLE BELLS"],
+    )
+
+    user = UserFactory()
+    client.force_login(user)
+
+    # Incorrect guess
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "I AM GUESSING"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 1
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 1
+    assert "I AM GUESSING" in guess_rows[0].text
+    assert "Incorrect" in guess_rows[0].text
+    eval_message = soup.find(id="evaluation-message")
+    assert "Incorrect" in eval_message.text
+
+    # Keep going guess
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "JINGLE BELLS"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 2
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 2
+    assert "JINGLE BELLS" in guess_rows[0].text
+    assert "Keep going" in guess_rows[0].text
+    eval_message = soup.find(id="evaluation-message")
+    assert "keep going" in eval_message.text
+
+    # Other keep going guess
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "SNOWFLAKE"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 3
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 3
+    assert "SNOWFLAKE" in guess_rows[0].text
+    assert "Keep going" in guess_rows[0].text
+    eval_message = soup.find(id="evaluation-message")
+    assert "keep going" in eval_message.text
+
+    # Correct answer
+    response = client.post(puzzle.get_absolute_url(), data={"guess": "FELIZ NAVIDAD"})
+    assert response.status_code == 200
+    assert guess_list_for_puzzle_and_user(puzzle=puzzle, user=user).count() == 4
+    assertTemplateUsed(response, "partials/puzzle_guess_list.html")
+    assertTemplateNotUsed(response, "puzzle_detail.html")
+    soup = BeautifulSoup(response.content, "html.parser")
+    guess_rows = soup.find_all("tr", class_="guess-list-row")
+    assert len(guess_rows) == 4
+    assert "FELIZ NAVIDAD" in guess_rows[0].text
+    assert "Correct" in guess_rows[0].text
+    eval_message = soup.find(id="evaluation-message")
+    assert "Correct" in eval_message.text
+
+
+def test_puzzle_solve_with_story_unlock(client):
+    pass
