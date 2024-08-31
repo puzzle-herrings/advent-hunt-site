@@ -334,6 +334,12 @@ STORAGES = {
     },
 }
 
+## WhiteNoise
+
+# https://whitenoise.readthedocs.io/en/stable/django.html#whitenoise-makes-my-tests-run-slow
+if DEPLOY_ENVIRONMENT == DeployEnvironment.TEST:
+    WHITENOISE_AUTOREFRESH = True
+
 ## Django 5 transition setting
 # https://adamj.eu/tech/2023/12/07/django-fix-urlfield-assume-scheme-warnings/
 filterwarnings("ignore", "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated.")
