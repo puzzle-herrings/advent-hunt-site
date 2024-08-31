@@ -7,6 +7,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods, require_safe
 
 from huntsite.puzzles import models as puzzle_models
+from huntsite.puzzles import services as puzzle_services
 from huntsite.teams import forms, models
 
 
@@ -71,7 +72,7 @@ def account_username_update(request):
 def team_detail(request, pk: int):
     """View to display the team profile of the user."""
     team = models.User.objects.with_profile().get(pk=pk)
-    solves = puzzle_models.Solve.objects.filter(user=team).select_related("puzzle")
+    solves = puzzle_services.solve_list_for_user(user=team).select_related("puzzle")
     context = {
         "team": team,
         "solves": solves,
