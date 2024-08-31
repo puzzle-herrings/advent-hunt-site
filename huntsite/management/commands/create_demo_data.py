@@ -73,6 +73,16 @@ class Command(BaseCommand):
                     published_at=timezone.now() + timezone.timedelta(seconds=i * 10),
                 )
 
+            # Puzzle zero has some clipboard data
+            puzzle_factories.ClipboardDataFactory(puzzle=puzzles[0])
+
+            # Puzzle one has an external link
+            puzzle_factories.ExternalLinkFactory(
+                puzzle=puzzles[1],
+                html='<i class="bi bi-file-earmark-spreadsheet"></i>',
+                description="Template spreadsheet available",
+            )
+
             # Puzzles for days 7, 14, and 23 are metas. Puzzle 24 is the final.
             for day, icon in [(7, "🤶"), (14, "🦌"), (23, "🧸")]:
                 puzzle_factories.MetapuzzleInfoFactory(puzzle=puzzles[day], icon=icon)

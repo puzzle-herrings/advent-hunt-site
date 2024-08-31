@@ -52,6 +52,28 @@ class MetapuzzleInfoFactory(factory.django.DjangoModelFactory):
     is_final = False
 
 
+def clipboard_data_text_factory() -> str:
+    nb = random.randint(3, 10)
+    return "\n".join(fake.sentence() for _ in range(nb))
+
+
+class ClipboardDataFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "puzzles.ClipboardData"
+
+    puzzle = factory.SubFactory(PuzzleFactory)
+    text = factory.LazyFunction(clipboard_data_text_factory)
+
+
+class ExternalLinkFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "puzzles.ExternalLink"
+
+    puzzle = factory.SubFactory(PuzzleFactory)
+    description = factory.Faker("sentence")
+    url = "https://example.com"
+
+
 class ErratumFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "puzzles.Erratum"
