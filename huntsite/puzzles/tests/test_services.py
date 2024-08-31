@@ -62,7 +62,8 @@ def test_guess_submit():
 
 
 def test_guess_submit_keep_going():
-    """guess_submit should create a guess and not mark the puzzle as solved if correct but keep going."""
+    """guess_submit should create a guess and not mark the puzzle as solved if correct but keep
+    going."""
     puzzle = PuzzleFactory(
         answer="SUPER SECRET ANSWER",
         keep_going_answers=["KEEP GOING", "STAY THE COURSE"],

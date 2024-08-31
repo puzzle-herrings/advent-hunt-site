@@ -152,7 +152,14 @@ class Guess(models.Model):
         self.text = clean_answer(self.text)
 
     def __str__(self):
-        return f"{self.user.team_name} - {self.puzzle.title} - {self.text} - {self.display_evaluation}"
+        return " - ".join(
+            [
+                self.user.team_name,
+                self.puzzle.title,
+                self.text,
+                self.display_evaluation,
+            ]
+        )
 
 
 class Solve(models.Model):
