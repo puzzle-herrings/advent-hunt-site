@@ -117,9 +117,10 @@ samp {
     --black: hsl(var(--black-h), var(--black-s), var(--black-l));
 
     --gold: hsla(51, 100%, 50%, 1);
+    --rosy-brown: hsla(10, 47%, 72%, 1);
+    --teal: hsla(190, 47%, 36%, 1);
 
     /* Bulma variables */
-
     --bulma-body-background-color: var(--parchment);
     --bulma-box-background-color: var(--white);
     --bulma-card-background-color: var(--white);
@@ -184,4 +185,12 @@ samp {
 .htmx-indicator {
     opacity: 0;
     transition: opacity 200ms ease-in-out;
+}
+
+.notification.announcement_message {
+    background-color: var(--rosy-brown);
+}
+
+.notification.announcement_message a:not(.button):not(.dropdown-item) {
+    color: var(--teal)
 }

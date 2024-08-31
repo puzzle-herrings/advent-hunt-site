@@ -30,3 +30,8 @@ def hunt_is_live(request):
     else:
         now = timezone.now()
     return {"hunt_is_live": now >= settings.HUNT_IS_LIVE_DATETIME}
+
+
+def announcement_message(request):
+    """Context processor to add the announcement message to the context."""
+    return {"announcement_message": settings.ANNOUNCEMENT_MESSAGE}

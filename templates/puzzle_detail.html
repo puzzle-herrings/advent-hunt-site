@@ -10,6 +10,7 @@
 {% block body %}
   <section class="section no-bottom-padding">
     <div class="container has-text-centered">
+      {% include "partials/announcement_message.html" %}
       {% include "partials/messages.html" %}
       <link href="{% static 'css/puzzle_detail.css' %}" rel="stylesheet" />
       <h1 class="title is-1 block">

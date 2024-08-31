@@ -405,3 +405,10 @@ META_OG_IMAGE = env("META_OG_IMAGE")
 HUNT_IS_LIVE_DATETIME = env.datetime("HUNT_IS_LIVE_DATETIME", default=timezone.now().isoformat())
 if HUNT_IS_LIVE_DATETIME.tzinfo is None:
     HUNT_IS_LIVE_DATETIME = HUNT_IS_LIVE_DATETIME.replace(tzinfo=datetime.timezone.utc)
+
+## Announcement message
+if ANNOUNCEMENT_MESSAGE := env("ANNOUNCEMENT_MESSAGE", default=None):
+    logger.info("Announcement message active: " + ANNOUNCEMENT_MESSAGE)
+    TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+        "huntsite.context_processors.announcement_message"
+    )

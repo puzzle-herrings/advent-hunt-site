@@ -80,6 +80,7 @@
     {% block body %}
       <section class="section">
         <div class="container">
+          {% include "partials/announcement_message.html" %}
           {% include "partials/messages.html" %}
           {% block content %}
           {% endblock content %}
