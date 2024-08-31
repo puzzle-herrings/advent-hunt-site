@@ -352,18 +352,31 @@ CRISPY_TEMPLATE_PACK = "bulma"
 
 ## Email
 
-if EMAIL_USE_MAILGUN := env.bool("EMAIL_USE_MAILGUN", default=False):
+EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
+
+if EMAIL_BACKEND == "anymail.backends.mailgun.EmailBackend":
     ANYMAIL = {
         "MAILGUN_API_KEY": env("EMAIL_MAILGUN_API_KEY"),
         "MAILGUN_SENDER_DOMAIN": env("EMAIL_MAILGUN_SENDER_DOMAIN"),
     }
-    EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-    DEFAULT_FROM_EMAIL = env("EMAIL_FROM_ADDRESS")
-    SERVER_EMAIL = env("EMAIL_FROM_ADDRESS")
+    EMAIL_FROM_DOMAIN = ANYMAIL["MAILGUN_SENDER_DOMAIN"]
+elif EMAIL_BACKEND == "anymail.backends.mailersend.EmailBackend":
+    ANYMAIL = {
+        "MAILERSEND_API_TOKEN": env("EMAIL_MAILERSEND_API_TOKEN"),
+    }
+    EMAIL_FROM_DOMAIN = env("EMAIL_MAILERSEND_DOMAIN")
+elif EMAIL_BACKEND == "django.core.mail.backends.console.EmailBackend":
+    EMAIL_FROM_DOMAIN = SITE_DOMAIN
 else:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    raise ValueError("Unsupported EMAIL_BACKEND: " + EMAIL_BACKEND)
+
+EMAIL_FROM_USERNAME = env("EMAIL_FROM_USERNAME", "noreply")
+
+DEFAULT_FROM_EMAIL = f"{EMAIL_FROM_USERNAME}@{EMAIL_FROM_DOMAIN}"
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 logger.info("Using email backend: " + EMAIL_BACKEND)
+logger.info("Server emails will be sent from: " + DEFAULT_FROM_EMAIL)
 
 ## Error Monitoring / Sentry
 
