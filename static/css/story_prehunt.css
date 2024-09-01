@@ -125,17 +125,20 @@
     padding: 3em;
 }
 
-.holiday-card:hover .holiday-card-outer {
+.holiday-card:hover .holiday-card-outer,
+.holiday-card:active .holiday-card-outer {
     transform: rotateY(-160deg);
     box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
 }
 
-.holiday-card:hover .holiday-card-inner-left {
+.holiday-card:hover .holiday-card-inner-left,
+.holiday-card:active .holiday-card-inner-left {
     transform: rotateY(-159.5deg);
     box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
 }
 
-.holiday-card:hover .holiday-card-inner-right {
+.holiday-card:hover .holiday-card-inner-right,
+.holiday-card:active .holiday-card-inner-right {
     transform: rotateY(-20deg);
     box-shadow: 0 1em 3em 0 rgba(0, 0, 0, .2);
 }
