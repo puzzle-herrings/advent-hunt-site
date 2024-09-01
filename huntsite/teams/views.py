@@ -2,7 +2,7 @@ from collections import defaultdict
 from typing import NamedTuple
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods, require_safe
 
@@ -71,7 +71,13 @@ def account_username_update(request):
 @require_safe
 def team_detail(request, pk: int):
     """View to display the team profile of the user."""
-    team = models.User.objects.with_profile().get(pk=pk)
+    user_manager = (
+        models.User.objects
+        if request.user.is_tester or request.user.is_staff
+        else models.User.nonprivileged
+    )
+    team = get_object_or_404(user_manager.with_profile(), pk=pk)
+
     solves = puzzle_services.solve_list_for_user(user=team).select_related("puzzle")
     context = {
         "team": team,

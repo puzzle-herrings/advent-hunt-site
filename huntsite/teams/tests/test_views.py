@@ -77,3 +77,49 @@ def test_team_detail_view(client):
     soup = BeautifulSoup(response.content, "html.parser")
     assert puzzle1.title not in soup.find("section").text
     assert puzzle2.title not in soup.find("section").text
+
+
+def test_team_view_nonexistent(client):
+    """Test that a nonexistent team returns a 404 (and not a server error)."""
+    response = client.get("/teams/999/")
+    assert response.status_code == 404
+    assert "Not Found" in response.content.decode()
+
+
+def test_team_view_privileged(client):
+    """Test that only privileged users can view all team profiles."""
+
+    user1 = UserFactory(team_name="Team 1")
+    user2 = UserFactory(team_name="Team 2")
+    tester = UserFactory(team_name="Team Test", is_tester=True)
+    admin = UserFactory(team_name="Team Admin", is_staff=True)
+    deactivated = UserFactory(team_name="Team Deactivated", is_active=False)
+
+    # anonymous user can only view nonprivileged teams profiles
+    for team in (user1, user2):
+        response = client.get(f"/teams/{team.pk}/")
+        assert response.status_code == 200
+        assert team.team_name in response.content.decode()
+    for team in (tester, admin, deactivated):
+        response = client.get(f"/teams/{team.pk}/")
+        assert response.status_code == 404
+        assert "Not Found" in response.content.decode()
+
+    # regular user can only view nonprivileged teams profiles
+    client.force_login(user1)
+    for team in (user1, user2):
+        response = client.get(f"/teams/{team.pk}/")
+        assert response.status_code == 200
+        assert team.team_name in response.content.decode()
+    for team in (tester, admin, deactivated):
+        response = client.get(f"/teams/{team.pk}/")
+        assert response.status_code == 404
+        assert "Not Found" in response.content.decode()
+
+    # tester and admin can view all profiles
+    for current_user in (tester, admin):
+        client.force_login(current_user)
+        for team in (user1, user2, tester, admin, deactivated):
+            response = client.get(f"/teams/{team.pk}/")
+            assert response.status_code == 200
+            assert team.team_name in response.content.decode()
