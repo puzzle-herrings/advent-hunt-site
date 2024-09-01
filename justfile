@@ -59,6 +59,7 @@ test verbosity="-v" file_or_dir="":
 coverage:
     DEPLOY_ENVIRONMENT=test coverage run -m pytest
     coverage report -m
+    coverage html
 
 createsuperuser:
     python manage.py createsuperuser --noinput
