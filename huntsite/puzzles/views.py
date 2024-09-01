@@ -48,7 +48,7 @@ GUESS_EVALUATION_MESSAGES = {
     GuessEvaluation.CORRECT: "Correct! 🎉",
     GuessEvaluation.INCORRECT: "Incorrect.",
     puzzle_services.ALREADY_SUBMITTED: "You've already submitted that guess.",
-    GuessEvaluation.KEEP_GOING: "Not the answer, but keep going!",
+    GuessEvaluation.KEEP_GOING: "You got an intermediate phrase! Keep going for the final answer.",
 }
 
 

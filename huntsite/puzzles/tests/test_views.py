@@ -283,7 +283,7 @@ def test_puzzle_guess_submit_keep_going(client):
     assert "JINGLE BELLS" in guess_rows[0].text
     assert "Keep going" in guess_rows[0].text
     eval_message = soup.find(id="evaluation-message")
-    assert "keep going" in eval_message.text
+    assert "intermediate" in eval_message.text
 
     # Other keep going guess
     response = client.post(puzzle.get_absolute_url(), data={"guess": "SNOWFLAKE"})
@@ -297,7 +297,7 @@ def test_puzzle_guess_submit_keep_going(client):
     assert "SNOWFLAKE" in guess_rows[0].text
     assert "Keep going" in guess_rows[0].text
     eval_message = soup.find(id="evaluation-message")
-    assert "keep going" in eval_message.text
+    assert "intermediate" in eval_message.text
 
     # Correct answer
     response = client.post(puzzle.get_absolute_url(), data={"guess": "FELIZ NAVIDAD"})
