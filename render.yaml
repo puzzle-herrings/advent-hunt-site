@@ -16,7 +16,7 @@ services:
         generateValue: true
     plan: free
     previews:
-      plan: free
+      plan: starter
     region: ohio
     startCommand: "./scripts/deploy.sh"
     type: web
@@ -26,7 +26,7 @@ services:
   - type: redis
     name: advent-hunt-redis
     plan: free
-    previewPlan: free
+    previewPlan: starter
     region: ohio
     ipAllowList: []
 
@@ -35,7 +35,7 @@ databases:
     databaseName: project_db
     ipAllowList: []
     plan: free
-    previewPlan: free
+    previewPlan: starter
     region: ohio
     user: project_db_user
 
