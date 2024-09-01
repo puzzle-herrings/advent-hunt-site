@@ -381,14 +381,18 @@ logger.info("Server emails will be sent from: " + DEFAULT_FROM_EMAIL)
 ## Error Monitoring / Sentry
 
 SENTRY_DSN = env("SENTRY_DSN", None)
+SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE", 0.01)
 if SENTRY_DSN and DEPLOY_ENVIRONMENT != DeployEnvironment.TEST:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration()],
         auto_session_tracking=False,
-        traces_sample_rate=0.01,
+        traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
         release="1.0.0",
         environment=DEPLOY_ENVIRONMENT,
+    )
+    logger.info(
+        "Initialized Sentry SDK with traces sample rate: " + str(SENTRY_TRACES_SAMPLE_RATE)
     )
 
 ## HTML Meta Tag Data
