@@ -187,3 +187,30 @@ img.story-art-red {
     max-height: 240px;
     width: auto;
 }
+
+.keep-scrolling {
+    position: fixed;
+    bottom: 24px;
+    right: 48px;
+    height: 30px;
+    opacity: 0.5;
+}
+
+
+@keyframes jumpInfinite {
+    0% {
+        margin-bottom: 0;
+    }
+
+    50% {
+        margin-bottom: 1.5rem;
+    }
+
+    100% {
+        margin-bottom: 0;
+    }
+}
+
+.keep-scrolling-chevron {
+    animation: jumpInfinite 1.5s infinite;
+}

@@ -123,4 +123,33 @@
       <div class="inner">❅</div>
     </div>
   </div>
+  <!--Keep scrolling indicator -->
+  <div class="keep-scrolling is-flex is-flex-direction-column is-justify-content-end has-text-white">
+    <div class="has-text-centered keep-scrolling-chevron is-size-4">
+      <i class="bi bi-chevron-double-down"></i>
+    </div>
+    <div class="keep-scrolling-text is-align-self-flex-end has-text-centered is-size-5">Keep&nbsp;scrolling</div>
+  </div>
+  <script>
+    // Fade out keep scrolling indicator
+    function handleScroll() {
+      const scrollIndicator = document.querySelector('.keep-scrolling');
+      const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      const startingOpacity = 0.5;
+      const fadeOutThreshold = 20;
+
+      // Start fading out at 0% scroll and completely fade out by {fadeOutThreshold}% scroll
+      if (scrollPercentage <= fadeOutThreshold) {
+        const opacity = startingOpacity - startingOpacity*(scrollPercentage / fadeOutThreshold);
+        scrollIndicator.style.opacity = opacity;
+      } else {
+        scrollIndicator.style.opacity = 0;
+      }
+    }
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+    // Initial call to set the initial state
+    handleScroll();
+  </script>
+  <!--End keep scrolling indicator-->
 {% endblock body %}
