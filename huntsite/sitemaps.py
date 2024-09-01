@@ -12,7 +12,7 @@ class StaticViewSitemap(sitemaps.Sitemap):
         return 0.5
 
     def items(self):
-        return ["home", "about", "story"]
+        return ["home", "about", "puzzle_list", "story", "team_list"]
 
     def location(self, item):
         return reverse(item)
