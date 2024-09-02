@@ -25,3 +25,12 @@ def user_deactivate(user: User):
         old_username=old_username,
         user=user,
     )
+
+
+def user_clear_password(user: User):
+    """Clears a user password. This makes them unable to log in until they perform a password
+    reset."""
+    logger.info("Clearing password for user {user}", user=user)
+    user.set_password("")
+    user.save()
+    logger.success("Cleared password for user {user}", user=user)

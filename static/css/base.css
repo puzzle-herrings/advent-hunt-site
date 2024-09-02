@@ -194,3 +194,17 @@ samp {
 .notification.announcement_message a:not(.button):not(.dropdown-item) {
     color: var(--teal)
 }
+
+/* allauth form validation errors */
+
+.invalid-feedback {
+    display: flex;
+    color: var(--red);
+}
+
+.invalid-feedback:before {
+    font-family: bootstrap-icons;
+    content: "\F33B";
+    margin-right: 0.5em;
+    align-self: flex-center;
+}

@@ -2,13 +2,19 @@ from django.contrib import admin
 
 from huntsite.admin import UneditableAsReadOnlyAdminMixin
 import huntsite.teams.models as models
-from huntsite.teams.services import user_deactivate
+from huntsite.teams.services import user_clear_password, user_deactivate
 
 
 @admin.action(description="Deactivate selected users")
 def deactivate_users(modeladmin, request, queryset):
     for user in queryset:
         user_deactivate(user)
+
+
+@admin.action(description="Clear password for selected users")
+def clear_user_passwords(modeladmin, request, queryset):
+    for user in queryset:
+        user_clear_password(user)
 
 
 @admin.register(models.User)
@@ -26,7 +32,7 @@ class UserAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_filter = ("is_staff", "is_active")
     search_fields = ("username", "email", "team_name")
     ordering = ("-date_joined",)
-    actions = [deactivate_users]
+    actions = [clear_user_passwords, deactivate_users]
 
     @admin.display(description="Email")
     def email_display(self, obj):
