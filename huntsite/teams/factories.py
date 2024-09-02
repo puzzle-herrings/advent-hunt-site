@@ -18,6 +18,9 @@ def team_members_text_factory() -> str:
     return ", ".join(fake.first_name() for _ in range(nb))
 
 
+NO_EMAIL_ADDRESSES = object()
+
+
 @factory.django.mute_signals(post_save)
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -37,6 +40,16 @@ class UserFactory(factory.django.DjangoModelFactory):
         else:
             obj.set_unusable_password()
         obj.save()
+
+    @factory.post_generation
+    def email_addresses(obj, create, extracted, **kwargs):
+        if extracted is NO_EMAIL_ADDRESSES:
+            return
+        obj.emailaddress_set.create(email=obj.email, primary=True, verified=False)
+        if extracted:
+            emails = set(extracted).difference({obj.email})
+            for email in emails:
+                obj.emailaddress_set.create(email=email, primary=False, verified=False)
 
 
 @factory.django.mute_signals(post_save)
