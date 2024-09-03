@@ -18,7 +18,7 @@ migrate: makemigrations
 drop-db:
     rm db.sqlite3 || true
 
-# Delete all migrations and regenerate them. Will drop the database.
+# Delete all migrations and regenerate them. Blunt instrument for squashing migrations. Will drop the database.
 delete-migrations: drop-db
     rm huntsite/content/migrations/0*.py || true
     rm huntsite/puzzles/migrations/0*.py || true
