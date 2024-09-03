@@ -121,6 +121,19 @@ In general, it'll be most convenient to use a cloud platform-as-a-service. Some 
 - [Heroku](https://www.heroku.com)—probably the most widely known and used hosting service.
 - [Fly.io](https://fly.io/)
 
+### Creating a superuser
+
+Normally, you run `python manage.py createsuperuser` on the web server to create an initial admin user. This requires shell access to the web server.
+
+Sometimes, free tiers of web hosts don't provide shell access (e.g., Render's free tier). As a workaround, the build script [`scripts/build.sh`](./scripts/build.sh) can run `createsuperuser` controlled by environment variables. First, make sure the following environment variables are set:
+
+- `DJANGO_SUPERUSER_USERNAME`
+- `DJANGO_SUPERUSER_PASSWORD`
+- `DJANGO_SUPERUSER_EMAIL`
+- `DJANGO_SUPERUSER_TEAM_NAME`
+
+Then set the environment variable `CREATE_SUPERUSER=1` before `build.sh` runs. This will cause `build.sh` to run `createsuperuser`. Don't forget to unset `CREATE_SUPERUSER` after running this once—it's not idempotent.
+
 ### Important environment variables
 
 A lot of configuration is done via environment variables, which are read into [`project/settings.py`](./project/settings.py). You should be able to find sections in `settings.py` that match the documented sections below.
