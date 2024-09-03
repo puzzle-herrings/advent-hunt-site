@@ -132,7 +132,7 @@ Sometimes, free tiers of web hosts don't provide shell access (e.g., Render's fr
 - `DJANGO_SUPERUSER_EMAIL`
 - `DJANGO_SUPERUSER_TEAM_NAME`
 
-Then set the environment variable `CREATE_SUPERUSER=1` before `build.sh` runs. This will cause `build.sh` to run `createsuperuser`. Don't forget to unset `CREATE_SUPERUSER` after running this once—it's not idempotent.
+Then set the environment variable `CREATE_SUPERUSER=1` before `build.sh` runs. This will cause `build.sh` to run `createsuperuser --no-input` and read the values from the other environment variables. Don't forget to unset `CREATE_SUPERUSER` after running this once—it's not idempotent.
 
 ### Important environment variables
 
