@@ -71,10 +71,33 @@ def test_puzzle_detail_availability(client):
     assert puzzle.title in response.content.decode()
 
 
-def test_puzzle_detail_no_answer(client):
+def test_puzzle_detail_no_answer_in_source(client):
     """Puzzle detail should not include answer in HTML source if not solved."""
-    puzzle = PuzzleFactory(
+    user = UserFactory()
+    client.force_login(user)
+
+    puzzle1 = PuzzleFactory(
         answer="SECRET", available_at=timezone.now() - timezone.timedelta(days=1)
+    )
+    response = client.get(puzzle1.get_absolute_url())
+    assert response.status_code == 200
+    assert puzzle1.answer not in response.content.decode()
+
+    puzzle2 = PuzzleFactory(
+        answer="SECRET PHRASE", available_at=timezone.now() - timezone.timedelta(days=1)
+    )
+    response = client.get(puzzle2.get_absolute_url())
+    assert response.status_code == 200
+    assert puzzle2.answer not in response.content.decode()
+
+
+def test_puzzle_detail_no_answer_keep_going_in_source(client):
+    """Puzzle detail should not include answer or keep goign answers in HTML source if not
+    solved."""
+    puzzle = PuzzleFactory(
+        answer="SECRET",
+        available_at=timezone.now() - timezone.timedelta(days=1),
+        keep_going_answers=["INTERMEDIATE A" "INTERMEDIATE B"],
     )
 
     user = UserFactory()
@@ -83,6 +106,11 @@ def test_puzzle_detail_no_answer(client):
     response = client.get(puzzle.get_absolute_url())
     assert response.status_code == 200
     assert puzzle.answer not in response.content.decode()
+    assert "SECRET" not in response.content.decode()
+    assert "INTERMEDIATE A" not in response.content.decode()
+    assert "INTERMEDIATEA" not in response.content.decode()
+    assert "INTERMEDIATE B" not in response.content.decode()
+    assert "INTERMEDIATEB" not in response.content.decode()
 
 
 def test_puzzle_detail_errata(client):
