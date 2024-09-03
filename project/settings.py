@@ -21,6 +21,7 @@ from environs import Env
 from loguru import logger
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.scrubber import DEFAULT_DENYLIST, EventScrubber
 
 env = Env()
 env.read_env()
@@ -382,6 +383,12 @@ logger.info("Server emails will be sent from: " + DEFAULT_FROM_EMAIL)
 
 SENTRY_DSN = env("SENTRY_DSN", None)
 SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE", 0.01)
+
+SENTRY_EXTRA_SCRUB_LIST = [
+    "password1",
+    "password2",
+]
+
 if SENTRY_DSN and DEPLOY_ENVIRONMENT != DeployEnvironment.TEST:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
@@ -390,6 +397,7 @@ if SENTRY_DSN and DEPLOY_ENVIRONMENT != DeployEnvironment.TEST:
         traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
         release="1.0.0",
         environment=DEPLOY_ENVIRONMENT,
+        event_scrubber=EventScrubber(DEFAULT_DENYLIST + SENTRY_EXTRA_SCRUB_LIST),
     )
     logger.info(
         "Initialized Sentry SDK with traces sample rate: " + str(SENTRY_TRACES_SAMPLE_RATE)
