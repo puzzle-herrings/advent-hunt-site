@@ -36,9 +36,12 @@ class NonprivilegedUserManager(models.Manager):
         )
 
 
+TEAM_NAME_MAX_LENGTH = 127
+
+
 class User(AbstractUser):
     team_name = models.CharField(
-        max_length=127,
+        max_length=TEAM_NAME_MAX_LENGTH,
         unique=True,
         blank=False,
         help_text="How the team will be publicly displayed.",

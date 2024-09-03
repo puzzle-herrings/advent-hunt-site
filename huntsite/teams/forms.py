@@ -17,7 +17,7 @@ class SignupForm(AllAuthSignupForm):
         )
         self.fields["username"].help_text = "(Private) Used only for logging in."
         self.fields["team_name"] = forms.CharField(
-            max_length=255,
+            max_length=models.TEAM_NAME_MAX_LENGTH,
             label="Team Name",
             help_text="(Public) How your team will be displayed.",
         )
@@ -28,15 +28,9 @@ class SignupForm(AllAuthSignupForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        if models.User.objects.filter(team_name=cleaned_data["team_name"]).exists():
+        if models.User.objects.filter(team_name=cleaned_data.get("team_name")).exists():
             self.add_error("team_name", "A team with that name already exists.")
         return cleaned_data
-
-    def save(self, request):
-        user = super().save(request)
-        user.team_name = self.cleaned_data["team_name"]
-        user.save()
-        return user
 
 
 class TeamProfileUpdateForm(forms.Form):
