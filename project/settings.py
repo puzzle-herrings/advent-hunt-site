@@ -378,7 +378,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 logger.info("Using email backend: " + EMAIL_BACKEND)
 logger.info("Server emails will be sent from: " + DEFAULT_FROM_EMAIL)
 
-## Error Monitoring / Sentry
+## Error and Performance Monitoring / Sentry
 
 SENTRY_DSN = env("SENTRY_DSN", None)
 SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE", 0.01)
@@ -401,8 +401,8 @@ META_TITLE = env("META_TITLE")
 META_DESCRIPTION = env("META_DESCRIPTION")
 META_AUTHOR = env("META_AUTHOR")
 META_KEYWORDS = env("META_KEYWORDS")
-META_OG_IMAGE_PREHUNT = env("META_OG_IMAGE_PREHUNT")
 META_OG_IMAGE = env("META_OG_IMAGE")
+META_OG_IMAGE_PREHUNT = env("META_OG_IMAGE_PREHUNT", META_OG_IMAGE)
 
 ## Hunt state
 
