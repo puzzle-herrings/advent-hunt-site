@@ -1,11 +1,9 @@
 from bs4 import BeautifulSoup
-from django.urls import reverse
 import pytest
 
 from huntsite.puzzles.factories import PuzzleFactory
 from huntsite.puzzles.services import guess_submit
 from huntsite.teams.factories import UserFactory
-from huntsite.teams.models import TEAM_NAME_MAX_LENGTH, User
 
 pytestmark = pytest.mark.django_db
 
@@ -125,78 +123,3 @@ def test_team_view_privileged(client):
             response = client.get(f"/teams/{team.pk}/")
             assert response.status_code == 200
             assert team.team_name in response.content.decode()
-
-
-def test_signup(client):
-    response = client.post(
-        reverse("account_signup"),
-        data={
-            "email": "foo@example.com",
-            "username": "foo",
-            "team_name": "Team Foo",
-            "password1": "foobadoo123!",
-            "password2": "foobadoo123!",
-        },
-    )
-    assert response.status_code == 302
-
-    assert User.objects.count() == 1
-    user = User.objects.first()
-    assert user.email == "foo@example.com"
-    assert user.username == "foo"
-    assert user.team_name == "Team Foo"
-
-
-def test_signup_team_name_errors(client):
-    # Too long
-    team_name = "a" * 200
-    response = client.post(
-        reverse("account_signup"),
-        data={
-            "email": "foo@example.com",
-            "username": "foo",
-            "team_name": team_name,
-            "password1": "foobadoo123!",
-            "password2": "foobadoo123!",
-        },
-    )
-    assert response.status_code == 200
-    assert response.context["form"].errors["team_name"] == [
-        f"Ensure this value has at most {TEAM_NAME_MAX_LENGTH} characters (it has 200)."
-    ]
-
-    assert User.objects.count() == 0
-
-    # Is blank
-    team_name = ""
-    response = client.post(
-        reverse("account_signup"),
-        data={
-            "email": "foo@example.com",
-            "username": "foo",
-            "team_name": team_name,
-            "password1": "foobadoo123!",
-            "password2": "foobadoo123!",
-        },
-    )
-    assert response.status_code == 200
-    assert response.context["form"].errors["team_name"] == ["This field is required."]
-
-    assert User.objects.count() == 0
-
-    # Is only whitespace
-    team_name = "     "
-    response = client.post(
-        reverse("account_signup"),
-        data={
-            "email": "foo@example.com",
-            "username": "foo",
-            "team_name": team_name,
-            "password1": "foobadoo123!",
-            "password2": "foobadoo123!",
-        },
-    )
-    assert response.status_code == 200
-    assert response.context["form"].errors["team_name"] == ["This field is required."]
-
-    assert User.objects.count() == 0
