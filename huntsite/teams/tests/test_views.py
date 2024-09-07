@@ -25,6 +25,10 @@ def test_team_list_view(client):
     assert "Team Admin" not in response.content.decode()
     assert "Team Deactivated" not in response.content.decode()
 
+    soup = BeautifulSoup(response.content, "html.parser")
+    team_count_p = soup.find("p", id="team-count")
+    assert "3" in team_count_p.text
+
 
 def test_team_detail_view(client):
     team = UserFactory(team_name="Team 1")
