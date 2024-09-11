@@ -54,7 +54,7 @@
             </a>
           </td>
           <td>
-            {% if puzzle.meta_info %}{{ puzzle.meta_info.icon }}{% endif %}
+            {% if puzzle.meta_info %}{{ puzzle.meta_info.icon|safe }}{% endif %}
           </td>
           <td>
             {% if puzzle.is_solved %}<span class="mono"><strong>{{ puzzle.answer }}</strong></span>{% endif %}

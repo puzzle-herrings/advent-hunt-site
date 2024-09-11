@@ -10,6 +10,6 @@
     <p class="puzzle-answer block">
       {% if puzzle.is_solved %}<strong><span class="mono">{{ puzzle.answer }}</span></strong>{% endif %}
     </p>
-    {% if puzzle.meta_info %}<div class="meta-icon">{{ puzzle.meta_info.icon }}</div>{% endif %}
+    {% if puzzle.meta_info %}<div class="meta-icon">{{ puzzle.meta_info.icon|safe }}</div>{% endif %}
   </div>
 </div>
