@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from huntsite.admin import UneditableAsReadOnlyAdminMixin
 import huntsite.puzzles.models as models
@@ -94,6 +95,7 @@ class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
         return obj.calendar_entry.day
 
     @admin.display(description="Meta")
+    @mark_safe
     def meta_icon(self, obj):
         return obj.meta_info.icon if obj.meta_info else None
 
@@ -104,7 +106,7 @@ class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
 
 @admin.register(models.MetapuzzleInfo)
 class MetapuzzleInfoAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
-    list_display = ("puzzle", "calendar_entry_day", "icon")
+    list_display = ("puzzle", "calendar_entry_day", "icon_safe")
     ordering = ("puzzle__calendar_entry__day",)
 
     def get_queryset(self, request):
@@ -114,6 +116,11 @@ class MetapuzzleInfoAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     @admin.display(description="Calendar Entry Day")
     def calendar_entry_day(self, obj):
         return obj.puzzle.calendar_entry.day
+
+    @admin.display(description="Icon")
+    @mark_safe
+    def icon_safe(self, obj):
+        return obj.icon
 
 
 @admin.register(models.Guess)
