@@ -218,8 +218,17 @@ LOGTAIL_SOURCE_TOKEN = env("LOGTAIL_SOURCE_TOKEN", None)
 ## Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+if DEPLOY_ENVIRONMENT == DeployEnvironment.PRODUCTION:
+    database_kwargs = {
+        "conn_max_age": 60,
+        "conn_health_checks": True,
+        "ssl_require": True,
+    }
+else:
+    database_kwargs = {}
+
 DATABASES = {
-    "default": env.dj_db_url("DATABASE_URL"),
+    "default": env.dj_db_url("DATABASE_URL", **database_kwargs),
 }
 
 # Default primary key field type
