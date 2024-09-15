@@ -190,7 +190,7 @@ LOCAL_FORMAT = (
     "| <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> "
     "- <level>{message}</level>"
 )
-PRODUCTION_FORMAT = "{extra[request_id]} | {name}:{function}:{line} - {message}"
+PRODUCTION_FORMAT = "{extra[request_id]} | {process} | {name}:{function}:{line} - {message}"
 
 logger.configure(extra={"request_id": "N/A"})
 
