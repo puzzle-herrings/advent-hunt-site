@@ -44,3 +44,16 @@ def victory_page(request):
         "entry": entry,
     }
     return TemplateResponse(request, "victory.html", context)
+
+
+@require_safe
+def attributions_page(request):
+    entries = models.AttributionsEntry.objects.all().order_by("order_by")
+    puzzles = (
+        puzzle_models.Puzzles.available.with_calendar_entry().all().order_by("calendar_entry__day")
+    )
+    context = {
+        "entries": entries,
+        "puzzles": puzzles,
+    }
+    return TemplateResponse(request, "legal.html", context)

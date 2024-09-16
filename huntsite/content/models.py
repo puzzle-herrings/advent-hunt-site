@@ -42,3 +42,21 @@ class StoryEntry(models.Model):
 
     def render_content(self):
         return markdown.markdown(self.content)
+
+
+class AttributionsEntry(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    order_by = models.IntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Legal Entries"
+
+    def __str__(self):
+        return self.title
+
+    def render_content(self):
+        return markdown.markdown(self.content)

@@ -161,6 +161,7 @@ samp {
     --bulma-danger-s: var(--yellow-green-s);
     --bulma-danger-l: var(--yellow-green-l);
     --bulma-danger-invert-l: var(--yellow-green-l-invert);
+
 }
 
 .table {
@@ -169,6 +170,12 @@ samp {
     --bulma-table-cell-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l), 0);
     --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
+
+footer.footer {
+    --bulma-footer-background-color: var(--parchment);
+    --bulma-footer-padding: 3rem 1.5rem 1rem
+}
+
 
 .loading-indicator {
     display: inline-block;
