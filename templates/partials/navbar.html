@@ -48,6 +48,12 @@
         <a class="navbar-item" href="{% url 'story' %}">Story</a>
         <a class="navbar-item" href="{% url 'team_list' %}">Teams</a>
         <a class="navbar-item" href="{% url 'about' %}">About</a>
+        {% if DISCORD_SERVER_LINK and user.is_authenticated %}
+          <a class="navbar-item"
+             id="discord-server-link"
+             style="column-gap: 0.5rem"
+             href="{{ DISCORD_SERVER_LINK }}"><i class="bi bi-discord"></i>Discord</a>
+        {% endif %}
       </div>
       <div class="navbar-end">
         {% if user.is_authenticated %}

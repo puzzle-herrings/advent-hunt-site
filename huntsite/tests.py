@@ -136,3 +136,57 @@ def test_santa_missing_og_image(client, monkeypatch):
     assert response.status_code == 200
     meta_parser = MetadataParser(html=response.content.decode())
     assert meta_parser.get_metadata_link("image") == "https://example.com/og_image.png"
+
+
+def test_announcement_message(client, monkeypatch):
+    monkeypatch.setattr(settings, "ANNOUNCEMENT_MESSAGE", None)
+    assert settings.ANNOUNCEMENT_MESSAGE is None
+
+    message = "This is an announcement message."
+
+    response = client.get("/")
+    assert response.status_code == 200
+    assert not response.context.get("ANNOUNCEMENT_MESSAGE")
+    assert message not in response.content.decode()
+
+    monkeypatch.setattr(settings, "ANNOUNCEMENT_MESSAGE", message)
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.context.get("ANNOUNCEMENT_MESSAGE") == message
+    assert message in response.content.decode()
+
+
+def test_discord_server_link(monkeypatch):
+    monkeypatch.setattr(settings, "DISCORD_SERVER_LINK", None)
+    assert settings.DISCORD_SERVER_LINK is None
+
+    # Set up users
+    anon_client = Client()
+    user1 = UserFactory()
+    user1_client = Client()
+    user1_client.force_login(user1)
+
+    # No discord server link, neither in context nor in navbar
+    for user in (anon_client, user1_client):
+        response = user.get("/")
+        assert response.status_code == 200
+        assert not response.context.get("DISCORD_SERVER_LINK")
+        soup = BeautifulSoup(response.content, "html.parser")
+        assert not soup.find("a", attrs={"id": "discord-server-link"})
+
+    # Set discord server link
+    monkeypatch.setattr(settings, "DISCORD_SERVER_LINK", "https://example.com/discord")
+
+    # Anon user still does not see, but it's in context
+    response = anon_client.get("/")
+    assert response.status_code == 200
+    assert response.context.get("DISCORD_SERVER_LINK")
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert not soup.find("a", attrs={"id": "discord-server-link"})
+
+    # Logged in user sees
+    response = user1_client.get("/")
+    assert response.status_code == 200
+    assert response.context.get("DISCORD_SERVER_LINK")
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert soup.find("a", attrs={"id": "discord-server-link"})

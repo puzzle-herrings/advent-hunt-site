@@ -34,4 +34,9 @@ def hunt_is_live(request):
 
 def announcement_message(request):
     """Context processor to add the announcement message to the context."""
-    return {"announcement_message": settings.ANNOUNCEMENT_MESSAGE}
+    return {"ANNOUNCEMENT_MESSAGE": settings.ANNOUNCEMENT_MESSAGE}
+
+
+def discord_server_link(request):
+    """Context processor to add the discord server link to the context."""
+    return {"DISCORD_SERVER_LINK": settings.DISCORD_SERVER_LINK}
