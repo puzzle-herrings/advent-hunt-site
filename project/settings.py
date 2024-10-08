@@ -145,6 +145,8 @@ TEMPLATES = [
                 "huntsite.context_processors.canonical",
                 "huntsite.context_processors.hunt_is_live",
                 "huntsite.tester_utils.context_processors.time_travel",
+                "huntsite.context_processors.announcement_message",
+                "huntsite.context_processors.discord_server_link",
             ],
         },
     },
@@ -430,13 +432,7 @@ if HUNT_IS_LIVE_DATETIME.tzinfo is None:
 ## Announcement message
 if ANNOUNCEMENT_MESSAGE := env("ANNOUNCEMENT_MESSAGE", default=None):
     logger.info("Announcement message active: " + ANNOUNCEMENT_MESSAGE)
-    TEMPLATES[0]["OPTIONS"]["context_processors"].append(
-        "huntsite.context_processors.announcement_message"
-    )
 
 ## Discord Server Link
 if DISCORD_SERVER_LINK := env("DISCORD_SERVER_LINK", default=None):
     logger.info("Discord server link active: " + DISCORD_SERVER_LINK)
-    TEMPLATES[0]["OPTIONS"]["context_processors"].append(
-        "huntsite.context_processors.discord_server_link"
-    )
