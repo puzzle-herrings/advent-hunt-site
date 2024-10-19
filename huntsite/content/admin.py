@@ -14,3 +14,9 @@ class AboutEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
 class StoryEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("title", "order_by", "puzzle")
     ordering = ("order_by",)
+
+
+@admin.register(models.AttributionsEntry)
+class AttributionsEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("title", "order_by")
+    ordering = ("order_by",)

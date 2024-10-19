@@ -65,6 +65,11 @@ class ErratumInline(admin.TabularInline):
     extra = 0
 
 
+class PuzzleAttributionsEntryInline(admin.TabularInline):
+    model = models.PuzzleAttributionsEntry
+    extra = 0
+
+
 @admin.register(models.Puzzle)
 class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     form = PuzzleAdminForm
@@ -74,6 +79,7 @@ class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
         ClipboardDataInline,
         ExternalLinksInline,
         ErratumInline,
+        PuzzleAttributionsEntryInline,
     )
     list_display = (
         "title",
@@ -121,6 +127,16 @@ class MetapuzzleInfoAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     @mark_safe
     def icon_safe(self, obj):
         return obj.icon
+
+
+@admin.register(models.PuzzleAttributionsEntry)
+class PuzzleAttributionsEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("puzzle", "calendar_entry_day")
+    ordering = ("puzzle__calendar_entry__day",)
+
+    @admin.display(description="Calendar Entry Day")
+    def calendar_entry_day(self, obj):
+        return obj.puzzle.calendar_entry.day
 
 
 @admin.register(models.Guess)
