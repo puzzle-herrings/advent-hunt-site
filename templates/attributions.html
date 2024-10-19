@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}
+  Attributions | {{ META_TITLE }}
+{% endblock title %}
+{# djlint:off #}
+  {% block og_title %}Attributions | {{ META_TITLE }}{% endblock og_title %}
+{# djlint:on #}
+{% block content %}
+  <h1 class="title is-1 block">Attributions</h1>
+  {% for entry in entries %}
+    <div class="content block">
+      <h2 class="title is-3 block">{{ entry.title }}</h2>
+      {{ entry.render_content | safe }}
+    </div>
+  {% endfor %}
+  <h2 class="title is-3 block">Puzzles</h2>
+  {% for puzzle in puzzles %}
+    {% if puzzle.attributions_entry and puzzle.is_available %}
+      <h3 class="title is-5 block">{{ puzzle.title }}</h3>
+      <div class="content block">{{ puzzle.attributions_entry.render | safe }}</div>
+    {% endif %}
+  {% endfor %}
+{% endblock content %}

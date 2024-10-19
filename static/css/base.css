@@ -170,6 +170,11 @@ samp {
     --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
 
+footer.footer {
+    --bulma-footer-background-color: var(--parchment);
+    --bulma-footer-padding: 3rem 1.5rem 1rem
+}
+
 .loading-indicator {
     display: inline-block;
     animation: spinner 3s linear infinite;
