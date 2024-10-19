@@ -82,6 +82,18 @@ class ErratumFactory(factory.django.DjangoModelFactory):
     text = factory.Faker("paragraph")
 
 
+def attributions_entry_content_factory():
+    return "\n".join("- " + fake.sentence() for _ in range(3))
+
+
+class PuzzleAttributionsEntryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "puzzles.PuzzleAttributionsEntry"
+
+    puzzle = factory.SubFactory(PuzzleFactory)
+    content = factory.LazyFunction(attributions_entry_content_factory)
+
+
 @factory.django.mute_signals(post_save)
 class AdventCalendarEntryFactory(factory.django.DjangoModelFactory):
     puzzle = factory.SubFactory("huntsite.puzzles.factories.PuzzleFactory", calendar_entry=None)

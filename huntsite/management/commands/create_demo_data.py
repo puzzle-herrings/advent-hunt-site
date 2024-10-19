@@ -157,4 +157,10 @@ class Command(BaseCommand):
                     title=story_entry_title, puzzle=related_puzzle, is_final=is_final
                 )
 
+            logger.info("Creating attributions content...")
+            content_factories.AttributionsEntryFactory(title="General")
+            puzzle_factories.PuzzleAttributionsEntryFactory(puzzle=puzzles[1])
+            puzzle_factories.PuzzleAttributionsEntryFactory(puzzle=puzzles[4])
+            puzzle_factories.PuzzleAttributionsEntryFactory(puzzle=puzzles[8])
+
         logger.success("create_demo_data complete.")

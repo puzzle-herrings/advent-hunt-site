@@ -7,8 +7,16 @@ from django.urls import reverse
 from django.utils import timezone
 import pytest
 
-from huntsite.content.factories import AboutEntryFactory, StoryEntryFactory
-from huntsite.puzzles.factories import MetapuzzleInfoFactory, PuzzleFactory
+from huntsite.content.factories import (
+    AboutEntryFactory,
+    AttributionsEntryFactory,
+    StoryEntryFactory,
+)
+from huntsite.puzzles.factories import (
+    MetapuzzleInfoFactory,
+    PuzzleAttributionsEntryFactory,
+    PuzzleFactory,
+)
 from huntsite.puzzles.services import guess_submit
 from huntsite.teams.factories import UserFactory
 
@@ -315,3 +323,29 @@ def test_victory_unlock():
     # Tester still sees victory page
     response = tester_client.get("/story/victory/")
     assert response.status_code == 200
+
+
+def test_attributions_page(client):
+    attrs_entry = AttributionsEntryFactory()
+    puzz_attrs_entry1 = PuzzleAttributionsEntryFactory(
+        puzzle__available_at=timezone.now() - timedelta(days=2)
+    )
+    puzz_attrs_entry2 = PuzzleAttributionsEntryFactory(
+        puzzle__available_at=timezone.now() - timedelta(days=1)
+    )
+    puzz_attrs_entry3 = PuzzleAttributionsEntryFactory(
+        puzzle__available_at=timezone.now() + timedelta(days=1)
+    )
+    puzz_attrs_entry4 = PuzzleAttributionsEntryFactory(
+        puzzle__available_at=timezone.now() + timedelta(days=2)
+    )
+    extra_puzz = PuzzleFactory()
+
+    response = client.get("/attributions/")
+    assert response.status_code == 200
+    assert attrs_entry.title in response.content.decode()
+    assert puzz_attrs_entry1.puzzle.title in response.content.decode()
+    assert puzz_attrs_entry2.puzzle.title in response.content.decode()
+    assert puzz_attrs_entry3.puzzle.title not in response.content.decode()
+    assert puzz_attrs_entry4.puzzle.title not in response.content.decode()
+    assert extra_puzz.title not in response.content.decode()

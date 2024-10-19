@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
+import markdown
 
 from huntsite.puzzles.utils import clean_answer, normalize_answer
 
@@ -39,6 +40,9 @@ class PuzzleQuerySet(models.QuerySet):
         return self.annotate(
             is_solved=models.Exists(Solve.objects.filter(user=user, puzzle=models.OuterRef("pk")))
         )
+
+    def with_attributions_entry(self):
+        return self.select_related("attributions_entry")
 
     def filter_available_at(self, dt: datetime.datetime):
         return self.filter(available_at__lte=dt)
@@ -159,6 +163,19 @@ class Erratum(models.Model):
 
     def __str__(self):
         return f"{self.puzzle.title} - {self.created_at}"
+
+
+class PuzzleAttributionsEntry(models.Model):
+    puzzle = models.OneToOneField(
+        Puzzle, on_delete=models.CASCADE, related_name="attributions_entry", primary_key=True
+    )
+    content = models.TextField()
+
+    class Meta:
+        verbose_name_plural = "Puzzle Attributions"
+
+    def render(self):
+        return markdown.markdown(self.content)
 
 
 class GuessEvaluation(models.TextChoices):

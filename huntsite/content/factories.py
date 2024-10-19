@@ -29,3 +29,16 @@ class StoryEntryFactory(factory.django.DjangoModelFactory):
     title = factory.Faker("sentence")
     content = factory.LazyFunction(content_factory)
     order_by = factory.Sequence(lambda n: n)
+
+
+def attributions_entry_content_factory():
+    return "\n".join("- " + fake.sentence() for _ in range(3))
+
+
+class AttributionsEntryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.AttributionsEntry
+
+    title = factory.Faker("sentence")
+    content = factory.LazyFunction(attributions_entry_content_factory)
+    order_by = factory.Sequence(lambda n: n)
