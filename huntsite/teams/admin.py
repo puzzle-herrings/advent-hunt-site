@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from huntsite.admin import UneditableAsReadOnlyAdminMixin
 import huntsite.teams.models as models
@@ -52,3 +53,14 @@ class TeamProfileAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     @admin.display(description="Team Name")
     def team_name(self, obj):
         return obj.user.team_name
+
+
+@admin.register(models.Flair)
+class FlairAdmin(admin.ModelAdmin):
+    list_display = ("icon_safe", "label", "order_by")
+    filter_horizontal = ("users",)
+
+    @admin.display(description="Icon")
+    @mark_safe
+    def icon_safe(self, obj):
+        return obj.icon

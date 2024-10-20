@@ -1,20 +1,24 @@
+import re
+
 from bs4 import BeautifulSoup
 import pytest
 
 from huntsite.puzzles.factories import PuzzleFactory
 from huntsite.puzzles.services import guess_submit
-from huntsite.teams.factories import UserFactory
+from huntsite.teams.factories import FlairFactory, UserFactory
 
 pytestmark = pytest.mark.django_db
 
 
 def test_team_list_view(client):
-    UserFactory(team_name="Team 1")
+    team1 = UserFactory(team_name="Team 1")
     UserFactory(team_name="Team 2")
-    UserFactory(team_name="Team 3")
+    team3 = UserFactory(team_name="Team 3")
     UserFactory(team_name="Team Test", is_tester=True)
     UserFactory(team_name="Team Admin", is_staff=True)
     UserFactory(team_name="Team Deactivated", is_active=False)
+
+    FlairFactory(icon="🎁", label="Kickstarter backer", users=[team1, team3])
 
     response = client.get("/teams/")
     assert response.status_code == 200
@@ -26,8 +30,12 @@ def test_team_list_view(client):
     assert "Team Deactivated" not in response.content.decode()
 
     soup = BeautifulSoup(response.content, "html.parser")
+
     team_count_p = soup.find("p", id="team-count")
     assert "3" in team_count_p.text
+
+    assert len(re.findall(r"🎁", response.content.decode())) == 2
+    assert len(re.findall(r"Kickstarter backer", response.content.decode())) == 2
 
 
 def test_team_detail_view(client):

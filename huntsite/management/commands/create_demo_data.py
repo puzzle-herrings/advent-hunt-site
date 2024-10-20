@@ -20,6 +20,8 @@ PUZZLE_STARTED_PROP = 0.4
 PUZZLE_SOLVED_PROP = 0.75
 INCORRECTED_GUESS_MAX = 10
 
+USER_FLAIR_PROP = 0.2
+
 
 class Command(BaseCommand):
     def add_arguments(self, parser: CommandParser) -> None:
@@ -107,6 +109,14 @@ class Command(BaseCommand):
                         username=f"user{i}", password="hohohomerrychristmas!"
                     )
                 )
+
+            # Create a flair
+            logger.info("Creating flairs...")
+            team_factories.FlairFactory(
+                icon="🎁",
+                label="Kickstarter backer",
+                users=[user for user in users if random.random() < USER_FLAIR_PROP],
+            )
 
             # Make guesses
             logger.info("Creating guesses...")

@@ -76,7 +76,7 @@ def team_detail(request, pk: int):
         if request.user.is_tester or request.user.is_staff
         else models.User.nonprivileged
     )
-    team = get_object_or_404(user_manager.with_profile(), pk=pk)
+    team = get_object_or_404(user_manager.with_profile().with_flairs(), pk=pk)
 
     solves = puzzle_services.solve_list_for_user(user=team).select_related("puzzle")
     context = {
@@ -97,7 +97,7 @@ class LeaderboardEntry(NamedTuple):
 def team_list(request):
     """View to display a list of all teams."""
 
-    teams = models.User.nonprivileged.with_profile().all()
+    teams = models.User.nonprivileged.with_flairs().all()
     solves = puzzle_models.Solve.objects.exclude(user__is_tester=True)
     puzzles = puzzle_models.Puzzle.objects.with_calendar_entry().all()
     meta_infos = puzzle_models.MetapuzzleInfo.objects.order_by("-is_final").all()

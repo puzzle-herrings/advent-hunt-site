@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import AnonymousUser as DefaultAnonymousUser
 from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.db import models
+from django.db.models import Prefetch
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -16,6 +17,11 @@ class UserQuerySet(models.QuerySet):
 
     def with_profile(self):
         return self.select_related("profile")
+
+    def with_flairs(self):
+        return self.prefetch_related(
+            Prefetch("flairs", queryset=Flair.objects.order_by("order_by"))
+        )
 
 
 class UserManager(DefaultUserManager.from_queryset(UserQuerySet)):
@@ -119,3 +125,10 @@ class TeamProfile(models.Model):
 def create_team_profile(sender, instance, created, **kwargs):
     if created:
         TeamProfile.objects.create(user=instance)
+
+
+class Flair(models.Model):
+    icon = models.CharField(max_length=1023, blank=False)
+    label = models.CharField(max_length=255, blank=False)
+    order_by = models.IntegerField(default=0)
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="flairs")
