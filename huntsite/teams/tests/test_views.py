@@ -91,6 +91,16 @@ def test_team_detail_view(client):
     assert puzzle2.title not in soup.find("section").text
 
 
+def test_team_detail_flair(client):
+    team = UserFactory(team_name="Team 1")
+    FlairFactory(icon="🎁", label="Kickstarter backer", users=[team])
+
+    response = client.get(f"/teams/{team.pk}/")
+    assert response.status_code == 200
+    assert "🎁" in response.content.decode()
+    assert "Kickstarter backer" in response.content.decode()
+
+
 def test_team_view_nonexistent(client):
     """Test that a nonexistent team returns a 404 (and not a server error)."""
     response = client.get("/teams/999/")

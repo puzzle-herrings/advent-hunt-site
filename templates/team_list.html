@@ -7,10 +7,12 @@
 {# djlint:off #}
   {% block og_title %}Teams | {{ META_TITLE }}{% endblock og_title %}
 {# djlint:on #}
-{% block content %}
+{% block header_extra %}
   <link href="{% static 'css/team_list.css' %}" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"
         rel="stylesheet" />
+{% endblock header_extra %}
+{% block content %}
   <h1 class="title is-1 block">Teams</h1>
   <p id="team-count" class="block mb-2">
     <strong>Total number of teams: {{ leaderboard_data|length }}</strong>
