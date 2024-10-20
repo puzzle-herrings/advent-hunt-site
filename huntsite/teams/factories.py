@@ -59,3 +59,21 @@ class TeamProfileFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory, profile=None)
     members = factory.LazyFunction(team_members_text_factory)
+
+
+class FlairFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "teams.Flair"
+        skip_postgeneration_save = True
+
+    icon = factory.Faker("emoji")
+    label = factory.Faker("word")
+    order_by = factory.Sequence(lambda n: n)
+
+    @factory.post_generation
+    def users(obj, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            obj.users.add(*extracted)
+            obj.save()

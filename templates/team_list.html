@@ -33,8 +33,10 @@
       {% for entry in leaderboard_data %}
         <tr>
           <td align="right">{{ entry.rank }}</td>
-          <td class="team-name"
-              {% if entry.team.profile.members %}data-tts aria-label="{{ entry.team.profile.members|truncatechars:128 }}"{% endif %}>
+          <td class="team-name">
+            {% for flair in entry.team.flairs.all %}
+              <span data-tts aria-label="{{ flair.label }}">{{ flair.icon|safe }}</span>
+            {% endfor %}
             <a href="{% url 'team_detail' entry.team.id %}">{{ entry.team.team_name|truncatechars:128 }}</a>
           </td>
           <td align="right">{{ entry.solved_days|length }}</td>
