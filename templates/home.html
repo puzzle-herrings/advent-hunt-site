@@ -40,22 +40,37 @@
       <div class="container">{% include "partials/story_prehunt.html" %}</div>
     {% else %}
       <div class="columns is-centered">
-        <div class="column is-one-quarter has-text-centered">
-          <img src="https://r2.jayqi.com/placeholder.png"
-               alt="Red, Santa's Chief of Staff"
-               class="story-art-red"
-               height="240"
-               width="auto" />
+        <div class="column is-one-fifth has-text-centered">
+          <picture class="story-art-red">
+            <source srcset="{% static 'images/red-173-280-q50.avif' %} 1x,
+                            {% static 'images/red-346x560-q50.avif' %} 2x,
+                            {% static 'images/red-519x840-q50.avif' %} 3x"
+                    width="173"
+                    height="280"
+                    type="image/avif"
+                    alt="Illustration of Red, Santa's Chief of Staff, smiling and waving.">
+            <source srcset="{% static 'images/red-173-280-q75.webp' %} 1x,
+                            {% static 'images/red-346x560-q75.webp' %} 2x,
+                            {% static 'images/red-519x840-q75.webp' %} 3x"
+                    width="173"
+                    height="280"
+                    type="image/webp"
+                    alt="Illustration of Red, Santa's Chief of Staff, smiling and waving.">
+            <img src="{% static 'images/red-173-280.png' %} 1x, {% static 'images/red-346x560.png' %} 2x, {% static 'images/red-519x840.png' %} 3x"
+                 width="173"
+                 height="280"
+                 alt="Illustration of Red, Santa's Chief of Staff, smiling and waving.">
+          </picture>
         </div>
-        <div class="column is-half">
+        <div class="column is-two-fifths">
           <p class="block">
-            You arrive at the North Pole on time, after a safe and smooth flight. As you step off the sleigh, you notice an elf, impeccably dressed in a festive yet formal-looking Christmas suit, walking briskly to meet you. Just as he's about to greet you, another elf comes running suddenly.
+            "Welcome to the North Pole!" you hear as you step down off the sleigh, freshly arrived after a smooth and on-time flight. The greeting comes from a sharply dressed elf, giving you a warm smile and wave. "I'm Red, Santa's Chief of Staff," he introduces himself. This must be the elf you've been in contact with to coordinate your trip.
           </p>
           <p class="block">
-            "Red! Red!" she shouts. She runs up to who you assume must be Red, the elf that you've been in contact with to coordinate your trip. The two elves enter into a furious whispered conversation. As they confer, you see Red becoming more and more distressed.
+            Before you can respond, you get interrupted by shouts of "Red! Red!" A second elf is running up, frantically waving her arms. The two elves enter into a furious whispered conversation. You watch Red become increasingly distressed…
           </p>
           <p class="block">
-            <a class="button is-primary" href="{% url "story" %}">Continue reading...</a>
+            <a class="button is-primary" href="{% url "story" %}">Continue reading</a>
           </p>
         </div>
       </div>
