@@ -131,4 +131,4 @@ class Flair(models.Model):
     icon = models.CharField(max_length=1023, blank=False)
     label = models.CharField(max_length=255, blank=False)
     order_by = models.IntegerField(default=0)
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="flairs")
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="flairs", blank=True)

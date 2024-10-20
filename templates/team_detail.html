@@ -8,6 +8,10 @@
 {# djlint:on #}
 {% block header_extra %}
   {% include "partials/timestamp_localize_libraries.html" %}
+  {% if team.flairs %}
+    <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"
+          rel="stylesheet" />
+  {% endif %}
 {% endblock header_extra %}
 {% block content %}
   {% if is_self %}
@@ -32,6 +36,13 @@
     </div>
   {% endif %}
   <h1 class="title is-1 block">{{ team.team_name }}</h1>
+  {% if team.flairs %}
+    <p class="block">
+      {% for flair in team.flairs.all %}
+        <span data-tts aria-label="{{ flair.label }}">{{ flair.icon|safe }}</span>
+      {% endfor %}
+    </p>
+  {% endif %}
   {% if team.profile.members %}
     <p class="block">
       <strong>Team Members:</strong> {{ team.profile.members }}
