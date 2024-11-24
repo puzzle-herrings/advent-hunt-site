@@ -65,6 +65,11 @@ class ErratumInline(admin.TabularInline):
     extra = 0
 
 
+class CannedHintInline(admin.TabularInline):
+    model = models.CannedHint
+    extra = 0
+
+
 class PuzzleAttributionsEntryInline(admin.TabularInline):
     model = models.PuzzleAttributionsEntry
     extra = 0
@@ -79,6 +84,7 @@ class PuzzleAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
         ClipboardDataInline,
         ExternalLinksInline,
         ErratumInline,
+        CannedHintInline,
         PuzzleAttributionsEntryInline,
     )
     list_display = (
