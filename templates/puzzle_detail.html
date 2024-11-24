@@ -38,6 +38,36 @@
         </div>
         {% include "partials/timestamp_localize_script.html" with timestamp_class="errata-timestamp" output_format="MMM D, YYYY hh:mm A z" %}
       {% endif %}
+      {% if puzzle.canned_hints.exists %}
+        <div id="canned-hints" class="card is-toggleable block">
+          <header class="card-header">
+            <p class="card-header-title">Hints</p>
+            {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
+          </header>
+          <div class="card-content has-text-left is-hidden">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" align="left">Keywords</th>
+                  <th scope="col" align="left">Hint</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for canned_hint in puzzle.canned_hints.all %}
+                  <tr>
+                    <td align="left">
+                      <span class="spoiler">{{ canned_hint.keywords }}</span>
+                    </td>
+                    <td align="left">
+                      <span class="spoiler">{{ canned_hint.text }}</span>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {% endif %}
       <div id="answer-checker" class="card is-toggleable block">
         <header class="card-header">
           <p class="card-header-title">Check&nbsp;answer</p>

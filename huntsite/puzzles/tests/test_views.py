@@ -3,7 +3,7 @@ from django.utils import timezone
 import pytest
 from pytest_django.asserts import assertRedirects, assertTemplateNotUsed, assertTemplateUsed
 
-from huntsite.puzzles.factories import ErratumFactory, PuzzleFactory
+from huntsite.puzzles.factories import CannedHintFactory, ErratumFactory, PuzzleFactory
 from huntsite.puzzles.services import guess_list_for_puzzle_and_user
 from huntsite.teams.factories import UserFactory
 
@@ -195,6 +195,71 @@ def test_puzzle_detail_errata(client):
     assert erratum1.text in entries[1].text
     assert erratum3.published_at.isoformat() in entries[2].text
     assert erratum3.text in entries[2].text
+
+
+def test_puzzle_detail_canned_hints(client):
+    """Canned hints display correctly on puzzle detail page."""
+    puzzle = PuzzleFactory()
+
+    user = UserFactory()
+    client.force_login(user)
+
+    # No canned hints
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert not soup.find(id="canned-hints")
+
+    # Add one canned hint, no hint release
+    CannedHintFactory(puzzle=puzzle, keywords="KEYWORD-A", text="HINT-A", order_by=1)
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert not soup.find(id="canned-hints")
+
+    # Before hint release
+    puzzle.canned_hints_available_at = timezone.now() + timezone.timedelta(days=1)
+    puzzle.save()
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert not soup.find(id="canned-hints")
+
+    # After hint release
+    puzzle.canned_hints_available_at = timezone.now() - timezone.timedelta(days=1)
+    puzzle.save()
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    card = soup.find(id="canned-hints")
+    assert card
+    header = card.find(class_="card-header")
+    assert header
+    assert "Hints" in header.text
+    entries = card.find(class_="card-content").find("tbody").find_all("tr")
+    assert len(entries) == 1
+    assert "KEYWORD" in entries[0].text
+    assert "HINT" in entries[0].text
+
+    ## Add second and third canned hint
+    CannedHintFactory(puzzle=puzzle, keywords="KEYWORD-B", text="HINT-B", order_by=0)
+    CannedHintFactory(puzzle=puzzle, keywords="KEYWORD-C", text="HINT-C", order_by=2)
+    response = client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    card = soup.find(id="canned-hints")
+    assert card
+    header = card.find(class_="card-header")
+    assert header
+    assert "Hints" in header.text
+    entries = card.find(class_="card-content").find("tbody").find_all("tr")
+    assert len(entries) == 3
+    assert "KEYWORD-B" in entries[0].text
+    assert "HINT-B" in entries[0].text
+    assert "KEYWORD-A" in entries[1].text
+    assert "HINT-A" in entries[1].text
+    assert "KEYWORD-C" in entries[2].text
+    assert "HINT-C" in entries[2].text
 
 
 def test_puzzle_guess_submit_auth(client):

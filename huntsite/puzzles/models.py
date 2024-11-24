@@ -21,6 +21,17 @@ class PuzzleQuerySet(models.QuerySet):
     def with_meta_info(self):
         return self.select_related("meta_info")
 
+    def with_canned_hints(self, as_of: datetime.datetime | None = None):
+        as_of = as_of or timezone.now()
+        return self.prefetch_related(
+            models.Prefetch(
+                "canned_hints",
+                queryset=CannedHint.objects.filter(
+                    puzzle__canned_hints_available_at__lte=as_of
+                ).order_by("order_by"),
+            )
+        )
+
     def with_clipboard_data(self):
         return self.select_related("clipboard_data")
 
@@ -70,6 +81,8 @@ class Puzzle(models.Model):
 
     available_at = models.DateTimeField(default=timezone.now)
 
+    canned_hints_available_at = models.DateTimeField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -85,6 +98,10 @@ class Puzzle(models.Model):
     @property
     def is_available(self):
         return self.available_at <= timezone.now()
+
+    @property
+    def is_hints_available(self):
+        return self.canned_hints_available_at and self.canned_hints_available_at <= timezone.now()
 
     def get_absolute_url(self):
         """Returns the URL for the detail page of the puzzle."""
@@ -114,6 +131,16 @@ class MetapuzzleInfo(models.Model):
         if self.is_final:
             if MetapuzzleInfo.objects.filter(is_final=True).exists():
                 raise ValidationError("There can only be one final metapuzzle.")
+
+
+class CannedHint(models.Model):
+    puzzle = models.ForeignKey(Puzzle, on_delete=models.CASCADE, related_name="canned_hints")
+    keywords = models.CharField(max_length=255, blank=False)
+    text = models.TextField()
+    order_by = models.IntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class ClipboardData(models.Model):

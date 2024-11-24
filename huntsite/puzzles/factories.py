@@ -52,6 +52,15 @@ class MetapuzzleInfoFactory(factory.django.DjangoModelFactory):
     is_final = False
 
 
+class CannedHintFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "puzzles.CannedHint"
+
+    puzzle = factory.SubFactory(PuzzleFactory)
+    keywords = factory.Faker("word")
+    text = factory.Faker("sentence")
+
+
 def clipboard_data_text_factory() -> str:
     nb = random.randint(3, 10)
     return "\n".join(fake.sentence() for _ in range(nb))

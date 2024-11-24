@@ -59,7 +59,14 @@ def puzzle_detail(request, slug: str):
     puzzle_manager = Puzzle.objects if request.user.is_tester else Puzzle.available
 
     if request.method == "GET":
-        queryset = puzzle_manager.with_errata().with_clipboard_data().with_external_links()
+        queryset = (
+            puzzle_manager.with_errata()
+            .with_clipboard_data()
+            .with_external_links()
+            .with_canned_hints(
+                as_of=read_time_travel_session_var(request) if request.user.is_tester else None
+            )
+        )
         puzzle = get_object_or_404(queryset, slug=slug)
 
         logger.trace(

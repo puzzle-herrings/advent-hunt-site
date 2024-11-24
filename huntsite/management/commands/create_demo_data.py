@@ -68,6 +68,19 @@ class Command(BaseCommand):
             puzzles[0].full_clean()
             puzzles[0].save()
 
+            # Puzzle zero has some canned hints available
+            puzzles[0].canned_hints_available_at = timezone.now() - timezone.timedelta(days=1)
+            puzzles[0].full_clean()
+            puzzles[0].save()
+            for i in range(3):
+                puzzle_factories.CannedHintFactory(puzzle=puzzles[0])
+
+            # Puzzle one has a canned hints but not yet available
+            puzzles[1].canned_hints_available_at = timezone.now() + timezone.timedelta(days=3)
+            puzzles[1].full_clean()
+            puzzles[1].save()
+            puzzle_factories.CannedHintFactory(puzzle=puzzles[1])
+
             # Puzzle zero has some errata
             for i in range(3):
                 puzzle_factories.ErratumFactory(
