@@ -168,3 +168,18 @@
   </script>
   <!--End keep scrolling indicator-->
 {% endblock body %}
+{% block footer %}
+  <footer class="footer">
+    <div class="content container">
+      <nav class="level">
+        <div class="level-item has-text-centered has-text-grey">
+          <p>Copyright © 2024 Peppermint Herrings 🎏</p>
+        </div>
+        <div class="level-item has-text-centered has-text-grey">
+          <a href="{% url 'about' %}">About</a>&nbsp;•&nbsp;
+          <a href="{% url 'attributions' %}">Attributions</a>
+        </div>
+      </nav>
+    </div>
+  </footer>
+{% endblock footer %}
