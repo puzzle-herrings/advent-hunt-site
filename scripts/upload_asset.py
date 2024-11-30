@@ -17,10 +17,11 @@ UPLOAD_EXTRA_ARGS = {
 
 def main(
     input_file: Path,
-    output_path: PurePosixPath,
+    output_path: str,
     skip_confirmation: Annotated[bool, typer.Option("-y")] = False,
     dryrun: bool = False,
 ):
+    output_path = PurePosixPath(output_path)
     assert not output_path.is_absolute(), "output_path must be a relative path"
 
     content = input_file.read_bytes()
