@@ -243,6 +243,17 @@ class Guess(models.Model):
     def clean(self):
         self.text = clean_answer(self.text)
 
+    def to_dict(self):
+        """Returns a dictionary representation of the Guess object that can be serialized as
+        JSON."""
+        return {
+            "team": self.user.team_name,
+            "puzzle": self.puzzle.title,
+            "text": self.text,
+            "evaluation": self.display_evaluation,
+            "timestamp": self.created_at.isoformat(),
+        }
+
     def __str__(self):
         return " - ".join(
             [
@@ -263,6 +274,15 @@ class Solve(models.Model):
 
     class Meta:
         unique_together = ("user", "puzzle")
+
+    def to_dict(self):
+        """Returns a dictionary representation of the Solve object that can be serialized as
+        JSON."""
+        return {
+            "team": self.user.team_name,
+            "puzzle": self.puzzle.title,
+            "timestamp": self.created_at.isoformat(),
+        }
 
     def __str__(self):
         return f"{self.user.team_name} - {self.puzzle.title} - {self.created_at}"

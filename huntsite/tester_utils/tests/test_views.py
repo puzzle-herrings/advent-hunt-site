@@ -6,6 +6,7 @@ import pytest
 
 from huntsite.puzzles.factories import PuzzleFactory
 from huntsite.teams.factories import UserFactory
+from huntsite.tester_utils.factories import OrganizerDashboardPermissionFactory
 from huntsite.tester_utils.session_handlers import (
     TIME_TRAVEL_SESSION_VAR,
     read_time_travel_session_var,
@@ -75,3 +76,20 @@ def test_time_travel_view(client):
     assert response.status_code == 200
     assert read_time_travel_session_var(response.wsgi_request) == time_travel_to
     assert puzzle.title in response.content.decode()
+
+
+def test_organizer_dashboard_view(client):
+    # Anonymous user should get 404
+    response = client.get(reverse("organizer_dashboard"))
+    assert response.status_code == 404
+
+    # Regular user should get 404
+    user = UserFactory()
+    client.force_login(user)
+    response = client.get(reverse("organizer_dashboard"))
+    assert response.status_code == 404
+
+    # User with permissions should be able to access
+    OrganizerDashboardPermissionFactory(user=user)
+    response = client.get(reverse("organizer_dashboard"))
+    assert response.status_code == 200

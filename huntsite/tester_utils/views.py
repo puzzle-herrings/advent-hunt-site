@@ -1,12 +1,16 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from loguru import logger
 
+from huntsite.puzzles.models import Guess, Solve
 from huntsite.tester_utils import forms, session_handlers
+from huntsite.tester_utils.models import OrganizerDashboardPermission
 
 
 @login_required
@@ -43,3 +47,25 @@ def time_travel_reset(request):
     response = HttpResponse("Traveling through time...")
     response["HX-Refresh"] = "true"
     return response
+
+
+def organizer_dashboard_view(request):
+    """View for hunt organizers to see solves and guesses."""
+    # Check permissions
+    if request.user.is_anonymous:
+        raise Http404
+    get_object_or_404(OrganizerDashboardPermission, user=request.user)
+
+    recent_solves = (
+        Solve.objects.select_related("user").select_related("puzzle").order_by("-created_at")[:200]
+    )
+    recent_guesses = (
+        Guess.objects.select_related("user").select_related("puzzle").order_by("-created_at")[:200]
+    )
+
+    context = {
+        "recent_solves_json": json.dumps([solve.to_dict() for solve in recent_solves]),
+        "recent_guesses_json": json.dumps([guess.to_dict() for guess in recent_guesses]),
+    }
+
+    return render(request, "organizer_dashboard.html", context)
