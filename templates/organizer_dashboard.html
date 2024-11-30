@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}
+  Secret Organizer Dashboard | {{ META_TITLE }}
+{% endblock title %}
+{# djlint:off #}
+  {% block og_title %}Secret Organizer Dashboard | {{ META_TITLE }}{% endblock og_title %}
+{# djlint:on #}
+{% block header_extra %}
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+          integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet"
+        href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css"
+        integrity="sha384-eCorNQ6xLKDT9aok8iCYVVP8S813O3kaugZFLBt1YhfR80d1ZgkNcf2ghiTRzRno"
+        crossorigin="anonymous">
+  <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"
+          integrity="sha384-cDXquhvkdBprgcpTQsrhfhxXRN4wfwmWauQ3wR5ZTyYtGrET2jd68wvJ1LlDqlQG"
+          crossorigin="anonymous"></script>
+  {% include "partials/timestamp_localize_libraries.html" %}
+{% endblock header_extra %}
+{% block content %}
+  <h1 class="title is-1 block">Secret Hunt Organizer Dashboard 🤫</h1>
+  <h2 class="title is-2 block">Last 200 Solves ✅</h2>
+  <table id="recent-solves" class="display block">
+  </table>
+  <h2 class="title is-2 block">Last 200 Guesses 📥</h2>
+  <table id="recent-guesses" class="display block">
+  </table>
+  <script>
+    render_as_timestamp = function(data, type, row) {
+      return `<span class="timestamp">${data}</span>`;
+    }
+    var recentSolves = {{ recent_solves_json|safe }};
+    $('#recent-solves').DataTable({
+      data: recentSolves,
+      columns: [
+        { title: 'Team', data: "team" },
+        { title: 'Puzzle', data: "puzzle" },
+        { title: 'Time', data: "timestamp", render: render_as_timestamp, searchable: false },
+      ],
+      order: [[2, 'desc']],
+    });
+    var recentGuesses = {{ recent_guesses_json|safe }};
+    $('#recent-guesses').DataTable({
+      data: recentGuesses,
+      columns: [
+        { title: 'Team', data: "team" },
+        { title: 'Puzzle', data: "puzzle" },
+        { title: 'Guess', data: "text" },
+        { title: 'Evaluation', data: "evaluation" },
+        { title: 'Time', data: "timestamp", render: render_as_timestamp, searchable: false },
+      ],
+      order: [[4, 'desc']],
+    });
+  </script>
+  {% include "partials/timestamp_localize_script.html" %}
+{% endblock content %}
