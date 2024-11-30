@@ -4,6 +4,7 @@ from crispy_bulma.layout import FormGroup, Submit
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Field, Layout
 from django import forms
+from django_admin_action_forms import AdminActionForm
 
 from huntsite.teams import models
 
@@ -100,3 +101,11 @@ class UsernameUpdateForm(forms.ModelForm):
 
     def add_no_changes_message(self):
         self.helper.layout[-1].fields.append(HTML(self._NO_CHANGES_MESSAGE))
+
+
+class SendEmailAdminForm(AdminActionForm):
+    subject = forms.CharField(max_length=255)
+    message = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        list_objects = True

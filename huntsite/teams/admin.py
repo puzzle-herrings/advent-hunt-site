@@ -1,7 +1,15 @@
+from allauth.account.admin import EmailAddressAdmin as AllAuthEmailAddressAdmin
+from allauth.account.models import EmailAddress
+from django.conf import settings
 from django.contrib import admin
+from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
+from django_admin_action_forms import action_with_form
+from django_no_queryset_admin_actions import NoQuerySetAdminActionsMixin
+from loguru import logger
 
 from huntsite.admin import UneditableAsReadOnlyAdminMixin
+from huntsite.teams.forms import SendEmailAdminForm
 import huntsite.teams.models as models
 from huntsite.teams.services import user_clear_password, user_deactivate
 
@@ -64,3 +72,39 @@ class FlairAdmin(admin.ModelAdmin):
     @mark_safe
     def icon_safe(self, obj):
         return obj.icon
+
+
+def send_email(subject, message, recipient_list):
+    logger.info(f"Sending email with subject '{subject}' to {len(recipient_list)} recipients.")
+    email = EmailMessage(
+        subject=subject,
+        body=message,
+        to=(settings.EMAIL_REPLY_TO,),
+        reply_to=(settings.EMAIL_REPLY_TO,),
+        bcc=recipient_list,
+    )
+    email.send()
+
+
+@action_with_form(SendEmailAdminForm, description="Send email to selected email addresses")
+def send_email_to_selected(modeladmin, request, queryset, data):
+    recipients = queryset.values_list("email", flat=True)
+    send_email(subject=data["subject"], message=data["message"], recipient_list=recipients)
+    modeladmin.message_user(request, f"Email sent to selected {queryset.count()} addresses.")
+
+
+@action_with_form(SendEmailAdminForm, description="Send email to all email addresses")
+def send_email_to_all(modeladmin, request, data):
+    queryset = EmailAddress.objects.all()
+    recipients = queryset.values_list("email", flat=True)
+    send_email(subject=data["subject"], message=data["message"], recipient_list=recipients)
+    modeladmin.message_user(request, f"Email sent to all ({queryset.count()}) addresses.")
+
+
+admin.site.unregister(EmailAddress)  # Unregister allauth's default admin
+
+
+@admin.register(EmailAddress)
+class EmailAddressAdmin(NoQuerySetAdminActionsMixin, AllAuthEmailAddressAdmin):
+    actions = [send_email_to_selected, send_email_to_all]
+    no_queryset_actions = [send_email_to_all]
