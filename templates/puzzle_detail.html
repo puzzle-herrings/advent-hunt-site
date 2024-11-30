@@ -56,10 +56,10 @@
                 {% for canned_hint in puzzle.canned_hints.all %}
                   <tr>
                     <td align="left">
-                      <span class="spoiler">{{ canned_hint.keywords }}</span>
+                      <span class="spoiler">{{ canned_hint.render_keywords | safe }}</span>
                     </td>
                     <td align="left">
-                      <span class="spoiler">{{ canned_hint.text }}</span>
+                      <span class="spoiler">{{ canned_hint.render_text | safe }}</span>
                     </td>
                   </tr>
                 {% endfor %}

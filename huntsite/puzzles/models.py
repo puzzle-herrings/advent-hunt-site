@@ -142,6 +142,12 @@ class CannedHint(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def render_keywords(self):
+        return markdown.markdown(self.keywords)
+
+    def render_text(self):
+        return markdown.markdown(self.text)
+
 
 class ClipboardData(models.Model):
     """Model for clipboard data related to a puzzle that users can copy when viewing a puzzle
