@@ -77,3 +77,11 @@ class FlairFactory(factory.django.DjangoModelFactory):
         if extracted:
             obj.users.add(*extracted)
             obj.save()
+
+
+class EmailAddressFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "account.EmailAddress"
+
+    user = factory.SubFactory(UserFactory)
+    email = factory.Faker("email")

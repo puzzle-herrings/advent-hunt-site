@@ -30,10 +30,14 @@ django==5.0.4
     #   -r requirements/deploy.txt
     #   crispy-bulma
     #   dj-database-url
+    #   django-admin-action-forms
     #   django-allauth
     #   django-anymail
     #   django-crispy-forms
     #   django-debug-toolbar
+    #   django-no-queryset-admin-actions
+django-admin-action-forms==1.2.4
+    # via -r requirements/deploy.txt
 django-allauth==0.63.6
     # via -r requirements/deploy.txt
 django-anymail==11.1
@@ -45,6 +49,8 @@ django-crispy-forms==2.2
     #   -r requirements/deploy.txt
     #   crispy-bulma
 django-debug-toolbar==4.4.6
+    # via -r requirements/deploy.txt
+django-no-queryset-admin-actions==1.1.0
     # via -r requirements/deploy.txt
 django-robots==6.1
     # via -r requirements/deploy.txt

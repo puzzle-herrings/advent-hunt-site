@@ -23,11 +23,15 @@ django==5.0.4
     #   -r requirements/deploy.in
     #   crispy-bulma
     #   dj-database-url
+    #   django-admin-action-forms
     #   django-allauth
     #   django-anymail
     #   django-crispy-forms
     #   django-debug-toolbar
+    #   django-no-queryset-admin-actions
     #   sentry-sdk
+django-admin-action-forms==1.2.4
+    # via -r requirements/deploy.in
 django-allauth==0.63.6
     # via -r requirements/deploy.in
 django-anymail==11.1
@@ -39,6 +43,8 @@ django-crispy-forms==2.2
     #   -r requirements/deploy.in
     #   crispy-bulma
 django-debug-toolbar==4.4.6
+    # via -r requirements/deploy.in
+django-no-queryset-admin-actions==1.1.0
     # via -r requirements/deploy.in
 django-robots==6.1
     # via -r requirements/deploy.in

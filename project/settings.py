@@ -98,6 +98,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bulma",
     "debug_toolbar",
+    "django_admin_action_forms",
+    "django_no_queryset_admin_actions",
     "robots",
     # Local apps
     "huntsite",
@@ -387,8 +389,11 @@ EMAIL_FROM_USERNAME = env("EMAIL_FROM_USERNAME", "noreply")
 DEFAULT_FROM_EMAIL = f"{EMAIL_FROM_USERNAME}@{EMAIL_FROM_DOMAIN}"
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
+EMAIL_REPLY_TO = env("EMAIL_REPLY_TO", DEFAULT_FROM_EMAIL)
+
 logger.info("Using email backend: " + EMAIL_BACKEND)
 logger.info("Server emails will be sent from: " + DEFAULT_FROM_EMAIL)
+logger.info("Server emails will have reply-to address: " + EMAIL_REPLY_TO)
 
 ## Error and Performance Monitoring / Sentry
 

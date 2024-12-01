@@ -1,9 +1,11 @@
 crispy-bulma
 django
+django-admin-action-forms
 django-allauth
 django-anymail[mailgun]
 django-crispy-forms
 django-debug-toolbar
+django-no-queryset-admin-actions
 django-robots>=4.0.0
 environs[django]
 gunicorn
