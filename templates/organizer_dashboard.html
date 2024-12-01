@@ -27,8 +27,8 @@
   <table id="recent-guesses" class="display block">
   </table>
   <script>
-    render_as_timestamp = function(data, type, row) {
-      return `<span class="timestamp">${data}</span>`;
+    render_in_local_time = function(data, type, row) {
+      return moment.tz(data, userTimeZone).format('{{output_format|default:"MMM D, YYYY hh:mm:ss A z"}}');
     }
     var recentSolves = {{ recent_solves_json|safe }};
     $('#recent-solves').DataTable({
@@ -36,7 +36,7 @@
       columns: [
         { title: 'Team', data: "team" },
         { title: 'Puzzle', data: "puzzle" },
-        { title: 'Time', data: "timestamp", render: render_as_timestamp, searchable: false },
+        { title: 'Time', data: "timestamp", render: render_in_local_time, searchable: false },
       ],
       order: [[2, 'desc']],
     });
@@ -48,10 +48,9 @@
         { title: 'Puzzle', data: "puzzle" },
         { title: 'Guess', data: "text" },
         { title: 'Evaluation', data: "evaluation" },
-        { title: 'Time', data: "timestamp", render: render_as_timestamp, searchable: false },
+        { title: 'Time', data: "timestamp", render: render_in_local_time, searchable: false },
       ],
       order: [[4, 'desc']],
     });
   </script>
-  {% include "partials/timestamp_localize_script.html" %}
 {% endblock content %}
