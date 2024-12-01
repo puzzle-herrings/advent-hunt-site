@@ -46,16 +46,7 @@ def user_clear_password(user: User):
 
 def email_address_select_all_active():
     """Select all active email addresses for users that are not staff or testers."""
-    return (
-        EmailAddress.objects
-        # Exclude inactive accounts
-        .exclude(user__is_active=False)
-        # Exclude staff and testers
-        .exclude(user__is_staff=True)
-        .exclude(user__is_tester=True)
-        .order_by("user")
-        .all()
-    )
+    return EmailAddress.objects.exclude(user__is_active=False).order_by("user").all()
 
 
 # https://stackoverflow.com/a/54923798

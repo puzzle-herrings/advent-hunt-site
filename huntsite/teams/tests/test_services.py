@@ -1,5 +1,6 @@
 from textwrap import dedent
 
+from django.conf import settings
 from django.core import mail
 import pytest
 
@@ -58,9 +59,9 @@ def test_active_email_select():
     assert user1_email in emails
     assert user2_email1 in emails
     assert user2_email2 in emails
-    assert admin_email not in emails
+    assert admin_email in emails
+    assert tester_email in emails
     assert deactivated_email not in emails
-    assert tester_email not in emails
 
 
 def test_markdown_unmark():
@@ -96,10 +97,10 @@ def test_send_email():
     assert len(mail.outbox) == 2
     assert mail.outbox[0].subject == subject
     assert mail.outbox[0].body == message
-    assert mail.outbox[0].to == []
+    assert mail.outbox[0].to == [settings.EMAIL_REPLY_TO]
     assert mail.outbox[0].bcc == recipients[:10]
 
     assert mail.outbox[1].subject == subject
     assert mail.outbox[1].body == message
-    assert mail.outbox[1].to == []
+    assert mail.outbox[0].to == [settings.EMAIL_REPLY_TO]
     assert mail.outbox[1].bcc == recipients[10:]
