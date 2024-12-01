@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.test import Client
@@ -5,6 +7,7 @@ from django.utils import timezone
 from metadata_parser import MetadataParser
 import pytest
 
+from huntsite.emails import unmark
 from huntsite.puzzles.factories import MetapuzzleInfoFactory, PuzzleFactory
 from huntsite.puzzles.services import guess_submit
 from huntsite.teams.factories import UserFactory
@@ -190,3 +193,22 @@ def test_discord_server_link(monkeypatch):
     assert response.context.get("DISCORD_SERVER_LINK")
     soup = BeautifulSoup(response.content, "html.parser")
     assert soup.find("a", attrs={"id": "discord-server-link"})
+
+
+def test_markdown_unmark():
+    message = "foo [bar](https://www.adventhunt.com) baz"
+    expected = "foo bar (https://www.adventhunt.com) baz"
+    assert unmark(message) == expected
+
+    message = dedent("""\
+    Here's a first **paragraph**. There's a [link](https://www.adventhunt.com) in it.
+
+    And here's a _second_ paragraph.
+    """)
+    expected = dedent("""\
+    Here's a first paragraph. There's a link (https://www.adventhunt.com) in it.
+
+    And here's a second paragraph.
+    """).strip()
+    output = unmark(message)
+    assert output == expected, output
