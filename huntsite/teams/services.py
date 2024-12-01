@@ -45,7 +45,7 @@ def user_clear_password(user: User):
 
 
 def email_address_select_all_active():
-    """Select all active email addresses for users that are not staff or testers."""
+    """Select all email addresses for active users."""
     return EmailAddress.objects.exclude(user__is_active=False).order_by("user").all()
 
 
