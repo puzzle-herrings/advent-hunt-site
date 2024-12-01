@@ -92,5 +92,5 @@ admin.site.unregister(EmailAddress)  # Unregister allauth's default admin
 
 @admin.register(EmailAddress)
 class EmailAddressAdmin(NoQuerySetAdminActionsMixin, AllAuthEmailAddressAdmin):
-    actions = [send_email_to_selected, send_email_to_all]
+    actions = AllAuthEmailAddressAdmin.actions + [send_email_to_selected, send_email_to_all]
     no_queryset_actions = [send_email_to_all]
