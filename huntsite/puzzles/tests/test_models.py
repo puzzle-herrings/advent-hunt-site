@@ -1,3 +1,5 @@
+import string
+
 from django.utils import timezone
 import pytest
 
@@ -87,3 +89,37 @@ def test_puzzle_is_available():
 
     assert puzzle_avail.is_available
     assert not puzzle_not_avail.is_available
+
+
+def test_puzzle_solve_stats_and_guess_stats():
+    puzzle1 = PuzzleFactory()
+    puzzle2 = PuzzleFactory()
+    puzzle3 = PuzzleFactory()
+
+    users = [UserFactory() for _ in range(10)]
+
+    # puzzle1 has no solves, no guesses
+
+    # puzzle2 has 5 solves, 10 guesses
+    for i in range(2):
+        guess_submit(puzzle2, users[0], puzzle2.answer + string.ascii_uppercase[i])
+    for i in range(3):
+        guess_submit(puzzle2, users[-1], puzzle2.answer + string.ascii_uppercase[i])
+    for user in users[:5]:
+        guess_submit(puzzle2, user, puzzle2.answer)
+
+    # puzzle3 has 1 solve, 8 guesses
+    for i in range(7):
+        guess_submit(puzzle3, users[i], puzzle3.answer + string.ascii_uppercase[i])
+    guess_submit(puzzle3, users[-1], puzzle3.answer)
+
+    puzzles = Puzzle.objects.with_solve_stats().with_guess_stats().order_by("id").all()
+    assert puzzles[0].id == puzzle1.id
+    assert puzzles[0].num_solves == 0
+    assert puzzles[0].num_guesses == 0
+    assert puzzles[1].id == puzzle2.id
+    assert puzzles[1].num_solves == 5
+    assert puzzles[1].num_guesses == 10
+    assert puzzles[2].id == puzzle3.id
+    assert puzzles[2].num_solves == 1
+    assert puzzles[2].num_guesses == 8

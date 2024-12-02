@@ -3,6 +3,7 @@ import datetime
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Count, Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
@@ -57,6 +58,28 @@ class PuzzleQuerySet(models.QuerySet):
 
     def filter_available_at(self, dt: datetime.datetime):
         return self.filter(available_at__lte=dt)
+
+    def with_solve_stats(self):
+        return self.annotate(
+            num_solves=Count(
+                "solve",
+                filter=Q(solve__user__is_active=True)
+                & Q(solve__user__is_staff=False)
+                & Q(solve__user__is_tester=False),
+                distinct=True,
+            )
+        )
+
+    def with_guess_stats(self):
+        return self.annotate(
+            num_guesses=Count(
+                "guess",
+                filter=Q(guess__user__is_active=True)
+                & Q(guess__user__is_staff=False)
+                & Q(guess__user__is_tester=False),
+                distinct=True,
+            )
+        )
 
 
 class AvailablePuzzleManager(models.Manager):
