@@ -28,7 +28,15 @@
   </table>
   <script>
     render_in_local_time = function(data, type, row) {
-      return moment.tz(data, userTimeZone).format('{{output_format|default:"MMM D, YYYY hh:mm:ss A z"}}');
+      // https://datatables.net/manual/data/orthogonal-data#Computed-values
+      // If display or filter data is requested, format the date
+      if ( type === 'display' || type === 'filter' ) {
+        return moment.tz(data, userTimeZone).format('{{output_format|default:"MMM D, YYYY hh:mm:ss A z"}}');
+      }
+      // Otherwise the data type requested (`type`) is type detection or
+      // sorting data, for which we want to use the integer, so just return
+      // that, unaltered
+      return data;
     }
     var recentSolves = {{ recent_solves_json|safe }};
     $('#recent-solves').DataTable({
