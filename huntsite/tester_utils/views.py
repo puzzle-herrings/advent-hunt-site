@@ -63,7 +63,12 @@ def organizer_dashboard_view(request):
         Guess.objects.select_related("user").select_related("puzzle").order_by("-created_at")[:200]
     )
     puzzles = (
-        Puzzle.objects.with_solve_stats().with_guess_stats().order_by("calendar_entry__day").all()
+        Puzzle.objects.with_calendar_entry()
+        .with_meta_info()
+        .with_solve_stats()
+        .with_guess_stats()
+        .order_by("calendar_entry__day")
+        .all()
     )
 
     context = {

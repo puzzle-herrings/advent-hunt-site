@@ -3,7 +3,8 @@ import datetime
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Count, Q
+from django.db.models import Count, Subquery, Value
+from django.db.models.functions import Coalesce
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
@@ -60,26 +61,32 @@ class PuzzleQuerySet(models.QuerySet):
         return self.filter(available_at__lte=dt)
 
     def with_solve_stats(self):
-        return self.annotate(
-            num_solves=Count(
-                "solve",
-                filter=Q(solve__user__is_active=True)
-                & Q(solve__user__is_staff=False)
-                & Q(solve__user__is_tester=False),
-                distinct=True,
+        solves_count = (
+            Solve.objects.filter(puzzle=models.OuterRef("pk"))
+            .filter(
+                user__is_active=True,
+                user__is_staff=False,
+                user__is_tester=False,
             )
+            .values("puzzle")
+            .annotate(c=Count("*"))
+            .values("c")
         )
+        return self.annotate(num_solves=Coalesce(Subquery(solves_count), Value(0)))
 
     def with_guess_stats(self):
-        return self.annotate(
-            num_guesses=Count(
-                "guess",
-                filter=Q(guess__user__is_active=True)
-                & Q(guess__user__is_staff=False)
-                & Q(guess__user__is_tester=False),
-                distinct=True,
+        guesses_count = (
+            Guess.objects.filter(puzzle=models.OuterRef("pk"))
+            .filter(
+                user__is_active=True,
+                user__is_staff=False,
+                user__is_tester=False,
             )
+            .values("puzzle")
+            .annotate(c=Count("*"))
+            .values("c")
         )
+        return self.annotate(num_guesses=Coalesce(Subquery(guesses_count), Value(0)))
 
 
 class AvailablePuzzleManager(models.Manager):
