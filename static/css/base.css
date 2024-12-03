@@ -170,6 +170,16 @@ samp {
     --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
 
+/* Adapted from https://github.com/cityssm/bulma-sticky-table/blob/main/_sticky-table.scss */
+.table.has-sticky-header {
+    thead th {
+        background-color: var(--parchment);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+}
+
 footer.footer {
     --bulma-footer-background-color: var(--parchment);
     --bulma-footer-padding: 3rem 1.5rem 1rem

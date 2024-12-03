@@ -97,6 +97,9 @@ def test_puzzle_solve_stats_and_guess_stats():
     puzzle3 = PuzzleFactory()
 
     users = [UserFactory() for _ in range(10)]
+    admin = UserFactory(is_staff=True)
+    tester = UserFactory(is_tester=True)
+    inactive = UserFactory(is_active=False)
 
     # puzzle1 has no solves, no guesses
 
@@ -108,12 +111,21 @@ def test_puzzle_solve_stats_and_guess_stats():
     for user in users[:5]:
         guess_submit(puzzle2, user, puzzle2.answer)
 
-    # puzzle3 has 1 solve, 8 guesses
+    # puzzle3 has 1 solve, 8 guesses, and additional guesses from inactive/admin/tester users
     for i in range(7):
         guess_submit(puzzle3, users[i], puzzle3.answer + string.ascii_uppercase[i])
     guess_submit(puzzle3, users[-1], puzzle3.answer)
+    for user in (admin, tester, inactive):
+        guess_submit(puzzle3, user, puzzle3.answer + "WRONG")
+        guess_submit(puzzle3, user, puzzle3.answer)
 
-    puzzles = Puzzle.objects.with_solve_stats().with_guess_stats().order_by("id").all()
+    puzzles = (
+        Puzzle.objects.with_calendar_entry()
+        .with_solve_stats()
+        .with_guess_stats()
+        .order_by("id")
+        .all()
+    )
     assert puzzles[0].id == puzzle1.id
     assert puzzles[0].num_solves == 0
     assert puzzles[0].num_guesses == 0

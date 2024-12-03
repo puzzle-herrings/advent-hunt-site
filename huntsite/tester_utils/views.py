@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from loguru import logger
 
-from huntsite.puzzles.models import Guess, Solve
+from huntsite.puzzles.models import Guess, Puzzle, Solve
 from huntsite.tester_utils import forms, session_handlers
 from huntsite.tester_utils.models import OrganizerDashboardPermission
 
@@ -62,10 +62,14 @@ def organizer_dashboard_view(request):
     recent_guesses = (
         Guess.objects.select_related("user").select_related("puzzle").order_by("-created_at")[:200]
     )
+    puzzles = (
+        Puzzle.objects.with_solve_stats().with_guess_stats().order_by("calendar_entry__day").all()
+    )
 
     context = {
         "recent_solves_json": json.dumps([solve.to_dict() for solve in recent_solves]),
         "recent_guesses_json": json.dumps([guess.to_dict() for guess in recent_guesses]),
+        "puzzles": puzzles,
     }
 
     return render(request, "organizer_dashboard.html", context)
