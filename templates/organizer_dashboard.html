@@ -61,4 +61,32 @@
       order: [[4, 'desc']],
     });
   </script>
+  <h2 class="title is-2 block">Puzzle Stats 🧩</h2>
+  <table class="table is-striped is-narrow has-sticky-header block">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Puzzle</th>
+        <th>Solves</th>
+        <th>Guesses</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for puzzle in puzzles %}
+        <tr>
+          <td scope="row" class="has-text-right">
+            {% if puzzle.meta_info %}{{ puzzle.meta_info.icon|safe }}{% endif %}
+            {{ puzzle.calendar_entry.day }}
+          </td>
+          <td>
+            {% if puzzle.meta_info %}<strong>{% endif %}
+              {{ puzzle.title }}
+              {% if puzzle.meta_info %}</strong>{% endif %}
+          </td>
+          <td>{{ puzzle.num_solves }}</td>
+          <td>{{ puzzle.num_guesses }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock content %}
