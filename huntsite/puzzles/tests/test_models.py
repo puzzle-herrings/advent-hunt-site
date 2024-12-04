@@ -1,10 +1,11 @@
 import string
 
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 import pytest
 
-from huntsite.puzzles.factories import PuzzleFactory
-from huntsite.puzzles.models import AdventCalendarEntry, Puzzle
+from huntsite.puzzles.factories import MetapuzzleInfoFactory, PuzzleFactory
+from huntsite.puzzles.models import AdventCalendarEntry, MetapuzzleInfo, Puzzle
 from huntsite.puzzles.services import guess_submit
 from huntsite.teams.factories import UserFactory
 from huntsite.teams.models import AnonymousUser
@@ -89,6 +90,20 @@ def test_puzzle_is_available():
 
     assert puzzle_avail.is_available
     assert not puzzle_not_avail.is_available
+
+
+def test_metapuzzle_info_final_uniqueness():
+    """MetapuzzleInfo should give validation error if saving `is_final` instance if another
+    already exists."""
+    metapuzzle_info1 = MetapuzzleInfoFactory(is_final=True)
+
+    # Should error
+    with pytest.raises(ValidationError):
+        metapuzzle_info2 = MetapuzzleInfo(puzzle=PuzzleFactory(), is_final=True)
+        metapuzzle_info2.full_clean()
+
+    # Should not error, same instance
+    metapuzzle_info1.full_clean()
 
 
 def test_puzzle_solve_stats_and_guess_stats():

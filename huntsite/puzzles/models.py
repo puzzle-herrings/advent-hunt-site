@@ -159,7 +159,7 @@ class MetapuzzleInfo(models.Model):
 
     def clean(self):
         if self.is_final:
-            if MetapuzzleInfo.objects.filter(is_final=True).exists():
+            if MetapuzzleInfo.objects.filter(is_final=True).exclude(pk=self.pk).exists():
                 raise ValidationError("There can only be one final metapuzzle.")
 
 
