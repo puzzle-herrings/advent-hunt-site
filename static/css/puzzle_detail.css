@@ -24,6 +24,10 @@ section.no-bottom-padding {
     justify-content: center;
 }
 
+#guess-form>form>.field>.control:has(>input#id_guess) {
+    flex: 1;
+}
+
 .pseudorelative-outer {
     position: relative;
     width: 0;

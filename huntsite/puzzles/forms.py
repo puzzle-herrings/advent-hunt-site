@@ -9,7 +9,7 @@ class GuessForm(forms.Form):
         label="",
         help_text="",
         max_length=128,
-        widget=forms.TextInput(attrs={"class": "input", "style": "min-width: 24em;"}),
+        widget=forms.TextInput(attrs={"class": "input"}),
     )
 
     def __init__(self, *args, slug: str, **kwargs):
