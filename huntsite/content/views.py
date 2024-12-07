@@ -60,3 +60,12 @@ def attributions_page(request):
         "puzzles": puzzles,
     }
     return TemplateResponse(request, "attributions.html", context)
+
+
+@require_safe
+def updates_page(request):
+    entries = models.UpdateEntry.objects.all().order_by("-published_at")
+    context = {
+        "entries": entries,
+    }
+    return TemplateResponse(request, "updates.html", context)

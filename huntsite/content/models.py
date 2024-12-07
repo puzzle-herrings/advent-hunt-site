@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 import markdown
 
 
@@ -57,6 +58,23 @@ class AttributionsEntry(models.Model):
 
     def __str__(self):
         return self.title
+
+    def render_content(self):
+        return markdown.markdown(self.content)
+
+
+class UpdateEntry(models.Model):
+    content = models.TextField()
+    published_at = models.DateTimeField(default=timezone.now)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Update Entries"
+
+    def __str__(self):
+        return self.content[:64] + "..."
 
     def render_content(self):
         return markdown.markdown(self.content)

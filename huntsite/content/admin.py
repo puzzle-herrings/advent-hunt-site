@@ -20,3 +20,9 @@ class StoryEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
 class AttributionsEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("title", "order_by")
     ordering = ("order_by",)
+
+
+@admin.register(models.UpdateEntry)
+class UpdateEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
+    list_display = ("__str__", "published_at")
+    ordering = ("-published_at",)

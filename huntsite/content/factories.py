@@ -42,3 +42,14 @@ class AttributionsEntryFactory(factory.django.DjangoModelFactory):
     title = factory.Faker("sentence")
     content = factory.LazyFunction(attributions_entry_content_factory)
     order_by = factory.Sequence(lambda n: n)
+
+
+def update_entry_content_factory():
+    return fake.paragraph(nb_sentences=random.randint(2, 4))
+
+
+class UpdateEntryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.UpdateEntry
+
+    content = factory.LazyFunction(update_entry_content_factory)

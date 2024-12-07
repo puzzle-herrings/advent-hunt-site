@@ -186,4 +186,10 @@ class Command(BaseCommand):
             puzzle_factories.PuzzleAttributionsEntryFactory(puzzle=puzzles[4])
             puzzle_factories.PuzzleAttributionsEntryFactory(puzzle=puzzles[8])
 
+            logger.info("Creating updates content...")
+            for i in range(5):
+                content_factories.UpdateEntryFactory(
+                    published_at=timezone.now() - timezone.timedelta(days=i)
+                )
+
         logger.success("create_demo_data complete.")
