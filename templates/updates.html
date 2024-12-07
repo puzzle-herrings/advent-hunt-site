@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}
+  Updates | {{ META_TITLE }}
+{% endblock title %}
+{# djlint:off #}
+  {% block og_title %}Updates | {{ META_TITLE }}{% endblock og_title %}
+{# djlint:on #}
+{% block header_extra %}
+  {% include "partials/timestamp_localize_libraries.html" %}
+{% endblock header_extra %}
+{% block content %}
+  <h1 class="title is-1 block">Updates</h1>
+  {% for entry in entries %}
+    <div class="block update-entry">
+      <h2 class="title is-5">
+        <span class="timestamp">{{ entry.published_at|date:"c" }}</span>
+      </h2>
+      <div class="content">{{ entry.render_content | safe }}</div>
+    </div>
+  {% endfor %}
+  {% include "partials/timestamp_localize_script.html" with timestamp_class="timestamp" output_format="MMM D, YYYY hh:mm A z" %}
+{% endblock content %}

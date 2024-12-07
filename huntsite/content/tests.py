@@ -11,6 +11,7 @@ from huntsite.content.factories import (
     AboutEntryFactory,
     AttributionsEntryFactory,
     StoryEntryFactory,
+    UpdateEntryFactory,
 )
 from huntsite.puzzles.factories import (
     MetapuzzleInfoFactory,
@@ -349,3 +350,27 @@ def test_attributions_page(client):
     assert puzz_attrs_entry3.puzzle.title not in response.content.decode()
     assert puzz_attrs_entry4.puzzle.title not in response.content.decode()
     assert extra_puzz.title not in response.content.decode()
+
+
+def test_updates_page(client):
+    UpdateEntryFactory(
+        content="The North Pole is a-buzz with activity as elves prepare for the big day.",
+        published_at=timezone.now() - timedelta(days=1),
+    )
+    UpdateEntryFactory(
+        content="The reindeer are practicing their take-offs and landings.",
+        published_at=timezone.now() - timedelta(days=3),
+    )
+    UpdateEntryFactory(
+        content="Santa is checking his list twice.",
+        published_at=timezone.now() - timedelta(days=2),
+    )
+
+    response = client.get("/updates/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    entries = soup.find_all("div", class_="update-entry")
+    assert len(entries) == 3
+    assert "North Pole" in entries[0].text
+    assert "Santa" in entries[1].text
+    assert "reindeer" in entries[2].text
