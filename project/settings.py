@@ -145,7 +145,7 @@ TEMPLATES = [
                 # Local custom context processors
                 "huntsite.context_processors.meta",
                 "huntsite.context_processors.canonical",
-                "huntsite.context_processors.hunt_is_live",
+                "huntsite.context_processors.hunt_state",
                 "huntsite.tester_utils.context_processors.time_travel",
                 "huntsite.context_processors.announcement_message",
                 "huntsite.context_processors.discord_server_link",
@@ -441,8 +441,8 @@ if HUNT_IS_ENDED_DATETIME.tzinfo is None:
     HUNT_IS_ENDED_DATETIME = HUNT_IS_ENDED_DATETIME.replace(tzinfo=datetime.timezone.utc)
 assert HUNT_IS_ENDED_DATETIME >= HUNT_IS_LIVE_DATETIME
 
-logger.info("HUNT_IS_LIVE_DATETIME: " + HUNT_IS_LIVE_DATETIME)
-logger.info("HUNT_IS_ENDED_DATETIME: " + HUNT_IS_ENDED_DATETIME)
+logger.info("HUNT_IS_LIVE_DATETIME: {}", HUNT_IS_LIVE_DATETIME)
+logger.info("HUNT_IS_ENDED_DATETIME: {}", HUNT_IS_ENDED_DATETIME)
 if timezone.now() > HUNT_IS_ENDED_DATETIME:
     logger.info("Hunt state is ended.")
 elif timezone.now() > HUNT_IS_LIVE_DATETIME:

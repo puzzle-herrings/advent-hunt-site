@@ -36,7 +36,7 @@
     </div>
   </section>
   <section class="section in-front">
-    {% if not hunt_is_live %}
+    {% if hunt_state == HuntState.PREHUNT %}
       <div class="container">{% include "partials/story_prehunt.html" %}</div>
     {% else %}
       <div class="columns is-centered">

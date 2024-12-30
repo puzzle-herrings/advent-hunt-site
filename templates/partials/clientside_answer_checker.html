@@ -1,0 +1,112 @@
+<!--CLIENTSIDE ANSWER CHECKER-->
+<div class="block">
+  <form id="guess-form">
+    <div class="field is-grouped is-align-items-center">
+      <div class="control" style="flex: 1;">
+        <input type="text"
+               name="guess"
+               class="input"
+               maxlength="128"
+               required=""
+               id="id_guess">
+      </div>
+      <div class="control">
+        <input type="submit"
+               name="submit"
+               value="Submit"
+               class="button is-primary"
+               id="submit-id-submit">
+      </div>
+    </div>
+  </form>
+</div>
+<div id="guesses-results" class="block is-hidden">
+  <p id="evaluation-message" class="block"></p>
+  <p class="has-text-grey is-size-7 block">
+    <i class="bi bi-info-circle"></i> Your guess history is not saved and will be lost if you reload or navigate away.
+  </p>
+  {% load static %}
+  <link href="{% static 'css/liberationmono.css' %}" rel="stylesheet" />
+  <table id="guess-list-table" class="guess-list-table table">
+    <thead>
+      <tr>
+        <th scope="col" align="left">Guess</th>
+        <th scope="col" align="center">Evaluation</th>
+        <th scope="col" align="center">Time</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+<script>
+  evaluations = {
+    CORRECT: "correct",
+    KEEP_GOING: "keep_going",
+    INCORRECT: "incorrect"
+  }
+  evaluation_messages = {
+    [evaluations.CORRECT]: "Correct! 🎉",
+    [evaluations.INCORRECT]: "Incorrect.",
+    [evaluations.KEEP_GOING]: "You got an intermediate phrase! Keep going for the final answer."
+  }
+  evaluation_displays = {
+    [evaluations.CORRECT]: "Correct",
+    [evaluations.INCORRECT]: "Incorrect",
+    [evaluations.KEEP_GOING]: "Keep going!"
+  }
+  const answerData = {{ answer_data|safe }};
+  function cleanAnswer(input) {
+    return input
+    .normalize('NFKD') // Normalize to NFKD
+    .toUpperCase() // Convert to uppercase
+    .trim() // Remove leading/trailing whitespace
+    .replace(/\s+/g, ' ') // Replace internal whitespace with single space
+    .replace(/[^A-Z ]/g, ''); // Remove non-alphabetic characters
+  }
+  function normalizeAnswer(input) {
+    return cleanAnswer(input).replace(/\s+/g, '');
+  }
+  function checkAnswer(guess) {
+    const normalizedGuess = normalizeAnswer(guess);
+    const normalizedAnswer = normalizeAnswer(atob(answerData.answer));
+    const normalizedKeepGoings = answerData.keep_goings.map(atob).map(normalizeAnswer);
+    if (normalizedGuess === normalizedAnswer) {
+      return evaluations.CORRECT
+    } else if (normalizedKeepGoings.includes(normalizedGuess)) {
+      return evaluations.KEEP_GOING
+    } else {
+      return evaluations.INCORRECT
+    }
+  }
+  document.getElementById("guess-form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+    const form = event.target;
+    const formData = new FormData(form);
+    const guess_text = formData.get("guess");
+    const evaluation = checkAnswer(guess_text);
+    // Unhide evaluation and guess list
+    document.getElementById("guesses-results").classList.remove("is-hidden");
+    // Update evaluation message
+    document.getElementById("evaluation-message").textContent = evaluation_messages[evaluation];
+    // Add row to guesses table
+    const newRow = document.getElementById("guess-list-table").tBodies[0].insertRow(0);
+    newRow.classList.add("guess-list-row");
+    const guessCell = newRow.insertCell();
+    const guessSpan = document.createElement("span");
+    guessSpan.textContent = cleanAnswer(guess_text);
+    guessSpan.classList.add("mono");
+    guessCell.appendChild(guessSpan);
+    guessCell.setAttribute("scope", "col");
+    guessCell.setAttribute("align", "left");
+    const evaluationCell = newRow.insertCell();
+    evaluationCell.textContent = evaluation_displays[evaluation];
+    evaluationCell.setAttribute("scope", "col");
+    evaluationCell.setAttribute("align", "center");
+    const timeCell = newRow.insertCell();
+    timeCell.textContent = moment.tz(Date.now(), userTimeZone).format('MMM D, YYYY hh:mm:ss A z');
+    evaluationCell.setAttribute("scope", "col");
+    evaluationCell.setAttribute("align", "center");
+    this.reset();
+  })
+</script>

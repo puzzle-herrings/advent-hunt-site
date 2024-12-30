@@ -18,7 +18,7 @@ class GuessForm(forms.Form):
         self.helper.form_id = "guess-form"
         self.helper.attrs = {
             "hx-post": ".",
-            "hx-target": "#guesses-table",
+            "hx-target": "#guesses-results",
             "hx-on::after-request": "if(event.detail.successful) this.reset()",
         }
         self.helper.layout = Layout(
