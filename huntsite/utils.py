@@ -12,6 +12,13 @@ class HuntState(enum.IntEnum):
     LIVE = enum.auto()
     ENDED = enum.auto()
 
+    @property
+    def do_not_call_in_templates(self):
+        """Turn off calling in templates, otherwise value access doesn't work properly.
+        https://stackoverflow.com/questions/35953132/how-to-access-enum-types-in-django-templates
+        """
+        return True
+
     def __str__(self):
         return self.name.lower()
 

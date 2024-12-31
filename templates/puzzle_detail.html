@@ -17,6 +17,18 @@
         {{ puzzle.title }}
         {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
       </h1>
+      {% if hunt_state >= HuntState.ENDED %}
+        <div id="solution-and-stats"
+             class="is-flex is-justify-content-space-around is-align-items-center block">
+          <p>
+            <a href="{{ puzzle.get_solution_absolute_url }}"
+               class="button is-primary">View solution</a>
+          </p>
+          <p class="has-text-grey">
+            Solves: {{ puzzle.num_solves }}&nbsp;&nbsp;|&nbsp;&nbsp;Incorrect guesses: {{ puzzle.num_incorrect_guesses }}
+          </p>
+        </div>
+      {% endif %}
       {% if puzzle.errata.exists %}
         <div id="errata" class="card is-toggleable block">
           <header class="card-header">
@@ -75,6 +87,7 @@
         </header>
         <div class="card-content">
           {% if hunt_state < HuntState.ENDED %}
+            <!--SERVERSIDE ANSWER CHECKER-->
             <div id="guess-form" class="block">{% crispy form %}</div>
             <div id="guesses-results" class="block">
               {% if guesses %}

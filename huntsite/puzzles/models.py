@@ -74,19 +74,21 @@ class PuzzleQuerySet(models.QuerySet):
         )
         return self.annotate(num_solves=Coalesce(Subquery(solves_count), Value(0)))
 
-    def with_guess_stats(self):
-        guesses_count = (
-            Guess.objects.filter(puzzle=models.OuterRef("pk"))
-            .filter(
-                user__is_active=True,
-                user__is_staff=False,
-                user__is_tester=False,
-            )
-            .values("puzzle")
-            .annotate(c=Count("*"))
-            .values("c")
+    def with_guess_stats(
+        self,
+        annotate_name="num_guesses",
+        filter_evaluations: list["GuessEvaluation"] | None = None,
+    ):
+        guesses = Guess.objects.filter(puzzle=models.OuterRef("pk")).filter(
+            user__is_active=True,
+            user__is_staff=False,
+            user__is_tester=False,
         )
-        return self.annotate(num_guesses=Coalesce(Subquery(guesses_count), Value(0)))
+        if filter_evaluations is not None:
+            guesses = guesses.filter(evaluation__in=filter_evaluations)
+        guesses_count = guesses.values("puzzle").annotate(c=Count("*")).values("c")
+        annotation = {annotate_name: Coalesce(Subquery(guesses_count), Value(0))}
+        return self.annotate(**annotation)
 
 
 class AvailablePuzzleManager(models.Manager):
@@ -108,6 +110,7 @@ class Puzzle(models.Model):
     )
 
     pdf_url = models.URLField()
+    solution_pdf_url = models.URLField(blank=True)
 
     available_at = models.DateTimeField(default=timezone.now)
 
@@ -136,6 +139,10 @@ class Puzzle(models.Model):
     def get_absolute_url(self):
         """Returns the URL for the detail page of the puzzle."""
         return reverse("puzzle_detail", kwargs={"slug": self.slug})
+
+    def get_solution_absolute_url(self):
+        """Returns the URL for the detail page of the puzzle."""
+        return reverse("puzzle_solution", kwargs={"slug": self.slug})
 
     def clean(self):
         self.answer = clean_answer(self.answer)

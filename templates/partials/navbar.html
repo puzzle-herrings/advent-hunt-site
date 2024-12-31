@@ -49,7 +49,7 @@
         <a class="navbar-item" href="{% url 'team_list' %}">Teams</a>
         <a class="navbar-item" href="{% url 'about' %}">About</a>
         <a class="navbar-item" href="{% url 'updates' %}">Updates</a>
-        {% if DISCORD_SERVER_LINK and user.is_authenticated %}
+        {% if DISCORD_SERVER_LINK and user.is_authenticated and hunt_state < HuntState.ENDED %}
           <a class="navbar-item"
              id="discord-server-link"
              style="column-gap: 0.5rem"

@@ -35,6 +35,7 @@ class PuzzleFactory(factory.django.DjangoModelFactory):
     slug = factory.Faker("slug")
     answer = factory.LazyFunction(answer_text_factory)
     pdf_url = factory.fuzzy.FuzzyChoice(MOCK_PUZZLES)
+    solution_pdf_url = factory.fuzzy.FuzzyChoice(MOCK_PUZZLES)
     available_at = factory.LazyFunction(timezone.now)
 
     calendar_entry = factory.RelatedFactory(

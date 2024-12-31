@@ -35,13 +35,16 @@ def puzzle_list(request):
         logger.trace("Team '{user.team_name}' is viewing puzzle list", user=request.user)
         puzzle_manager = Puzzle.available
 
-    puzzles = (
-        puzzle_manager.with_calendar_entry()
-        .with_meta_info()
-        .with_solves_by_user(request.user)
-        .all()
-        .order_by("calendar_entry__day")
-    )
+    puzzle_queryset = puzzle_manager.with_calendar_entry().with_meta_info()
+    if get_hunt_state(request) < HuntState.ENDED:
+        puzzle_queryset = puzzle_queryset.with_solves_by_user(request.user)
+    else:
+        puzzle_queryset = puzzle_queryset.with_solve_stats().with_guess_stats(
+            annotate_name="num_incorrect_guesses",
+            filter_evaluations=[GuessEvaluation.INCORRECT],
+        )
+
+    puzzles = puzzle_queryset.all().order_by("calendar_entry__day")
     day_spine = list(range(1, 25))
     context = {
         "day_spine": day_spine,
@@ -141,6 +144,7 @@ def puzzle_detail_serverside(request, slug: str):
 
 
 def puzzle_detail_clientside(request, slug: str):
+    """Puzzle detail view with clientside answer checker, for after hunt has ended."""
     puzzle_manager = Puzzle.objects
 
     if request.method == "GET":
@@ -150,6 +154,11 @@ def puzzle_detail_clientside(request, slug: str):
             .with_external_links()
             .with_canned_hints(
                 as_of=read_time_travel_session_var(request) if request.user.is_tester else None
+            )
+            .with_solve_stats()
+            .with_guess_stats(
+                annotate_name="num_incorrect_guesses",
+                filter_evaluations=[GuessEvaluation.INCORRECT],
             )
         )
         puzzle = get_object_or_404(queryset, slug=slug)
@@ -173,7 +182,7 @@ def puzzle_detail_clientside(request, slug: str):
 @require_safe
 def puzzle_solution(request, slug: str):
     hunt_state = get_hunt_state(request)
-    if hunt_state < HuntState.ENDED:
+    if not request.user.is_tester and hunt_state < HuntState.ENDED:
         raise Http404
 
     puzzle = get_object_or_404(Puzzle, slug=slug)

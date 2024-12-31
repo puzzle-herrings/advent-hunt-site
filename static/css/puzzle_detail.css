@@ -2,6 +2,16 @@ section.no-bottom-padding {
     padding-bottom: 0;
 }
 
+#solution-and-stats {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 40rem;
+}
+
+#solution-and-stats p {
+    vertical-align: center;
+}
+
 #errata {
     margin-left: auto;
     margin-right: auto;
