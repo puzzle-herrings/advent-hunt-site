@@ -140,6 +140,12 @@ A lot of configuration is done via environment variables, which are read into [`
 
 #### Hunt State
 
+There are three states to the hunt website:
+
+- Before the hunt is "live"
+- While the hunt is "live"
+- After the hunt has "ended"
+
 The variable `HUNT_IS_LIVE_DATETIME` optionally lets you switch control behavior before and after a nominal "start" time for the hunt. A context processor `hunt_is_live` sets a boolean context variable `hunt_is_live` indicating whether the current time is before or after `HUNT_IS_LIVE_DATETIME`. If not set, it will be set to the current time when the application starts up.
 
 #### HTML Metadata

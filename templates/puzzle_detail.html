@@ -17,6 +17,18 @@
         {{ puzzle.title }}
         {% if not puzzle.is_available %}<span class="tag is-danger">Preview</span>{% endif %}
       </h1>
+      {% if hunt_state >= HuntState.ENDED %}
+        <div id="solution-and-stats"
+             class="is-flex is-justify-content-space-around is-align-items-center block">
+          <p>
+            <a href="{{ puzzle.get_solution_absolute_url }}"
+               class="button is-primary">View solution</a>
+          </p>
+          <p class="has-text-grey">
+            Solves: {{ puzzle.num_solves }}&nbsp;&nbsp;|&nbsp;&nbsp;Incorrect guesses: {{ puzzle.num_incorrect_guesses }}
+          </p>
+        </div>
+      {% endif %}
       {% if puzzle.errata.exists %}
         <div id="errata" class="card is-toggleable block">
           <header class="card-header">
@@ -74,12 +86,17 @@
           {% include "partials/card_toggle_indicator.html" %}
         </header>
         <div class="card-content">
-          <div id="guess-form" class="block">{% crispy form %}</div>
-          <div id="guesses-table" class="block">
-            {% if guesses %}
-              {% include "partials/puzzle_guess_list.html" %}
-            {% endif %}
-          </div>
+          {% if hunt_state < HuntState.ENDED %}
+            <!--SERVERSIDE ANSWER CHECKER-->
+            <div id="guess-form-container" class="block">{% crispy form %}</div>
+            <div id="guesses-results" class="block">
+              {% if guesses %}
+                {% include "partials/puzzle_guess_list.html" %}
+              {% endif %}
+            </div>
+          {% else %}
+            {% include "partials/clientside_answer_checker.html" %}
+          {% endif %}
         </div>
       </div>
       {% include "partials/card_toggle_script.html" %}

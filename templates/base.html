@@ -17,13 +17,13 @@
     <meta property="og:title"
           content="{% block og_title %}{{ META_TITLE }}{% endblock og_title %}" />
     <meta property="og:description" content="{{ META_DESCRIPTION }}" />
-    {% if not hunt_is_live %}
+    {% if hunt_state == HuntState.PREHUNT %}
       <meta property="og:image" content="{{ META_OG_IMAGE_PREHUNT }}" />
     {% else %}
       <meta property="og:image" content="{{ META_OG_IMAGE }}" />
     {% endif %}
     <!-- Favicons -->
-    {% if not hunt_is_live or user.is_finished %}
+    {% if hunt_state == HuntState.PREHUNT or user.is_finished %}
       {% comment %} Normal Santa Logo {% endcomment %}
       <link rel="icon" href="{% static 'santa/favicon.ico' %}" sizes="32x32">
       <link rel="icon"

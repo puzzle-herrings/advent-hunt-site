@@ -3,7 +3,7 @@
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item merienda" href="{% url 'home' %}">
-        {% if not hunt_is_live or user.is_finished %}
+        {% if hunt_state == HuntState.PREHUNT or user.is_finished %}
           {% comment %} Normal Santa Logo {% endcomment %}
           <picture>
             <source srcset="{% static 'santa/icon.svg' %}"
@@ -49,24 +49,26 @@
         <a class="navbar-item" href="{% url 'team_list' %}">Teams</a>
         <a class="navbar-item" href="{% url 'about' %}">About</a>
         <a class="navbar-item" href="{% url 'updates' %}">Updates</a>
-        {% if DISCORD_SERVER_LINK and user.is_authenticated %}
+        {% if DISCORD_SERVER_LINK and user.is_authenticated and hunt_state < HuntState.ENDED %}
           <a class="navbar-item"
              id="discord-server-link"
              style="column-gap: 0.5rem"
              href="{{ DISCORD_SERVER_LINK }}"><i class="bi bi-discord"></i>Discord</a>
         {% endif %}
       </div>
-      <div class="navbar-end">
-        {% if user.is_authenticated %}
-          <a class="navbar-item" href="{% url 'team_detail' user.id %}">{{ user.team_name|truncatechars:36 }}</a>
-          <a class="navbar-item"
-             href="#"
-             onClick="document.getElementById('logout-form').submit()">Logout</a>
-        {% else %}
-          <a class="navbar-item" href="{% url 'account_login' %}">Login</a>
-          <a class="navbar-item" href="{% url 'account_signup' %}">Register</a>
-        {% endif %}
-      </div>
+      {% if hunt_state < HuntState.ENDED %}
+        <div class="navbar-end">
+          {% if user.is_authenticated %}
+            <a class="navbar-item" href="{% url 'team_detail' user.id %}">{{ user.team_name|truncatechars:36 }}</a>
+            <a class="navbar-item"
+               href="#"
+               onClick="document.getElementById('logout-form').submit()">Logout</a>
+          {% else %}
+            <a class="navbar-item" href="{% url 'account_login' %}">Login</a>
+            <a class="navbar-item" href="{% url 'account_signup' %}">Register</a>
+          {% endif %}
+        </div>
+      {% endif %}
     </div>
   </div>
 </nav>

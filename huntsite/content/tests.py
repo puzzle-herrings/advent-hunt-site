@@ -1,7 +1,6 @@
 from datetime import timedelta
 
 from bs4 import BeautifulSoup, Tag
-from django.conf import settings
 from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
@@ -42,7 +41,7 @@ def test_about_page(client):
     assert b"go down in history" in response.content
 
 
-def test_story_page(client, monkeypatch):
+def test_story_page(client, settings):
     # Set up puzzles and story entries
     puzzle1 = PuzzleFactory()
     story1_title = "Here is Story 1"
@@ -77,7 +76,8 @@ def test_story_page(client, monkeypatch):
     user2_client.force_login(user2)
 
     ## Before hunt live - no story entries, only invitation
-    monkeypatch.setattr(settings, "HUNT_IS_LIVE_DATETIME", timezone.now() + timedelta(days=1))
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() + timedelta(days=1)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() + timedelta(days=2)
 
     def _assert_invitation_available(story_cards: list[Tag], is_hidden: bool):
         invitation_story_card = story_cards[0]
@@ -101,7 +101,7 @@ def test_story_page(client, monkeypatch):
         _assert_invitation_available(story_cards, is_hidden=False)
 
     ## After hunt live - Arriving in North Pole
-    monkeypatch.setattr(settings, "HUNT_IS_LIVE_DATETIME", timezone.now() - timedelta(days=1))
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timedelta(days=1)
 
     def _assert_arrived_available(story_cards: list[Tag], is_hidden: bool):
         arrived_story = story_cards[1]
@@ -125,12 +125,20 @@ def test_story_page(client, monkeypatch):
     ## User 1 solves puzzle 1
     guess_submit(puzzle=puzzle1, user=user1, guess_text=puzzle1.answer)
 
-    def _assert_story1_available(story_cards: list[Tag], is_hidden: bool):
+    def _assert_story1_available(
+        story_cards: list[Tag],
+        is_hidden: bool,
+        has_spoiler_warning: bool = False,
+    ):
         story1_card = next(card for card in story_cards if story1_title in card.find("h3").text)
         assert story1_content in story1_card.text
         assert (
             "is-hidden" in story1_card.find("div", class_="card-content")["class"]
         ) == is_hidden
+        if has_spoiler_warning:
+            assert f"Spoiler warning for {puzzle1.title}" in story1_card.text
+        else:
+            assert "Spoiler warning" not in story1_card.text
 
     # Anon should still only see invitation and arriving story
     response = anon_client.get("/story/")
@@ -166,12 +174,20 @@ def test_story_page(client, monkeypatch):
     ## User 1 solves puzzle 2
     guess_submit(puzzle=puzzle2, user=user1, guess_text=puzzle2.answer)
 
-    def _assert_story2_available(story_cards: list[Tag], is_hidden: bool):
+    def _assert_story2_available(
+        story_cards: list[Tag],
+        is_hidden: bool,
+        has_spoiler_warning: bool = False,
+    ):
         story2_card = next(card for card in story_cards if story2_title in card.find("h3").text)
         assert story2_content in story2_card.text
         assert (
             "is-hidden" in story2_card.find("div", class_="card-content")["class"]
         ) == is_hidden
+        if has_spoiler_warning:
+            assert f"Spoiler warning for {puzzle2.title}" in story2_card.text
+        else:
+            assert "Spoiler warning" not in story2_card.text
 
     # Anon should still only see invitation and arriving story
     response = anon_client.get("/story/")
@@ -210,12 +226,20 @@ def test_story_page(client, monkeypatch):
     ## User 2 solves puzzle 3
     guess_submit(puzzle=puzzle3, user=user2, guess_text=puzzle3.answer)
 
-    def _assert_story3_available(story_cards: list[Tag], is_hidden: bool):
+    def _assert_story3_available(
+        story_cards: list[Tag],
+        is_hidden: bool,
+        has_spoiler_warning: bool = False,
+    ):
         story3_card = next(card for card in story_cards if story3_title in card.find("h3").text)
         assert story3_content in story3_card.text
         assert (
             "is-hidden" in story3_card.find("div", class_="card-content")["class"]
         ) == is_hidden
+        if has_spoiler_warning:
+            assert f"Spoiler warning for {puzzle3.title}" in story3_card.text
+        else:
+            assert "Spoiler warning" not in story3_card.text
 
     # Anon should still only see invitation and arriving story
     response = anon_client.get("/story/")
@@ -253,8 +277,27 @@ def test_story_page(client, monkeypatch):
     _assert_arrived_available(story_cards, is_hidden=True)
     _assert_story3_available(story_cards, is_hidden=False)
 
+    ## Hunt state is ended
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timedelta(days=1)
+    # All users should see all story entries, all are hidden
+    for client in (anon_client, user1_client, user2_client):
+        response = client.get("/story/")
+        assert response.status_code == 200
+        assert len(response.context["entries"]) == 3
+        assert response.context["entries"][0] == story1
+        assert response.context["entries"][1] == story2
+        assert response.context["entries"][2] == story3
+        soup = BeautifulSoup(response.content, "html.parser")
+        story_cards = soup.find_all("div", class_="story-card")
+        assert len(story_cards) == 5
+        _assert_invitation_available(story_cards, is_hidden=True)
+        _assert_arrived_available(story_cards, is_hidden=True)
+        _assert_story1_available(story_cards, is_hidden=True, has_spoiler_warning=True)
+        _assert_story2_available(story_cards, is_hidden=True, has_spoiler_warning=True)
+        _assert_story3_available(story_cards, is_hidden=True, has_spoiler_warning=True)
 
-def test_victory_unlock():
+
+def test_victory_unlock(settings):
     # Set up users
     anon_client = Client()
     user1 = UserFactory()
@@ -275,6 +318,10 @@ def test_victory_unlock():
     story = StoryEntryFactory(
         title=story_title, content=story_content, puzzle=puzzle, order_by=1, is_final=True
     )
+
+    ## Hunt state is live
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timedelta(days=2)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() + timedelta(days=2)
 
     ## Before solve, nobody sees victory entry or victory page
     for client in [anon_client, user1_client, user2_client]:
@@ -324,6 +371,28 @@ def test_victory_unlock():
     # Tester still sees victory page
     response = tester_client.get("/story/victory/")
     assert response.status_code == 200
+
+    ## Hunt state is ended
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timedelta(days=1)
+    # Everyone sees victory entry and victory page
+    for client in (anon_client, user1_client, user2_client, tester_client):
+        response = client.get("/story/")
+        assert response.status_code == 200
+        assert len(response.context["entries"]) == 1
+        assert response.context["entries"][0] == story
+        soup = BeautifulSoup(response.content, "html.parser")
+        story_cards = soup.find_all("div", class_="story-card")
+        last_story_card = story_cards[-1]
+        assert story_title in last_story_card.text
+        assert (
+            reverse("victory")
+            in last_story_card.find("div", class_="card-content").find("a")["href"]
+        )
+
+        response = client.get("/story/victory/")
+        assert response.status_code == 200
+        assert story_title in response.content.decode()
+        assert story_content in response.content.decode()
 
 
 def test_attributions_page(client):

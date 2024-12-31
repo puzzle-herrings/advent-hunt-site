@@ -5,7 +5,7 @@ from django.utils import timezone
 import pytest
 
 from huntsite.puzzles.factories import MetapuzzleInfoFactory, PuzzleFactory
-from huntsite.puzzles.models import AdventCalendarEntry, MetapuzzleInfo, Puzzle
+from huntsite.puzzles.models import AdventCalendarEntry, GuessEvaluation, MetapuzzleInfo, Puzzle
 from huntsite.puzzles.services import guess_submit
 from huntsite.teams.factories import UserFactory
 from huntsite.teams.models import AnonymousUser
@@ -72,6 +72,48 @@ def test_puzzle_manager_with_solves_by_user():
     result_with_anon = Puzzle.objects.with_solves_by_user(anon_user).first()
     assert hasattr(result_with_anon, "is_solved")
     assert not result_with_anon.is_solved
+
+
+def test_puzzle_manager_with_solve_stats():
+    puzzle = PuzzleFactory()
+
+    users = [UserFactory() for _ in range(5)]
+
+    for user in users[0:3]:
+        guess_submit(puzzle, user, puzzle.answer)
+
+    assert Puzzle.objects.with_solve_stats().get(pk=puzzle.pk).num_solves == 3
+
+
+def test_puzzle_manager_with_guess_stats():
+    puzzle = PuzzleFactory(answer="THE ANSWER", keep_going_answers=["KEEP GOING ANSWER"])
+
+    users = [UserFactory() for _ in range(5)]
+
+    # 3 wrong guesses
+    for user in users[:3]:
+        guess_submit(puzzle, user, puzzle.answer + "WRONG")
+    # 3 more wrong guesses
+    for user in users[2 : 2 + 3]:
+        guess_submit(puzzle, user, puzzle.answer + "WRONG WRONG")
+    # 4 keep going guesses
+    for user in users[:4]:
+        guess_submit(puzzle, user, puzzle.keep_going_answers[0])
+    # 2 correct guesses
+    for user in users[:2]:
+        guess_submit(puzzle, user, puzzle.answer)
+
+    # Total guesses: 12
+    assert Puzzle.objects.with_guess_stats().get(pk=puzzle.pk).num_guesses == 12
+    # Num incorrect guesses: 6
+    assert (
+        Puzzle.objects.with_guess_stats(
+            annotate_name="num_incorrect_guesses", filter_evaluations=[GuessEvaluation.INCORRECT]
+        )
+        .get(pk=puzzle.pk)
+        .num_incorrect_guesses
+        == 6
+    )
 
 
 def test_available_puzzle_manager():

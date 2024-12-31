@@ -59,6 +59,10 @@
           <td>
             {% if puzzle.is_solved %}<span class="mono"><strong>{{ puzzle.answer }}</strong></span>{% endif %}
           </td>
+          {% if hunt_state >= HuntState.ENDED %}
+            <td align="right" class="has-text-grey">{{ puzzle.num_solves }} solves</td>
+            <td align="right" class="has-text-grey">{{ puzzle.num_incorrect_guesses }} incorrect guesses</td>
+          {% endif %}
         </tr>
       {% endfor %}
     </tbody>

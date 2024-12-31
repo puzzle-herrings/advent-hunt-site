@@ -14,7 +14,7 @@ UPLOAD_EXTRA_ARGS = {
 }
 
 
-def main(input_file: Path, dryrun: bool = False):
+def main(input_file: Path, solution: bool = False, dryrun: bool = False):
     content = input_file.read_bytes()
     md5sum = md5(content)
     xxh32sum = xxh32(content)
@@ -28,7 +28,12 @@ def main(input_file: Path, dryrun: bool = False):
 
     if not dryrun:
         client = S3Client(endpoint_url=env("R2_ENDPOINT_URL"), extra_args=UPLOAD_EXTRA_ARGS)
-        output_path = client.S3Path(f"s3://{env('R2_BUCKET_NAME')}/puzzles/{output_file_name}")
+        if not solution:
+            output_path = client.S3Path(f"s3://{env('R2_BUCKET_NAME')}/puzzles/{output_file_name}")
+        else:
+            output_path = client.S3Path(
+                f"s3://{env('R2_BUCKET_NAME')}/solutions/{output_file_name}"
+            )
         output_path.upload_from(input_file, force_overwrite_to_cloud=True)
         print("Successfully uploaded to:", output_path)
 

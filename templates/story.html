@@ -12,18 +12,18 @@
   <div class="card block story-card is-toggleable">
     <header class="card-header">
       <h3 class="card-header-title is-size-4">You receive an exciting piece of mail from the North Pole...</h3>
-      {% if hunt_is_live %}
-        {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
-      {% else %}
+      {% if hunt_state == HuntState.PREHUNT %}
         {% include "partials/card_toggle_indicator.html" %}
+      {% else %}
+        {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
       {% endif %}
     </header>
-    <div class="card-content content{% if hunt_is_live %} is-hidden{% endif %}">
+    <div class="card-content content{% if hunt_state > HuntState.PREHUNT %} is-hidden{% endif %}">
       {% include "partials/story_prehunt.html" %}
     </div>
   </div>
   {% comment %} Hunt live story {% endcomment %}
-  {% if hunt_is_live %}
+  {% if hunt_state > HuntState.PREHUNT %}
     <div class="card block story-card is-toggleable">
       <header class="card-header">
         <h3 class="card-header-title is-size-4">You arrive at the North Pole…</h3>
@@ -42,14 +42,19 @@
   {% for entry in entries %}
     <div class="card story-card block is-toggleable">
       <header class="card-header">
-        <h3 class="card-header-title is-size-4">{{ entry.title }}</h3>
-        {% if forloop.counter < entries|length %}
+        <h3 class="card-header-title is-size-4">
+          {{ entry.title }}
+          {% if hunt_state >= HuntState.ENDED %}
+            &nbsp;<span class="tag is-primary">Spoiler warning for {{ entry.puzzle.title }}</span>
+          {% endif %}
+        </h3>
+        {% if forloop.counter < entries|length or hunt_state >= HuntState.ENDED %}
           {% include "partials/card_toggle_indicator.html" with start_hidden=True %}
         {% else %}
           {% include "partials/card_toggle_indicator.html" %}
         {% endif %}
       </header>
-      <div class="card-content content{% if forloop.counter < entries|length %} is-hidden{% endif %}">
+      <div class="card-content content{% if forloop.counter < entries|length or hunt_state >= HuntState.ENDED %} is-hidden{% endif %}">
         {% if entry.is_final %}
           <a href="{% url "victory" %}">Click here to view the final story entry.</a>
         {% else %}

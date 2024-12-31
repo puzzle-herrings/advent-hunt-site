@@ -2,6 +2,16 @@ section.no-bottom-padding {
     padding-bottom: 0;
 }
 
+#solution-and-stats {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 40rem;
+}
+
+#solution-and-stats p {
+    vertical-align: center;
+}
+
 #errata {
     margin-left: auto;
     margin-right: auto;
@@ -20,11 +30,11 @@ section.no-bottom-padding {
     max-width: 40rem;
 }
 
-#guess-form>form>.field {
+#guess-form-container>form>.field {
     justify-content: center;
 }
 
-#guess-form>form>.field>.control:has(>input#id_guess) {
+#guess-form-container>form>.field>.control:has(>input#id_guess) {
     flex: 1;
 }
 
@@ -39,7 +49,7 @@ section.no-bottom-padding {
     top: -0.75em;
 }
 
-#guesses-table>table {
+#guesses-results>table {
     margin-left: auto;
     margin-right: auto;
 }
