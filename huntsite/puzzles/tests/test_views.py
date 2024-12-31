@@ -1,4 +1,7 @@
+import re
+
 from bs4 import BeautifulSoup
+from django.test import Client
 from django.utils import timezone
 import pytest
 from pytest_django.asserts import assertRedirects, assertTemplateNotUsed, assertTemplateUsed
@@ -38,6 +41,25 @@ def test_puzzle_list_view(client):
     assert "unavailable" in calendar_cell.find("div").attrs.get("class")
     assert puzzles[3].title not in calendar_cell.text
     assert puzzles[3].title not in puzzle_list_table.text
+
+
+def test_puzzle_list_view_hunt_ended(client, settings):
+    """Stats are shown in list view"""
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timezone.timedelta(days=2)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timezone.timedelta(days=1)
+
+    _ = [
+        PuzzleFactory(
+            calendar_entry__day=i,
+            available_at=timezone.now() + timezone.timedelta(days=i - 10),
+        )
+        for i in range(4)
+    ]
+
+    response = client.get("/puzzles/")
+    assert response.status_code == 200
+    assert len(re.findall("0 solves", response.content.decode())) == 4
+    assert len(re.findall("0 incorrect guesses", response.content.decode())) == 4
 
 
 def test_puzzle_detail_auth(client):
@@ -409,3 +431,75 @@ def test_puzzle_guess_submit_keep_going(client):
 
 def test_puzzle_solve_with_story_unlock(client):
     pass
+
+
+def test_puzzle_answer_checker_hunt_state(settings):
+    """Serverside answer checker while hunt is live, clientside answer checker while hunt is
+    ended."""
+    # Set up puzzle
+    puzzle = PuzzleFactory(available_at=timezone.now() - timezone.timedelta(days=1))
+    # Set up users
+    anon_client = Client()
+    user = UserFactory()
+    user_client = Client()
+    user_client.force_login(user)
+
+    ## Hunt state is live
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timezone.timedelta(days=2)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() + timezone.timedelta(days=2)
+
+    # Anon user can't access puzzle detail page
+    response = anon_client.get(puzzle.get_absolute_url())
+    assert response.status_code == 302  # redirect to login
+    # Registered user can access puzzle detail page
+    response = user_client.get(puzzle.get_absolute_url())
+    assert response.status_code == 200
+    assert puzzle.title in response.content.decode()
+    assert "Solves" not in response.content.decode()
+    assert "Incorrect guesses" not in response.content.decode()
+    assert puzzle.get_solution_absolute_url() not in response.content.decode()
+    assert "SERVERSIDE ANSWER CHECKER" in response.content.decode()
+    assert "CLIENTSIDE ANSWER CHECKER" not in response.content.decode()
+    # Registered user can submit guess
+    response = user_client.post(puzzle.get_absolute_url(), data={"guess": "I AM GUESSING"})
+    assert response.status_code == 200
+
+    ## Hunt state is ended
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timezone.timedelta(days=1)
+
+    # Both users can access puzzle detail page
+    for client in (anon_client, user_client):
+        response = client.get(puzzle.get_absolute_url())
+        assert response.status_code == 200
+        assert puzzle.title in response.content.decode()
+        assert "Solves: 0" in response.content.decode()
+        assert "Incorrect guesses: 1" in response.content.decode()
+        assert puzzle.get_solution_absolute_url() in response.content.decode()
+        assert "SERVERSIDE ANSWER CHECKER" not in response.content.decode()
+        assert "CLIENTSIDE ANSWER CHECKER" in response.content.decode()
+    # User can't submit guesses anymore
+    response = user_client.post(puzzle.get_absolute_url(), data={"guess": "STILL GUESSING"})
+    assert response.status_code == 403
+
+
+def test_puzzle_solution_page(settings):
+    # Set up puzzle
+    puzzle = PuzzleFactory(available_at=timezone.now() - timezone.timedelta(days=1))
+    # Set up users
+    anon_client = Client()
+    user = UserFactory()
+    user_client = Client()
+    user_client.force_login(user)
+
+    ## Hunt state is live
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timezone.timedelta(days=2)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() + timezone.timedelta(days=2)
+    # No one can access puzzle solution page
+    for client in (anon_client, user_client):
+        assert client.get(puzzle.get_solution_absolute_url()).status_code == 404
+
+    ## Hunt state is ended
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timezone.timedelta(days=1)
+    # Both users can access puzzle detail page
+    for client in (anon_client, user_client):
+        assert client.get(puzzle.get_solution_absolute_url()).status_code == 200
