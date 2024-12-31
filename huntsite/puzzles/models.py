@@ -180,10 +180,10 @@ class CannedHint(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def render_keywords(self):
-        return markdown.markdown(self.keywords)
+        return markdown.markdown(self.keywords).removeprefix("<p>").removesuffix("</p>")
 
     def render_text(self):
-        return markdown.markdown(self.text)
+        return markdown.markdown(self.text).removeprefix("<p>").removesuffix("</p>")
 
 
 class ClipboardData(models.Model):
