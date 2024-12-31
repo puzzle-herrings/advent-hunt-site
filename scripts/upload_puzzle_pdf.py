@@ -23,7 +23,10 @@ def main(input_file: Path, solution: bool = False, dryrun: bool = False):
 
     calendar_day: int = int(typer.prompt("Calendar day"))
     slug: str = typer.prompt("Slug")
-    output_file_name = f"{calendar_day:02d}-{slug}-{xxh32sum.hexdigest()}.pdf"
+    if not solution:
+        output_file_name = f"{calendar_day:02d}-{slug}-{xxh32sum.hexdigest()}.pdf"
+    else:
+        output_file_name = f"solution-{calendar_day:02d}-{slug}-{xxh32sum.hexdigest()}.pdf"
     print("Output file name:", output_file_name)
 
     if not dryrun:
