@@ -435,7 +435,8 @@ if HUNT_IS_LIVE_DATETIME.tzinfo is None:
     HUNT_IS_LIVE_DATETIME = HUNT_IS_LIVE_DATETIME.replace(tzinfo=datetime.timezone.utc)
 
 HUNT_IS_ENDED_DATETIME = env.datetime(
-    "HUNT_IS_ENDED_DATETIME", default=HUNT_IS_LIVE_DATETIME + timezone.timedelta(days=31)
+    "HUNT_IS_ENDED_DATETIME",
+    default=(HUNT_IS_LIVE_DATETIME + timezone.timedelta(days=31)).isoformat(),
 )
 if HUNT_IS_ENDED_DATETIME.tzinfo is None:
     HUNT_IS_ENDED_DATETIME = HUNT_IS_ENDED_DATETIME.replace(tzinfo=datetime.timezone.utc)
@@ -443,9 +444,9 @@ assert HUNT_IS_ENDED_DATETIME >= HUNT_IS_LIVE_DATETIME
 
 logger.info("HUNT_IS_LIVE_DATETIME: {}", HUNT_IS_LIVE_DATETIME)
 logger.info("HUNT_IS_ENDED_DATETIME: {}", HUNT_IS_ENDED_DATETIME)
-if timezone.now() > HUNT_IS_ENDED_DATETIME:
+if timezone.now() >= HUNT_IS_ENDED_DATETIME:
     logger.info("Hunt state is ended.")
-elif timezone.now() > HUNT_IS_LIVE_DATETIME:
+elif timezone.now() >= HUNT_IS_LIVE_DATETIME:
     logger.info("Hunt state is live.")
 else:
     logger.info("Hunt state is not yet live.")

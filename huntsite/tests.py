@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from django.conf import settings
-from django.test import Client
+from django.test import Client, RequestFactory
 from django.utils import timezone
 from metadata_parser import MetadataParser
 import pytest
@@ -8,6 +8,8 @@ import pytest
 from huntsite.puzzles.factories import MetapuzzleInfoFactory, PuzzleFactory
 from huntsite.puzzles.services import guess_submit
 from huntsite.teams.factories import UserFactory
+from huntsite.teams.models import AnonymousUser
+from huntsite.utils import HuntState, get_hunt_state
 
 pytestmark = pytest.mark.django_db
 
@@ -22,6 +24,29 @@ def test_home_page(client):
     response = client.get("/")
     assert response.status_code == 200
     assert "Advent Puzzle Hunt" in response.content.decode()
+
+
+def test_hunt_state(settings):
+    request_factory = RequestFactory()
+
+    # Prehunt
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() + timezone.timedelta(days=1)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() + timezone.timedelta(days=2)
+    request = request_factory.get("/")
+    request.user = AnonymousUser()
+    assert get_hunt_state(request) == HuntState.PREHUNT
+
+    # Live
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timezone.timedelta(days=2)
+    request = request_factory.get("/")
+    request.user = AnonymousUser()
+    assert get_hunt_state(request) == HuntState.LIVE
+
+    # Ended
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timezone.timedelta(days=1)
+    request = request_factory.get("/")
+    request.user = AnonymousUser()
+    assert get_hunt_state(request) == HuntState.ENDED
 
 
 def test_navbar(client):
@@ -44,8 +69,32 @@ def test_navbar(client):
     assert "Logout" in navbar.text
 
 
+def test_navbar_hunt_ended(client, settings):
+    """Navbar should not have any account-related options if hunt is ended."""
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timezone.timedelta(days=2)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timezone.timedelta(days=1)
+
+    response = client.get("/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    navbar = soup.find("nav")
+    assert "Advent Hunt" in navbar.text
+    assert "Login" not in navbar.text
+    assert "Register" not in navbar.text
+
+    user = UserFactory(team_name="Test Herrings 🎏")
+    client.force_login(user)
+    response = client.get("/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    navbar = soup.find("nav")
+    assert "Advent Hunt" in navbar.text
+    assert "Test Herrings 🎏" not in navbar.text
+    assert "Logout" not in navbar.text
+
+
 def test_santa_missing(monkeypatch):
-    """Favicon and Navbar logo should change based on the HUNT_IS_LIVE_DATETIME setting."""
+    """Favicon and Navbar logo should change based on the hunt state."""
 
     # Set up users
     anon_client = Client()
