@@ -30,11 +30,11 @@ section.no-bottom-padding {
     max-width: 40rem;
 }
 
-#answer-checker>form>.field {
+#guess-form-container>form>.field {
     justify-content: center;
 }
 
-#answer-checker>form>.field>.control:has(>input#id_guess) {
+#guess-form-container>form>.field>.control:has(>input#id_guess) {
     flex: 1;
 }
 

@@ -88,7 +88,7 @@
         <div class="card-content">
           {% if hunt_state < HuntState.ENDED %}
             <!--SERVERSIDE ANSWER CHECKER-->
-            <div id="guess-form" class="block">{% crispy form %}</div>
+            <div id="guess-form-container" class="block">{% crispy form %}</div>
             <div id="guesses-results" class="block">
               {% if guesses %}
                 {% include "partials/puzzle_guess_list.html" %}
