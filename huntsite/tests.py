@@ -93,7 +93,7 @@ def test_navbar_hunt_ended(client, settings):
     assert "Logout" not in navbar.text
 
 
-def test_santa_missing(monkeypatch):
+def test_santa_missing(monkeypatch, settings):
     """Favicon and Navbar logo should change based on the hunt state."""
 
     # Set up users
@@ -105,10 +105,9 @@ def test_santa_missing(monkeypatch):
     user2_client = Client()
     user2_client.force_login(user2)
 
-    ## Before changeover date, normal santa
-    monkeypatch.setattr(
-        settings, "HUNT_IS_LIVE_DATETIME", timezone.now() + timezone.timedelta(days=1)
-    )
+    ## While hunt state is prehunt, normal santa
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() + timezone.timedelta(days=1)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() + timezone.timedelta(days=2)
     for client in (anon_client, user1_client, user2_client):
         response = client.get("/")
         assert response.status_code == 200
@@ -122,10 +121,8 @@ def test_santa_missing(monkeypatch):
         assert "static/santa/" in navbar.img["src"]
         assert "static/santa-missing" not in navbar.img["src"]
 
-    ## After changeover date, santa missing
-    monkeypatch.setattr(
-        settings, "HUNT_IS_LIVE_DATETIME", timezone.now() - timezone.timedelta(days=1)
-    )
+    ## While hunt state is live, santa missing
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timezone.timedelta(days=2)
     # But user1 finishes the hunt, Santa is back
     final_puzzle = PuzzleFactory()
     MetapuzzleInfoFactory(puzzle=final_puzzle, is_final=True)
@@ -158,6 +155,22 @@ def test_santa_missing(monkeypatch):
     navbar = soup.find("div", class_="navbar-brand")
     assert "static/santa/" in navbar.img["src"]
     assert "static/santa-missing" not in navbar.img["src"]
+
+    ## While hunt state is ended, santa missing
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timezone.timedelta(days=1)
+    # We don't really care about which one is shown for user1 that finished
+    for client in (anon_client, user2_client):
+        response = client.get("/")
+        assert response.status_code == 200
+        soup = BeautifulSoup(response.content, "html.parser")
+        # Favicon
+        header = soup.find("head")
+        assert "static/santa/" not in str(header)
+        assert "static/santa-missing" in str(header)
+        # Navbar logo
+        navbar = soup.find("div", class_="navbar-brand")
+        assert "static/santa/" not in navbar.img["src"]
+        assert "static/santa-missing" in navbar.img["src"]
 
 
 def test_santa_missing_og_image(client, monkeypatch):
