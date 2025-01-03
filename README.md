@@ -25,7 +25,7 @@ Developed on and deployed on Python 3.11.9.
     ```
 2. Install development dependencies:
     ```bash
-    just requirements
+    just requirements    # requires uv
     # or
     python -m pip install -r requirements/dev.txt
     ```
@@ -118,7 +118,7 @@ You can deploy this application anywhere where you can deploy a Python applicati
 In general, it'll be most convenient to use a cloud platform-as-a-service. Some examples include:
 
 - [Render](https://render.com/)—we used this for Advent Puzzle Hunt. A [blueprint file](https://docs.render.com/infrastructure-as-code) is in the repository ([`render.yaml`](./render.yaml)).
-- [Heroku](https://www.heroku.com)—probably the most widely known and used hosting service.
+- [Heroku](https://www.heroku.com)—another widely known and commonly used hosting service.
 - [Fly.io](https://fly.io/)
 
 ### Creating a superuser
@@ -142,11 +142,11 @@ A lot of configuration is done via environment variables, which are read into [`
 
 There are three states to the hunt website:
 
-- Before the hunt is "live"
-- While the hunt is "live"
-- After the hunt has "ended"
+- `PREHUNT`: Before the hunt is "live" and the hunt story is revealed
+- `LIVE`: While the hunt is "live"
+- `ENDED`: After the hunt has "ended"—leaderboard is frozen, solutions are posted
 
-The variable `HUNT_IS_LIVE_DATETIME` optionally lets you switch control behavior before and after a nominal "start" time for the hunt. A context processor `hunt_is_live` sets a boolean context variable `hunt_is_live` indicating whether the current time is before or after `HUNT_IS_LIVE_DATETIME`. If not set, it will be set to the current time when the application starts up.
+These hunt states are controlled by two environment variables `HUNT_IS_LIVE_DATETIME` and `HUNT_IS_ENDED_DATETIME`. The current time is then checked against these two timestamps. If not set, `HUNT_IS_LIVE_DATETIME` is set to the current time at application start, and `HUNT_IS_ENDED_DATETIME` is set to 31 days in the future.
 
 #### HTML Metadata
 
@@ -157,7 +157,7 @@ This controls the `<meta>` tag data in rendered views for things like website ti
 - `META_AUTHOR` — Author information. Will be used in search engine results and social media links.
 - `META_KEYWORDS` — Comma-separated list of keywords for search engines.
 - `META_OG_IMAGE` — OpenGraph image, used for social media links.
-— `META_OG_IMAGE_PREHUNT` — (optional) OpenGraph image, used for social media links. Used if before `HUNT_IS_LIVE_DATETIME`.
+— `META_OG_IMAGE_PREHUNT` — (optional) OpenGraph image, used for social media links. Used when hunt is in the `PREHUNT` state.
 
 #### Email
 
@@ -172,4 +172,6 @@ This app is set up with the Sentry SDK to send errors and performance data to a 
 #### Other settings
 
 - `ACCOUNT_DISABLE_REGISTRATION` — Setting to `True` will disable signups. This can be useful if your site is deployed but you're still developing stuff and are not ready for real users.
+- `ANNOUNCEMENT_MESSAGE` — If set, will display a message in a notification block at the top of all pages.
+- `DISCORD_SERVER_LINK` — If set, logged in users will see this link in the navbar. Used for the hunt community Discord server invite link.
 - `ROBOTS_DISALLOW_ALL` — Setting to `True` will set the `robots.txt` file to disallow everything. This will prevent search engines from crawling your site, and is useful if your site is deployed but you're still developing stuff and are not ready for real users.
