@@ -15,6 +15,7 @@ UPLOAD_EXTRA_ARGS = {
 
 
 def main(input_file: Path, solution: bool = False, dryrun: bool = False):
+    """Upload puzzle PDFs to an S3-compatible object storage with proper CacheControl header."""
     content = input_file.read_bytes()
     md5sum = md5(content)
     xxh32sum = xxh32(content)

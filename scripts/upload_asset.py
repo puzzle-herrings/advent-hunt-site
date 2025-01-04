@@ -21,6 +21,8 @@ def main(
     skip_confirmation: Annotated[bool, typer.Option("-y")] = False,
     dryrun: bool = False,
 ):
+    """Upload files to an S3-compatible object storage with proper CacheControl header."""
+
     output_path = PurePosixPath(output_path)
     assert not output_path.is_absolute(), "output_path must be a relative path"
 
