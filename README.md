@@ -1,6 +1,6 @@
 # Advent Hunt Site
 
-This is a Django web application that runs a puzzle hunt website. It was used for the [Advent Puzzle Hunt](https://www.adventhunt.com) website in 2024.
+This is a Django web application that runs a puzzle hunt website. It was used for the [Advent Puzzle Hunt](https://www.adventhunt.com) website in 2024. You can find additional discussion about design choices and deployment in [this blog post](https://jayqi.com/blog/2025-01-05_advent-hunt-site-design-notes/).
 
 Developed on and deployed on Python 3.11.9.
 
@@ -138,7 +138,7 @@ Then set the environment variable `CREATE_SUPERUSER=1` before `build.sh` runs. T
 
 A lot of configuration is done via environment variables, which are read into [`project/settings.py`](./project/settings.py). You should be able to find sections in `settings.py` that match the documented sections below.
 
-#### Hunt State
+#### Hunt state
 
 There are three states to the hunt website:
 
@@ -163,7 +163,7 @@ This controls the `<meta>` tag data in rendered views for things like website ti
 
 This app uses [django-allauth](https://docs.allauth.org/en/latest/) for auth and account management. It sends transactional emails for email verification and password resets.
 
-You will need to set up a transactional email service provider to actually send any emails. We use [django-anymail](https://anymail.dev/en/stable/) to integrate a provider. See the `## Email` section of the [`project/settings.py`](./project/settings.py) to see the relevant environment variables. Currently, `project/settings.py` supports Mailgun and MailSender. You can easily add integration for any other provider that Anygun supports.
+You will need to set up a transactional email service provider to actually send any emails. We use [django-anymail](https://anymail.dev/en/stable/) to integrate a provider. See the `## Email` section of the [`project/settings.py`](./project/settings.py) to see the relevant environment variables. Currently, `project/settings.py` supports Mailgun and MailSender. You can easily add integration for any other provider that Anymail supports.
 
 #### Error and Performance Monitoring
 
