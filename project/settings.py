@@ -101,6 +101,7 @@ INSTALLED_APPS = [
     "django_admin_action_forms",
     "django_no_queryset_admin_actions",
     "robots",
+    "solo",
     # Local apps
     "huntsite",
     "huntsite.content",
@@ -264,6 +265,12 @@ else:
         }
     }
 logger.info("Using cache backend: " + CACHES["default"]["BACKEND"])
+
+# Solo cache
+
+if env.bool("SOLO_CACHE_ENABLED", default=False):
+    SOLO_CACHE = "default"
+SOLO_CACHE_TIMEOUT = env.int("SOLO_CACHE_TIMEOUT", default=60 * 5)
 
 ## Sessions
 

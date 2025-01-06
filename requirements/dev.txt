@@ -34,11 +34,9 @@ charset-normalizer==3.3.2
     #   requests
 click==8.1.7
     # via
-    #   -r requirements/demo.txt
     #   djlint
     #   flask
     #   typer
-    #   uvicorn
 cloudpathlib==0.18.1
     # via -r requirements/dev.in
 colorama==0.4.6
@@ -68,6 +66,7 @@ django==5.0.4
     #   django-crispy-forms
     #   django-debug-toolbar
     #   django-no-queryset-admin-actions
+    #   django-solo
 django-admin-action-forms==1.2.4
     # via -r requirements/demo.txt
 django-allauth==0.63.6
@@ -85,6 +84,8 @@ django-debug-toolbar==4.4.6
 django-no-queryset-admin-actions==1.1.0
     # via -r requirements/demo.txt
 django-robots==6.1
+    # via -r requirements/demo.txt
+django-solo==2.4.0
     # via -r requirements/demo.txt
 djlint==1.34.1
     # via -r requirements/dev.in
@@ -124,10 +125,6 @@ greenlet==3.0.3
     # via gevent
 gunicorn==22.0.0
     # via -r requirements/demo.txt
-h11==0.14.0
-    # via
-    #   -r requirements/demo.txt
-    #   uvicorn
 hiredis==3.0.0
     # via -r requirements/demo.txt
 html-tag-names==0.1.2
@@ -301,8 +298,6 @@ urllib3==2.2.2
     #   geventhttpclient
     #   requests
     #   sentry-sdk
-uvicorn==0.30.1
-    # via -r requirements/demo.txt
 wcwidth==0.2.13
     # via prompt-toolkit
 werkzeug==3.0.3
