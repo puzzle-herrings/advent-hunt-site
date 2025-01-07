@@ -7,6 +7,7 @@
   {% block og_title %}{{ team.team_name|truncatechars:36 }} | {{ META_TITLE }} | {{ META_TITLE }}{% endblock og_title %}
 {# djlint:on #}
 {% block header_extra %}
+  <meta name="robots" content="noindex">
   {% include "partials/timestamp_localize_libraries.html" %}
   {% if team.flairs %}
     <link href="https://cdn.jsdelivr.net/npm/@zkreations/tooltips@4/tooltips.min.css"
