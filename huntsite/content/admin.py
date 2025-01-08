@@ -1,4 +1,5 @@
 from django.contrib import admin
+from solo.admin import SingletonModelAdmin
 
 from huntsite.admin import UneditableAsReadOnlyAdminMixin
 import huntsite.content.models as models
@@ -26,3 +27,6 @@ class AttributionsEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
 class UpdateEntryAdmin(UneditableAsReadOnlyAdminMixin, admin.ModelAdmin):
     list_display = ("__str__", "published_at")
     ordering = ("-published_at",)
+
+
+admin.site.register(models.WrapupEntry, SingletonModelAdmin)

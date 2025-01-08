@@ -4,7 +4,7 @@ from django.views.decorators.http import require_safe
 
 from huntsite.content import models
 from huntsite.puzzles import models as puzzle_models
-from huntsite.utils import HuntState, get_hunt_state
+from huntsite.utils import HuntState, get_hunt_state, is_wrapup_available
 
 
 @require_safe
@@ -77,3 +77,15 @@ def updates_page(request):
         "entries": entries,
     }
     return TemplateResponse(request, "updates.html", context)
+
+
+@require_safe
+def wrapup_page(request):
+    if not request.user.is_tester and not is_wrapup_available(request):
+        raise Http404
+
+    entry = models.WrapupEntry.get_solo()
+    context = {
+        "entry": entry,
+    }
+    return TemplateResponse(request, "wrapup.html", context)

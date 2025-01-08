@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 
-from huntsite.utils import HuntState, get_hunt_state
+from huntsite.utils import HuntState, get_hunt_state, is_wrapup_available
 
 
 def canonical(request):
@@ -24,10 +24,14 @@ def meta(request):
 
 def hunt_state(request):
     """Context processor to set the hunt state."""
-    return {
+    hunt_state = get_hunt_state(request)
+    context = {
         "HuntState": HuntState,
-        "hunt_state": get_hunt_state(request),
+        "hunt_state": hunt_state,
     }
+    if hunt_state >= HuntState.ENDED:
+        context["wrapup_is_available"] = is_wrapup_available(request)
+    return context
 
 
 def announcement_message(request):

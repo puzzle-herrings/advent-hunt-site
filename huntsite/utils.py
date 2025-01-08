@@ -1,5 +1,6 @@
 import enum
 
+from django.apps import apps
 from django.conf import settings
 from django.utils import timezone
 
@@ -41,3 +42,17 @@ def get_hunt_state(request):
         return HuntState.LIVE
     else:
         return HuntState.PREHUNT
+
+
+def is_wrapup_available(request):
+    """Determine if wrapup is available."""
+    if (
+        request.user.is_authenticated
+        and request.user.is_tester
+        and (time_traveling_at := read_time_travel_session_var(request))
+    ):
+        now = time_traveling_at
+    else:
+        now = timezone.now()
+    wrapup_entry = apps.get_model("content", "WrapupEntry").get_solo()
+    return wrapup_entry.is_available_at(now)

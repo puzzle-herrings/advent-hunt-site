@@ -10,8 +10,6 @@ certifi==2024.7.4
     #   sentry-sdk
 charset-normalizer==3.3.2
     # via requests
-click==8.1.7
-    # via uvicorn
 crispy-bulma==0.11.0
     # via -r requirements/deploy.in
 dj-database-url==2.2.0
@@ -29,6 +27,7 @@ django==5.0.4
     #   django-crispy-forms
     #   django-debug-toolbar
     #   django-no-queryset-admin-actions
+    #   django-solo
     #   sentry-sdk
 django-admin-action-forms==1.2.4
     # via -r requirements/deploy.in
@@ -48,12 +47,12 @@ django-no-queryset-admin-actions==1.1.0
     # via -r requirements/deploy.in
 django-robots==6.1
     # via -r requirements/deploy.in
+django-solo==2.4.0
+    # via -r requirements/deploy.in
 environs==11.0.0
     # via -r requirements/deploy.in
 gunicorn==22.0.0
     # via -r requirements/deploy.in
-h11==0.14.0
-    # via uvicorn
 hiredis==3.0.0
     # via redis
 idna==3.7
@@ -95,7 +94,5 @@ urllib3==2.2.2
     #   django-anymail
     #   requests
     #   sentry-sdk
-uvicorn==0.30.1
-    # via -r requirements/deploy.in
 whitenoise==6.7.0
     # via -r requirements/deploy.in

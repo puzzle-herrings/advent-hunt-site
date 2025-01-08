@@ -12,6 +12,7 @@ from huntsite.content.factories import (
     StoryEntryFactory,
     UpdateEntryFactory,
 )
+from huntsite.content.models import WrapupEntry
 from huntsite.puzzles.factories import (
     MetapuzzleInfoFactory,
     PuzzleAttributionsEntryFactory,
@@ -443,3 +444,59 @@ def test_updates_page(client):
     assert "North Pole" in entries[0].text
     assert "Santa" in entries[1].text
     assert "reindeer" in entries[2].text
+
+
+def test_wrapup_navbar(client, settings):
+    ## Hunt state is live
+    settings.HUNT_IS_LIVE_DATETIME = timezone.now() - timedelta(days=3)
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() + timedelta(days=3)
+
+    wrapup_entry = WrapupEntry.get_solo()
+    wrapup_entry.content = "Merry Christmas to all, and to all a good night!"
+    wrapup_entry.available_at = timezone.now() + timedelta(days=6)
+    wrapup_entry.save()
+
+    response = client.get("/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert not soup.find("a", class_="navbar-item", string="Wrap-up")
+
+    ## Hint state is ended but before wrapup available
+    settings.HUNT_IS_ENDED_DATETIME = timezone.now() - timedelta(days=2)
+    response = client.get("/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert not soup.find("a", class_="navbar-item", string="Wrap-up")
+
+    ## Wrapup is available
+    wrapup_entry.available_at = timezone.now() - timedelta(days=1)
+    wrapup_entry.save()
+    response = client.get("/")
+    assert response.status_code == 200
+    soup = BeautifulSoup(response.content, "html.parser")
+    assert soup.find("a", class_="navbar-item", string="Wrap-up")
+
+
+def test_wrapup_page(client):
+    wrapup_entry = WrapupEntry.get_solo()
+    wrapup_entry.content = "Merry Christmas to all, and to all a good night!"
+    wrapup_entry.save()
+
+    # 404 on wrapup page if not available
+    response = client.get("/wrapup/")
+    assert response.status_code == 404
+
+    # Test user can see wrapup page though
+    test_user = UserFactory(is_tester=True)
+    test_client = Client()
+    test_client.force_login(test_user)
+    response = test_client.get("/wrapup/")
+    assert response.status_code == 200
+    assert wrapup_entry.content in response.content.decode()
+
+    # Update wrapup entry to be available
+    wrapup_entry.available_at = timezone.now() - timedelta(days=1)
+    wrapup_entry.save()
+    response = client.get("/wrapup/")
+    assert response.status_code == 200
+    assert wrapup_entry.content in response.content.decode()

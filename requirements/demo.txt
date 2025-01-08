@@ -15,10 +15,6 @@ charset-normalizer==3.3.2
     # via
     #   -r requirements/deploy.txt
     #   requests
-click==8.1.7
-    # via
-    #   -r requirements/deploy.txt
-    #   uvicorn
 crispy-bulma==0.11.0
     # via -r requirements/deploy.txt
 dj-database-url==2.2.0
@@ -36,6 +32,7 @@ django==5.0.4
     #   django-crispy-forms
     #   django-debug-toolbar
     #   django-no-queryset-admin-actions
+    #   django-solo
 django-admin-action-forms==1.2.4
     # via -r requirements/deploy.txt
 django-allauth==0.63.6
@@ -54,6 +51,8 @@ django-no-queryset-admin-actions==1.1.0
     # via -r requirements/deploy.txt
 django-robots==6.1
     # via -r requirements/deploy.txt
+django-solo==2.4.0
+    # via -r requirements/deploy.txt
 environs==11.0.0
     # via -r requirements/deploy.txt
 factory-boy==3.3.0
@@ -64,10 +63,6 @@ faker==26.0.0
     #   factory-boy
 gunicorn==22.0.0
     # via -r requirements/deploy.txt
-h11==0.14.0
-    # via
-    #   -r requirements/deploy.txt
-    #   uvicorn
 hiredis==3.0.0
     # via -r requirements/deploy.txt
 idna==3.7
@@ -129,7 +124,5 @@ urllib3==2.2.2
     #   django-anymail
     #   requests
     #   sentry-sdk
-uvicorn==0.30.1
-    # via -r requirements/deploy.txt
 whitenoise==6.7.0
     # via -r requirements/deploy.txt

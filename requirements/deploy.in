@@ -7,6 +7,7 @@ django-crispy-forms
 django-debug-toolbar
 django-no-queryset-admin-actions
 django-robots>=4.0.0
+django-solo
 environs[django]
 gunicorn
 logtail-python
@@ -14,6 +15,6 @@ loguru
 markdown
 psycopg2-binary
 redis[hiredis]
-uvicorn
+# uvicorn
 sentry-sdk[django]
 whitenoise[brotli]
