@@ -1,6 +1,6 @@
 # Advent Hunt Site
 
-This is a Django web application that runs a puzzle hunt website. It was used for the [Advent Puzzle Hunt](https://www.adventhunt.com) website in 2024. You can find additional discussion about design choices and deployment in [this blog post](https://jayqi.com/blog/2025-01-05_advent-hunt-site-design-notes/).
+This is a Django web application that runs a puzzle hunt website. It was used for the [Advent Puzzle Hunt](https://2024.adventhunt.com) website in 2024. You can find additional discussion about design choices and deployment in [this blog post](https://www.jayqi.com/blog/advent-hunt-site-design-notes/).
 
 Developed on and deployed on Python 3.11.9.
 
