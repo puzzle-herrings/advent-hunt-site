@@ -170,6 +170,11 @@ samp {
     --bulma-table-striped-row-even-background-color: hsla(var(--parchment-h), var(--parchment-s), var(--parchment-l-invert), 0.035);
 }
 
+.content blockquote {
+    --bulma-content-blockquote-border-left: 5px solid var(--hunter-green);
+    --bulma-content-blockquote-background-color: var(--parchment);
+}
+
 /* Adapted from https://github.com/cityssm/bulma-sticky-table/blob/main/_sticky-table.scss */
 .table.has-sticky-header {
     thead th {
