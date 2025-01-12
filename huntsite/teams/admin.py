@@ -1,3 +1,5 @@
+import threading
+
 from allauth.account.admin import EmailAddressAdmin as AllAuthEmailAddressAdmin
 from allauth.account.models import EmailAddress
 from django.contrib import admin
@@ -79,7 +81,11 @@ class FlairAdmin(admin.ModelAdmin):
 @action_with_form(SendEmailAdminForm, description="Send email to selected email addresses")
 def send_email_to_selected(modeladmin, request, queryset, data):
     recipients = queryset.values_list("email", flat=True)
-    send_email(subject=data["subject"], message=data["message"], recipient_list=recipients)
+    thread = threading.Thread(
+        target=send_email,
+        kwargs=dict(subject=data["subject"], message=data["message"], recipient_list=recipients),
+    )
+    thread.start()
     modeladmin.message_user(request, f"Email sent to selected {queryset.count()} addresses.")
 
 
@@ -87,7 +93,11 @@ def send_email_to_selected(modeladmin, request, queryset, data):
 def send_email_to_all(modeladmin, request, data):
     queryset = email_address_select_all_active()
     recipients = queryset.values_list("email", flat=True)
-    send_email(subject=data["subject"], message=data["message"], recipient_list=recipients)
+    thread = threading.Thread(
+        target=send_email,
+        kwargs=dict(subject=data["subject"], message=data["message"], recipient_list=recipients),
+    )
+    thread.start()
     modeladmin.message_user(request, f"Email sent to all ({queryset.count()}) addresses.")
 
 
