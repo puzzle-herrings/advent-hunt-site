@@ -1,5 +1,6 @@
 from io import StringIO
 from itertools import islice
+from time import sleep
 
 from allauth.account.models import EmailAddress
 from django.conf import settings
@@ -111,3 +112,4 @@ def send_email(subject, message, recipient_list):
         )
         email.attach_alternative(message_html, "text/html")
         email.send()
+        sleep(0.1)
