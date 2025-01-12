@@ -4,19 +4,25 @@ This is a Django web application that runs a puzzle hunt website. It was used fo
 
 Developed on and deployed on Python 3.11.9.
 
+## Development
+
 > [!NOTE]
-> This project uses [Just](https://github.com/casey/just) as a command runner. Several convenience commands are defined in [`justfile`](./justfile). You can print available commands by running:
+> ### Requirements
+>
+> This project uses the following tools:
+>
+> - [**Just**](https://github.com/casey/just) as a command runner. Several convenience commands are defined in [`justfile`](./justfile).
+> - [**uv**](https://github.com/astral-sh/uv) for managing Python dependencies.
+>
+> To print documentation for all available Just commands, run:
 >
 > ```bash
 > just
 > ```
 >
-> Many of the Just commands use [uv](https://github.com/astral-sh/uv) for managing dependencies.
+> You can do things without Just by just inspecting the [`justfile`](./justfile) and copying and pasting out the commands. You can also do things without uv by using `pip` in place of `uv pip` and `pip-compile`/`pip-sync` from pip-tools in place of `uv pip compile`/`uv pip sync`.
 
-
-## Development
-
-### Environment setup
+### Python environment setup
 
 1. Create and activate a Python 3.11.9 virtual environment. You can do this with your virtual environment tool of your choice. For example:
     ```bash
@@ -26,8 +32,6 @@ Developed on and deployed on Python 3.11.9.
 2. Install development dependencies:
     ```bash
     just requirements    # requires uv
-    # or
-    python -m pip install -r requirements/dev.txt
     ```
 
 ### Running the site locally
@@ -38,16 +42,12 @@ Developed on and deployed on Python 3.11.9.
 2. Create the database and run migrations:
     ```bash
     just migrate
-    # or
-    python manage.py migrate
     ```
 
 #### Running the development server
 
 ```bash
 just run
-# or
-python manage.py runserver
 ```
 
 #### Creating a superuser
@@ -56,16 +56,12 @@ Make sure you have the `DJANGO_SUPERUSER_*` environment variables set in your `.
 
 ```bash
 just createsuperuser
-# or
-python manage.py createsuperuser
 ```
 
 #### Creating demo data
 
 ```bash
 just demo-data
-# or
-python manage.py create_demo_data
 ```
 
 ### Repository organization
@@ -90,9 +86,6 @@ If you change any of the database models, you'll need to generate database migra
 
 ```bash
 just migrate
-# or
-python manage.py makemigrations
-python manage.py migrate
 ```
 
 ### Compiling requirements (lockfile)
@@ -101,14 +94,6 @@ If you update any of the dependencies required by the application, you'll need t
 
 ```bash
 just compile-requirements    # requires uv
-# or
-uv pip compile requirements/deploy.in -o requirements/deploy.txt
-uv pip compile requirements/demo.in -o requirements/demo.txt
-uv pip compile requirements/dev.in -o requirements/dev.txt
-# or
-pip-compile requirements/deploy.in -o requirements/deploy.txt
-pip-compile compile requirements/demo.in -o requirements/demo.txt
-pip-compile compile requirements/dev.in -o requirements/dev.txt
 ```
 
 ## Deployment
